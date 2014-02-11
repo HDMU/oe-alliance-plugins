@@ -26,7 +26,7 @@ if ODINM6
 SUBDIRS += OdinM7VFDControl
 endif
 
-if INIHDE
+if XPEEDLX
 SUBDIRS += INIVFDControl
 endif
 
