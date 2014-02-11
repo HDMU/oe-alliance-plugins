@@ -10,7 +10,8 @@ from Components.config import config, configfile, ConfigSubsection, ConfigEnable
 from Components.ConfigList import ConfigListScreen, ConfigList
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
 from enigma import iPlayableService, eServiceCenter, eTimer, eActionMap
-from boxbranding import getBoxType
+#from boxbranding import getBoxType
+from Tools.HardwareInfo import HardwareInfo
 from os import system
 from Plugins.Plugin import PluginDescriptor
 from Components.ServiceEventTracker import ServiceEventTracker
@@ -19,7 +20,7 @@ from Screens.InfoBar import InfoBar
 from time import localtime, time
 import Screens.Standby
 
-BOX = getBoxType()
+BOX = HardwareInfo().get_device_name()
 
 if BOX in ('gb800se', 'gb800solo', 'gb800ue'):
 	from enigma import evfd
