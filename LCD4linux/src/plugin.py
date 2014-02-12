@@ -11358,18 +11358,18 @@ def autostart(reason, **kwargs):
 				pass
 
 def setup(menuid, **kwargs):
-	if getImageDistro() in ("openvix", "openatv", "ventonsupport", "egami", "openhdf"):
-		if menuid == "display" and SystemInfo["Display"]:
-			return [("LCD4Linux", main, "lcd4linux", None)]
-		elif menuid == "system" and not SystemInfo["Display"]:
-			return [("LCD4Linux", main, "lcd4linux", None)]
-		else:
-			return []
+#	if getImageDistro() in ("openvix", "openatv", "ventonsupport", "egami", "openhdf"):
+#		if menuid == "display" and SystemInfo["Display"]:
+#			return [("LCD4Linux", main, "lcd4linux", None)]
+#		elif menuid == "system" and not SystemInfo["Display"]:
+#			return [("LCD4Linux", main, "lcd4linux", None)]
+#		else:
+#			return []
+#	else:
+	if menuid == "setup":
+		return [("LCD4Linux", main, "lcd4linux", None)]
 	else:
-		if menuid == "setup":
-			return [("LCD4Linux", main, "lcd4linux", None)]
-		else:
-			return []
+		return []
 
 def Plugins(**kwargs):
 	list = [
