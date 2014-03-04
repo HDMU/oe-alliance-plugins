@@ -437,7 +437,6 @@ class VFD_GigaSetup(ConfigListScreen, Screen):
 
 class VFD_Giga:
 	def __init__(self, session):
-		print "[VFD-GIGA] initializing"
 		self.session = session
 		self.service = None
 		self.onClose = [ ]
@@ -486,10 +485,8 @@ def controlgigaVfd():
 	global mySession
 
 	if gReason == 0 and mySession != None and gigaVfd == None:
-		print "[VFD-GIGA] Starting !!"
 		gigaVfd = VFD_Giga(mySession)
 	elif gReason == 1 and gigaVfd != None:
-		print "[VFD-GIGA] Stopping !!"
 		if BOX in ('gb800se', 'gb800solo', 'gb800ue'):
 			evfd.getInstance().vfd_led(config.plugins.VFD_Giga.ledDSBY.value)
 		else:
@@ -520,7 +517,6 @@ def SetTime():
 		print "[VFD-GIGA] set RTC time failed!"
 
 def sessionstart(reason, **kwargs):
-	print "[VFD-GIGA] sessionstart"
 	global gigaVfd
 	global gReason
 	global mySession
