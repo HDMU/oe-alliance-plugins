@@ -75,9 +75,9 @@ def setAttr(attr, encoder, value):
 	setattr(config.plugins.transcodingsetup, encoder == '0' and attr or "%s_%s"%(attr, encoder), value)
 
 def createTransCodingConfig(encoder):
-	if fileExists( getProcPath(encoder ,"bitrate") ):
-		if getModel() == "solo2":
-			choice = TconfigInteger(encoder, default = 400000, limits = (50000, 1000000))
+	if fileExists(getProcPath(encoder ,"bitrate")):
+		if getBoxType() == "vusolo2":
+			choice = ConfigSelection(default = "400000", choices=[("50000", "50 Kbits"), ("100000", "100 Kbits"), ("150000", "150 Kbits"), ("200000", "200 Kbits"), ("250000", "250 Kbits"), ("300000", "300 Kbits"), ("350000", "350 Kbits"), ("400000", "400 Kbits"), ("450000", "450 Kbits"), ("500000", "500 Kbits"), ("600000", "600 Kbits"), ("700000", "700 Kbits"), ("800000", "800 Kbits"), ("900000", "900 Kbits"), ("1000000", "1 Mbits")])
 		else:
 			choice = TconfigInteger(encoder, default = 2000000, limits = (100000, 10000000))
 		setAttr("bitrate", encoder, choice)
@@ -141,7 +141,13 @@ if len(encoders) > 1:
 	choices = []
 	for encoder in encoders:
 		choices.append((encoder, encoder))
-	config.plugins.transcodingsetup.encoder = ConfigSelection(default = '0', choices = choices )
+else:
+	choices.append(('0','0'))
+	
+config.plugins.transcodingsetup.encodernum = ConfigSelection(default = '0', choices = choices)
+
+SystemInfo["AdvancedTranscoding"] = checkSupportAdvanced()
+SystemInfo["MultipleEncoders"] = len(encoders) > 1
 
 transcodingsetupinit = None
 class TranscodingSetupInit:
@@ -150,41 +156,39 @@ class TranscodingSetupInit:
 		config.plugins.transcodingsetup.port.addNotifier(self.setPort)
 
 		for encoder in encoders:
-			if hasAttr("automode", encoder):
-				if getAttr("automode", encoder).value == "On":
-					getAttr("automode", encoder).addNotifier(self.setAutomode)
+			if hasattr(config.plugins.transcodingsetup.encoder[int(encoder)], "automode"):
+				if config.plugins.transcodingsetup.encoder[int(encoder)].automode.getValue() == "On":
+					config.plugins.transcodingsetup.encoder[int(encoder)].automode.addNotifier(self.setAutomode, extra_args=[int(encoder)])
 
-					if hasAttr("bitrate", encoder):
-						getAttr("bitrate", encoder).addNotifier(self.setBitrate, False)
+			if hasattr(config.plugins.transcodingsetup.encoder[int(encoder)], "bitrate"):
+				config.plugins.transcodingsetup.encoder[int(encoder)].bitrate.addNotifier(self.setBitrate, extra_args=[int(encoder)])
 
-					if hasAttr("framerate", encoder):
-						getAttr("framerate", encoder).addNotifier(self.setFramerate, False)
+			if hasattr(config.plugins.transcodingsetup.encoder[int(encoder)], "framerate"):
+				config.plugins.transcodingsetup.encoder[int(encoder)].framerate.addNotifier(self.setFramerate, extra_args=[int(encoder)])
 
-				else: # autoMode Off
-					getAttr("automode", encoder).addNotifier(self.setAutomode, False)
-					if hasAttr("bitrate", encoder):
-						getAttr("bitrate", encoder).addNotifier(self.setBitrate)
+			if hasattr(config.plugins.transcodingsetup.encoder[int(encoder)], "resolution"):
+				config.plugins.transcodingsetup.encoder[int(encoder)].resolution.addNotifier(self.setResolution, extra_args=[int(encoder)])
 
-					if hasAttr("framerate", encoder):
-						getAttr("framerate", encoder).addNotifier(self.setFramerate)
+			if hasattr(config.plugins.transcodingsetup.encoder[int(encoder)], "aspectratio"):
+				config.plugins.transcodingsetup.encoder[int(encoder)].aspectratio.addNotifier(self.setAspectRatio, extra_args=[int(encoder)])
 
-			if hasAttr("resolution", encoder):
-				getAttr("resolution", encoder).addNotifier(self.setResolution)
+			if hasattr(config.plugins.transcodingsetup.encoder[int(encoder)], "audiocodec"):
+				config.plugins.transcodingsetup.encoder[int(encoder)].audiocodec.addNotifier(self.setAudioCodec, extra_args=[int(encoder)])
 
-			if hasAttr("aspectratio", encoder):
-				getAttr("aspectratio", encoder).addNotifier(self.setAspectRatio)
+			if hasattr(config.plugins.transcodingsetup.encoder[int(encoder)], "videocodec"):
+				config.plugins.transcodingsetup.encoder[int(encoder)].videocodec.addNotifier(self.setVideoCodec, extra_args=[int(encoder)])
 
-			if hasAttr("audiocodec", encoder):
-				getAttr("audiocodec", encoder).addNotifier(self.setAudioCodec)
+			if hasattr(config.plugins.transcodingsetup.encoder[int(encoder)], "gopframeb"):
+				config.plugins.transcodingsetup.encoder[int(encoder)].gopframeb.addNotifier(self.setGopFrameB, extra_args=[int(encoder)])
 
-			if hasAttr("videocodec", encoder):
-				getAttr("videocodec", encoder).addNotifier(self.setVideoCodec)
+			if hasattr(config.plugins.transcodingsetup.encoder[int(encoder)], "gopframep"):
+				config.plugins.transcodingsetup.encoder[int(encoder)].gopframep.addNotifier(self.setGopFrameP, extra_args=[int(encoder)])
 
-			if hasAttr("gopframeb", encoder):
-				getAttr("gopframeb", encoder).addNotifier(self.setGopFrameB)
+			if hasattr(config.plugins.transcodingsetup.encoder[int(encoder)], "level"):
+				config.plugins.transcodingsetup.encoder[int(encoder)].level.addNotifier(self.setLevel, extra_args=[int(encoder)])
 
-			if hasAttr("gopframep", encoder):
-				getAttr("gopframep", encoder).addNotifier(self.setGopFrameP)
+			if hasattr(config.plugins.transcodingsetup.encoder[int(encoder)], "profile"):
+				config.plugins.transcodingsetup.encoder[int(encoder)].profile.addNotifier(self.setProfile, extra_args=[int(encoder)])
 
 			if hasAttr("level", encoder):
 				getAttr("level", encoder).addNotifier(self.setLevel)
@@ -262,60 +266,92 @@ class TranscodingSetupInit:
 		configElement.value = curValue
 		configElement.save()
 
-	def setAutomode(self, configElement):
+	def setAutomode(self, configElement, extra_args):
 		configName = "AutoMode"
 #		print "[TranscodingSetup]  setAutomode, configName %s, value %s" % ( configName, configElement.value )
 		if configElement.value == "On":
 			autoValue = str(-1)
-			if ((hasAttr("bitrate", configElement.encoder) and
-					self.setConfig(getProcPath(configElement.encoder ,"bitrate"), autoValue) ) or
-					(hasAttr("framerate", configElement.encoder) and
-					self.setConfig(getProcPath(configElement.encoder ,"framerate"), autoValue) ) ):
+			if (hasattr(config.plugins.transcodingsetup.encoder[int(extra_args[0])], "bitrate") and self.setConfig(getProcPath(int(extra_args[0]) ,"bitrate"), autoValue)) or (hasattr(config.plugins.transcodingsetup.encoder[int(extra_args[0])], "framerate") and self.setConfig(getProcPath(int(extra_args[0]), "framerate"), autoValue)):
 				configElement.value = "Off" # set config failed, reset to previous value
 				configElement.save()
 				self.showMessage("Set %s failed." % (configName), MessageBox.TYPE_ERROR)
 		else: # Off
-			if hasAttr("bitrate", configElement.encoder):
-				self.setBitrate(getAttr("bitrate", configElement.encoder))
-			if hasAttr("framerate", configElement.encoder):
-				self.setFramerate(getAttr("framerate", configElement.encoder))
+			if hasattr(config.plugins.transcodingsetup.encoder[int(extra_args[0])], "bitrate"):
+				self.setBitrate(config.plugins.transcodingsetup.encoder[int(extra_args[0])].bitrate)
+			if hasattr(config.plugins.transcodingsetup.encoder[int(extra_args[0])], "framerate"):
+				self.setFramerate(config.plugins.transcodingsetup.encoder[int(extra_args[0])].framerate)
 
-	def setBitrate(self, configElement):
-		self.setupConfig(configElement, getProcPath(configElement.encoder ,"bitrate"))
+	def setBitrate(self, configElement, extra_args):
+		self.setupConfig(configElement, getProcPath(int(extra_args[0]) ,"bitrate"))
 
-	def setFramerate(self, configElement):
-		self.setupConfig(configElement, getProcPath(configElement.encoder ,"framerate"))
+	def setFramerate(self, configElement, extra_args):
+		self.setupConfig(configElement, getProcPath(int(extra_args[0]) ,"framerate"))
 
-	def setResolution(self, configElement):
+	def setResolution(self, configElement, extra_args):
 		resolution = configElement.value
 		if resolution in [ "320x240", "160x120" ]:
 			(width, height) = tuple(resolution.split('x'))
-			self.setConfig(getProcPath(configElement.encoder ,"resolution"), "custom")
-			self.setConfig(getProcPath(configElement.encoder ,"width"), width)
-			self.setConfig(getProcPath(configElement.encoder ,"height"), height)
+			self.setConfig(getProcPath(int(extra_args[0]) ,"resolution"), "custom")
+			self.setConfig(getProcPath(int(extra_args[0]) ,"width"), width)
+			self.setConfig(getProcPath(int(extra_args[0]) ,"height"), height)
 		else:
-			self.setupConfig(configElement, getProcPath(configElement.encoder ,"resolution"))
+			self.setupConfig(configElement, getProcPath(int(extra_args[0]) ,"resolution"))
 
-	def setAspectRatio(self, configElement):
-		self.setupConfig(configElement, getProcPath(configElement.encoder ,"aspectratio"))
+	def setAspectRatio(self, configElement, extra_args):
+		self.setupConfig(configElement, getProcPath(int(extra_args[0]) ,"aspectratio"))
 
-	def setAudioCodec(self, configElement):
-		self.setupConfig(configElement, getProcPath(configElement.encoder ,"audiocodec"))
+	def setAudioCodec(self, configElement, extra_args):
+		self.setupConfig(configElement, getProcPath(int(extra_args[0]) ,"audiocodec"))
 
-	def setVideoCodec(self, configElement):
-		self.setupConfig(configElement, getProcPath(configElement.encoder ,"videocodec"))
+	def setVideoCodec(self, configElement, extra_args):
+		self.setupConfig(configElement, getProcPath(int(extra_args[0]) ,"videocodec"))
 
-	def setGopFrameB(self, configElement):
-		self.setupConfig(configElement, getProcPath(configElement.encoder ,"gopframeb"))
+	def setGopFrameB(self, configElement, extra_args):
+		self.setupConfig(configElement, getProcPath(int(extra_args[0]) ,"gopframeb"))
 
-	def setGopFrameP(self, configElement):
-		self.setupConfig(configElement, getProcPath(configElement.encoder ,"gopframep"))
+	def setGopFrameP(self, configElement, extra_args):
+		self.setupConfig(configElement, getProcPath(int(extra_args[0]) ,"gopframep"))
 
-	def setLevel(self, configElement):
-		self.setupConfig(configElement, getProcPath(configElement.encoder ,"level"))
+	def setLevel(self, configElement, extra_args):
+		self.setupConfig(configElement, getProcPath(int(extra_args[0]) ,"level"))
 
-	def setProfile(self, configElement):
-		self.setupConfig(configElement, getProcPath(configElement.encoder ,"profile"))
+	def setProfile(self, configElement, extra_args):
+		self.setupConfig(configElement, getProcPath(int(extra_args[0]) ,"profile"))
+
+	def setPort(self, configElement):
+		port = configElement.getValue()
+
+		print "[TranscodingSetup] set port",port
+		try:
+			fp = file('/etc/inetd.conf', 'r')
+			datas = fp.read()
+			fp.close()
+
+			newConfigData = ""
+			oldConfigData = datas
+			for L in oldConfigData.splitlines():
+				try:
+					if L[0] == '#':
+						newConfigData += L + '\n'
+						continue
+				except: continue
+				LL = L.split()
+				if LL[5] == '/usr/bin/transtreamproxy':
+					LL[0] = port
+				if LL[5] == '/usr/bin/filestreamproxy':
+					LL = ''
+				newConfigData += ''.join(str(X) + "\t" for X in LL) + '\n'
+
+			if newConfigData.find("transtreamproxy") == -1:
+				newConfigData += port + "/tstream\ttcp\tnowait\troot\t/usr/bin/transtreamproxy\ttranstreamproxy\n"
+			fd = file("/etc/inetd.conf",'w')
+			fd.write(newConfigData)
+			fd.close()
+		except:
+			self.showMessage("Set port failed.", MessageBox.TYPE_ERROR)
+			return
+
+		self.inetdRestart()
 
 	def inetdRestart(self):
 		if fileExists("/etc/init.d/inetd"):
@@ -430,10 +466,14 @@ class TranscodingSetup(Screen, ConfigListScreen):
 		if len(encoders) == 1:
 			encoder = encoders[0]
 		elif len(encoders) > 1:
-			self.encoder = getConfigListEntry(_("Encoder"), config.plugins.transcodingsetup.encoder)
-			self.list.append( self.encoder )
-			encoder = config.plugins.transcodingsetup.encoder.value			
+			self.encoder = getConfigListEntry(_("Encoder"), config.plugins.transcodingsetup.encodernum)
+			self.list.append(self.encoder)
+			encoder = config.plugins.transcodingsetup.encodernum.getValue()
+		self.curencoder = encoder
+		self.createSetup2()
 
+	def createSetup2(self):
+		encoder = self.curencoder
 		if encoder is not None:
 			self.automode = None
 			if checkSupportAdvanced() and hasAttr('automode', encoder):
