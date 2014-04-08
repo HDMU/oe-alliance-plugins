@@ -30,6 +30,10 @@ if XPEEDLX
 SUBDIRS += INIVFDControl
 endif
 
+if XPEEDLX3
+SUBDIRS += MICOMUpgrade
+endif
+
 if ENFINITY
 SUBDIRS += EVOVFDControl
 endif
