@@ -293,5 +293,11 @@ def sessionstart(reason, **kwargs):
 	controliniVfd()
 
 def Plugins(**kwargs):
-	return [ PluginDescriptor(where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=sessionstart),
-		PluginDescriptor(name="LED Display Setup", description="Change VFD display settings",where = PluginDescriptor.WHERE_MENU, fnc = main) ]
+	f = open("/proc/stb/fp/version",'r')
+ 	model = f.readline().strip().lower()
+ 	f.close()
+	if model in ("0"):
+		return [ PluginDescriptor(where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=sessionstart),
+			PluginDescriptor(name="LED Display Setup", description="Change VFD display settings",where = PluginDescriptor.WHERE_MENU, fnc = main) ]
+	else:
+		return []
