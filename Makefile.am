@@ -50,7 +50,7 @@ if MIRACLEBOX
 SUBDIRS += VentonFancontrol Blindscan MICOMUpgrade
 endif
 
-if INIHDP
+if XPEEDLX3
 SUBDIRS += TransCodingSetup
 endif
 
