@@ -76,7 +76,8 @@ def setAttr(attr, encoder, value):
 
 def createTransCodingConfig(encoder):
 	if fileExists(getProcPath(encoder ,"bitrate")):
-		if getBoxType() == "vusolo2":
+		from Tools.HardwareInfo import HardwareInfo
+		if HardwareInfo().get_device_name() == "vusolo2":
 			choice = ConfigSelection(default = "400000", choices=[("50000", "50 Kbits"), ("100000", "100 Kbits"), ("150000", "150 Kbits"), ("200000", "200 Kbits"), ("250000", "250 Kbits"), ("300000", "300 Kbits"), ("350000", "350 Kbits"), ("400000", "400 Kbits"), ("450000", "450 Kbits"), ("500000", "500 Kbits"), ("600000", "600 Kbits"), ("700000", "700 Kbits"), ("800000", "800 Kbits"), ("900000", "900 Kbits"), ("1000000", "1 Mbits")])
 		else:
 			choice = TconfigInteger(encoder, default = 2000000, limits = (100000, 10000000))
