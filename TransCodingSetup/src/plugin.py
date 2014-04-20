@@ -54,7 +54,7 @@ def checkSupportAdvanced():
 
 config.plugins.transcodingsetup = ConfigSubsection()
 config.plugins.transcodingsetup.transcoding = ConfigSelection(default = "enable", choices = [ ("enable", _("enable")), ("disable", _("disable"))])
-config.plugins.transcodingsetup.port = ConfigInteger(default = 8002, limits = (8002, 9999))
+config.plugins.transcodingsetup.port = ConfigSelection(default = "8002", choices = [ ("8001", "8001"), ("8002", "8002"), ("8003", "8003"), ("8004", "8004")])
 config.plugins.transcodingsetup.encoder = ConfigSubList()
 
 def createTransCodingConfig(encoder):
