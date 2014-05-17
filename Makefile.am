@@ -14,6 +14,10 @@ if XTREND
 SUBDIRS += XtrendFancontrol Blindscan XtrendRemote
 endif
 
+if MUTANT2400
+SUBDIRS += XtrendFancontrol XtrendRemote
+endif
+
 if ODIN
 SUBDIRS += XtrendFancontrol Blindscan
 endif
@@ -34,19 +38,15 @@ if XPEEDLX3
 SUBDIRS += MICOMUpgrade
 endif
 
-if ENFINITY
-SUBDIRS += EVOVFDControl
+if INIHDE
+SUBDIRS += INIVFDControl
 endif
 
-if VENTON
-SUBDIRS += VentonFancontrol Blindscan MICOMUpgrade
+if EW7358
+SUBDIRS += EWVFDControl
 endif
 
 if INI
-SUBDIRS += VentonFancontrol Blindscan MICOMUpgrade
-endif
-
-if MIRACLEBOX
 SUBDIRS += VentonFancontrol Blindscan MICOMUpgrade
 endif
 
