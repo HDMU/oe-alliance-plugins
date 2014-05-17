@@ -126,7 +126,7 @@ Data = LCD4plugin+"data/"
 stb = HardwareInfo().get_device_name()
 if stb in ('gbquad','gb800ue','gb800ueplus'):
 	LCD4default = Data+"default.gigablue"
-elif getBoxType() == 'gbquadplus':
+elif stb == 'gbquadplus':
 	LCD4default = Data+"default.quadplus"
 else:	
 	LCD4default = Data+"default.lcd"
