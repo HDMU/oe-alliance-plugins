@@ -36,6 +36,7 @@ endif
 
 if XPEEDLX3
 SUBDIRS += MICOMUpgrade
+endif
 
 if EW7358
 SUBDIRS += EWVFDControl
