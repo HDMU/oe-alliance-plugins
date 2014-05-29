@@ -36,14 +36,17 @@ endif
 
 if XPEEDLX3
 SUBDIRS += MICOMUpgrade
+
+if EW7358
+SUBDIRS += EWVFDControl
 endif
 
 if INIHDE
 SUBDIRS += INIVFDControl
 endif
 
-if EW7358
-SUBDIRS += EWVFDControl
+if INIHDE2
+SUBDIRS += INIVFDControl
 endif
 
 if INI
@@ -67,6 +70,10 @@ SUBDIRS += VuDuoFanControl
 endif
 
 if VUSOLO2
+SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup Blindscan
+endif
+
+if VUSOLOSE
 SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup Blindscan
 endif
 
