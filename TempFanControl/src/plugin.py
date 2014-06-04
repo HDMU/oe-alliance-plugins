@@ -12,8 +12,7 @@ from Screens.Screen import Screen
 
 from Plugins.Plugin import PluginDescriptor
 from Components.FanControl import fancontrol
-
-from boxbranding import getBrandOEM
+from Tools.HardwareInfo import HardwareInfo
 
 class TempFanControl(Screen, ConfigListScreen):
 	skin = """
@@ -109,10 +108,11 @@ class TempFanControl(Screen, ConfigListScreen):
 		for count in range(8):
 			if count < tempcount:
 				id = templist[count]
-				if getBrandOEM() not in ('dags', 'vuplus'):
+				stb = HardwareInfo().get_device_name()
+				if stb not in ('optimussos1', 'optimussos2, 'solo2'):
 					self["SensorTempText%d" % count] = StaticText(sensors.getSensorName(id))
 					self["SensorTemp%d" % count] = SensorSource(sensorid = id)
-				elif getBrandOEM() in ('dags', 'vuplus') and id < 1:
+				elif stb in ('optimussos1', 'optimussos2, 'solo2') and id < 1:
 					self["SensorTempText%d" % count] = StaticText(sensors.getSensorName(id))
 					self["SensorTemp%d" % count] = SensorSource(sensorid = id)
 				else:
@@ -132,10 +132,10 @@ class TempFanControl(Screen, ConfigListScreen):
 
 		self.list = []
 		for count in range(fancontrol.getFanCount()):
-			if getBrandOEM() not in ('dags', 'vuplus'):
+			if stb not in ('optimussos1', 'optimussos2, 'solo2'):
 				self.list.append(getConfigListEntry(_("Fan %d voltage") % (count + 1), fancontrol.getConfig(count).vlt))
 			self.list.append(getConfigListEntry(_("Fan %d PWM") % (count + 1), fancontrol.getConfig(count).pwm))
-			if getBrandOEM() not in ('dags', 'vuplus'):
+			if stb not in ('optimussos1', 'optimussos2, 'solo2'):
 				self.list.append(getConfigListEntry(_("Standby fan %d voltage") % (count + 1), fancontrol.getConfig(count).vlt_standby))
 			self.list.append(getConfigListEntry(_("Standby fan %d PWM") % (count + 1), fancontrol.getConfig(count).pwm_standby))
 
@@ -155,20 +155,22 @@ class TempFanControl(Screen, ConfigListScreen):
 
 	def save(self):
 		for count in range(fancontrol.getFanCount()):
-			if getBrandOEM() not in ('dags', 'vuplus'):
+			stb = HardwareInfo().get_device_name()
+			if stb not in ('optimussos1', 'optimussos2, 'solo2'):
 				fancontrol.getConfig(count).vlt.save()
 			fancontrol.getConfig(count).pwm.save()
-			if getBrandOEM() not in ('dags', 'vuplus'):
+			if stb not in ('optimussos1', 'optimussos2, 'solo2'):
 				fancontrol.getConfig(count).vlt_standby.save()
 			fancontrol.getConfig(count).pwm_standby.save()
 		self.close()
 
 	def revert(self):
 		for count in range(fancontrol.getFanCount()):
-			if getBrandOEM() not in ('dags', 'vuplus'):
+			stb = HardwareInfo().get_device_name()
+			if stb not in ('optimussos1', 'optimussos2, 'solo2'):
 				fancontrol.getConfig(count).vlt.load()
 			fancontrol.getConfig(count).pwm.load()
-			if getBrandOEM() not in ('dags', 'vuplus'):
+			if stb not in ('optimussos1', 'optimussos2, 'solo2'):
 				fancontrol.getConfig(count).vlt_standby.load()
 			fancontrol.getConfig(count).pwm_standby.load()
 		self.close()
