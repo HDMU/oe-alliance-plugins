@@ -104,11 +104,11 @@ class TempFanControl(Screen, ConfigListScreen):
 
 		self["red"] = StaticText(_("Cancel"))
 		self["green"] = StaticText(_("OK"))
+		stb = HardwareInfo().get_device_name()
 
 		for count in range(8):
 			if count < tempcount:
 				id = templist[count]
-				stb = HardwareInfo().get_device_name()
 				if stb not in ('optimussos1', 'optimussos2', 'solo2'):
 					self["SensorTempText%d" % count] = StaticText(sensors.getSensorName(id))
 					self["SensorTemp%d" % count] = SensorSource(sensorid = id)
