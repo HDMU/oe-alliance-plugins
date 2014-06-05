@@ -109,10 +109,10 @@ class TempFanControl(Screen, ConfigListScreen):
 			if count < tempcount:
 				id = templist[count]
 				stb = HardwareInfo().get_device_name()
-				if stb not in ('optimussos1', 'optimussos2, 'solo2'):
+				if stb not in ('optimussos1', 'optimussos2', 'solo2'):
 					self["SensorTempText%d" % count] = StaticText(sensors.getSensorName(id))
 					self["SensorTemp%d" % count] = SensorSource(sensorid = id)
-				elif stb in ('optimussos1', 'optimussos2, 'solo2') and id < 1:
+				elif stb in ('optimussos1', 'optimussos2', 'solo2') and id < 1:
 					self["SensorTempText%d" % count] = StaticText(sensors.getSensorName(id))
 					self["SensorTemp%d" % count] = SensorSource(sensorid = id)
 				else:
@@ -132,10 +132,10 @@ class TempFanControl(Screen, ConfigListScreen):
 
 		self.list = []
 		for count in range(fancontrol.getFanCount()):
-			if stb not in ('optimussos1', 'optimussos2, 'solo2'):
+			if stb not in ('optimussos1', 'optimussos2', 'solo2'):
 				self.list.append(getConfigListEntry(_("Fan %d voltage") % (count + 1), fancontrol.getConfig(count).vlt))
 			self.list.append(getConfigListEntry(_("Fan %d PWM") % (count + 1), fancontrol.getConfig(count).pwm))
-			if stb not in ('optimussos1', 'optimussos2, 'solo2'):
+			if stb not in ('optimussos1', 'optimussos2', 'solo2'):
 				self.list.append(getConfigListEntry(_("Standby fan %d voltage") % (count + 1), fancontrol.getConfig(count).vlt_standby))
 			self.list.append(getConfigListEntry(_("Standby fan %d PWM") % (count + 1), fancontrol.getConfig(count).pwm_standby))
 
@@ -156,10 +156,10 @@ class TempFanControl(Screen, ConfigListScreen):
 	def save(self):
 		for count in range(fancontrol.getFanCount()):
 			stb = HardwareInfo().get_device_name()
-			if stb not in ('optimussos1', 'optimussos2, 'solo2'):
+			if stb not in ('optimussos1', 'optimussos2', 'solo2'):
 				fancontrol.getConfig(count).vlt.save()
 			fancontrol.getConfig(count).pwm.save()
-			if stb not in ('optimussos1', 'optimussos2, 'solo2'):
+			if stb not in ('optimussos1', 'optimussos2', 'solo2'):
 				fancontrol.getConfig(count).vlt_standby.save()
 			fancontrol.getConfig(count).pwm_standby.save()
 		self.close()
@@ -167,10 +167,10 @@ class TempFanControl(Screen, ConfigListScreen):
 	def revert(self):
 		for count in range(fancontrol.getFanCount()):
 			stb = HardwareInfo().get_device_name()
-			if stb not in ('optimussos1', 'optimussos2, 'solo2'):
+			if stb not in ('optimussos1', 'optimussos2', 'solo2'):
 				fancontrol.getConfig(count).vlt.load()
 			fancontrol.getConfig(count).pwm.load()
-			if stb not in ('optimussos1', 'optimussos2, 'solo2'):
+			if stb not in ('optimussos1', 'optimussos2', 'solo2'):
 				fancontrol.getConfig(count).vlt_standby.load()
 			fancontrol.getConfig(count).pwm_standby.load()
 		self.close()
