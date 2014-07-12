@@ -2,6 +2,10 @@ ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = AutoBouquetsMaker DLNABrowser DLNAServer StreamTV 3GModemManager OpenUitzendingGemist TunerServer OnDemand Fempa LCD4linux RemoteChannelStreamConverter
 
+if HAVE_WIRELESSACCESSPOINT
+SUBDIRS += WirelessAccessPoint
+endif
+
 if AZBOX
 SUBDIRS += Blindscan
 endif
@@ -31,11 +35,18 @@ SUBDIRS += OdinM7VFDControl
 endif
 
 if XPEEDLX
-SUBDIRS += INIVFDControl
+SUBDIRS += INIVFDControl MICOMUpgrade
 endif
 
 if XPEEDLX3
 SUBDIRS += MICOMUpgrade
+
+if ODINM7S
+SUBDIRS += OdinM7VFDControl
+endif
+
+if ODINM7C
+SUBDIRS += OdinM7VFDControl
 endif
 
 if EW7358
@@ -43,7 +54,7 @@ SUBDIRS += EWVFDControl
 endif
 
 if INIHDE
-SUBDIRS += INIVFDControl
+SUBDIRS += INIVFDControl MICOMUpgrade
 endif
 
 if INIHDE2
@@ -56,6 +67,10 @@ endif
 
 if XPEEDLX3
 SUBDIRS += TransCodingSetup
+endif
+
+if FORMULER3
+SUBDIRS += F3LEDControl
 endif
 
 if VUUNO

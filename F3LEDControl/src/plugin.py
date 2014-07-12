@@ -16,6 +16,8 @@ from Screens.InfoBar import InfoBar
 from time import localtime, time
 from Tools.Directories import fileExists
 
+from boxbranding import getBoxType
+
 import Screens.Standby
 
 config.plugins.VFD_ini = ConfigSubsection()
@@ -138,13 +140,13 @@ class Channelnumber:
 ChannelnumberInstance = None
 
 def leaveStandby():
-	print "[VFD-INI] Leave Standby"
+	print "[F3 LED] Leave Standby"
 
 	if config.plugins.VFD_ini.showClock.value == 'Off':
 		vfd_write("....")
 
 def standbyCounterChanged(configElement):
-	print "[VFD-INI] In Standby"
+	print "[F3 LED] In Standby"
 
 	from Screens.Standby import inStandby
 	inStandby.onClose.append(leaveStandby)
@@ -153,7 +155,7 @@ def standbyCounterChanged(configElement):
 		vfd_write("....")
 
 def initVFD():
-	print "[VFD-INI] initVFD"
+	print "[F3 LED] initVFD"
 
 	if config.plugins.VFD_ini.showClock.value == 'Off':
 		vfd_write("....")
@@ -195,7 +197,7 @@ class VFD_INISetup(ConfigListScreen, Screen):
 	def createSetup(self):
 		self.editListEntry = None
 		self.list = []
-		self.list.append(getConfigListEntry(_("Show on VFD"), config.plugins.VFD_ini.showClock))
+		self.list.append(getConfigListEntry(_("Show on LED"), config.plugins.VFD_ini.showClock))
 		if config.plugins.VFD_ini.showClock.value != "Off":
 			self.list.append(getConfigListEntry(_("Time mode"), config.plugins.VFD_ini.timeMode))
 
@@ -235,7 +237,7 @@ class VFD_INISetup(ConfigListScreen, Screen):
 
 class VFD_INI:
 	def __init__(self, session):
-		print "[VFD-INI] initializing"
+		print "[F3 LED] initializing"
 		self.session = session
 		self.service = None
 		self.onClose = [ ]
@@ -252,7 +254,7 @@ class VFD_INI:
 		self.abort()
 
 	def abort(self):
-		print "[VFD-INI] aborting"
+		print "[F3 LED] aborting"
 		config.misc.standbyCounter.addNotifier(standbyCounterChanged, initial_call = False)
 
 def main(menuid):
@@ -273,15 +275,15 @@ def controliniVfd():
 	global mySession
 
 	if gReason == 0 and mySession != None and iniVfd == None:
-		print "[VFD-INI] Starting !!"
+		print "[F3 LED] Starting !!"
 		iniVfd = VFD_INI(mySession)
 	elif gReason == 1 and iniVfd != None:
-		print "[VFD-INI] Stopping !!"
+		print "[F3 LED] Stopping !!"
 
 		iniVfd = None
 
 def sessionstart(reason, **kwargs):
-	print "[VFD-INI] sessionstart"
+	print "[F3 LED] sessionstart"
 	global iniVfd
 	global gReason
 	global mySession
@@ -293,11 +295,6 @@ def sessionstart(reason, **kwargs):
 	controliniVfd()
 
 def Plugins(**kwargs):
-	f = open("/proc/stb/fp/version",'r')
- 	model = f.readline().strip().lower()
- 	f.close()
-	if model in ("0"):
-		return [ PluginDescriptor(where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=sessionstart),
-			PluginDescriptor(name="LED Display Setup", description="Change VFD display settings",where = PluginDescriptor.WHERE_MENU, fnc = main) ]
-	else:
-		return []
+	return [ PluginDescriptor(where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=sessionstart),
+		PluginDescriptor(name="LED Display Setup", description="Change LED display settings",where = PluginDescriptor.WHERE_MENU, fnc = main) ]
+

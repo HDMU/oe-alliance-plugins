@@ -66,6 +66,7 @@ AM_CONDITIONAL(EBOX5100, test "$BOXTYPE" == ebox5100)
 AM_CONDITIONAL(EBOXLUMI, test "$BOXTYPE" == eboxlumi)
 AM_CONDITIONAL(EBOX7358, test "$BOXTYPE" == ebox7358)
 AM_CONDITIONAL(EW7358, test `echo "$BOXTYPE"` == "ew7358")
+<<<<<<< HEAD
 AM_CONDITIONAL(ET4X00, test "$BOXTYPE" == et4x00)
 AM_CONDITIONAL(ET5X00, test "$BOXTYPE" == et5x00)
 AM_CONDITIONAL(ET6X00, test "$BOXTYPE" == et6x00)
@@ -79,6 +80,18 @@ AM_CONDITIONAL(GB800UEPLUS, test "$BOXTYPE" == gb800ueplus)
 AM_CONDITIONAL(GBQUADPLUS, test "$BOXTYPE" == gbquadplus)
 AM_CONDITIONAL(GBQUAD, test "$BOXTYPE" == gbquad)
 AM_CONDITIONAL(INIHDE, test "$BOXTYPE" == inihde)
+=======
+AM_CONDITIONAL(FORMULER1, test "$BOXTYPE" == formuler1)
+AM_CONDITIONAL(FORMULER3, test "$BOXTYPE" == formuler3)
+AM_CONDITIONAL(GB800SOLO, test "$BOXTYPE" == "gb800solo")
+AM_CONDITIONAL(GB800SE, test "$BOXTYPE" == "gb800se")
+AM_CONDITIONAL(GB800UE, test "$BOXTYPE" == "gb800ue")
+AM_CONDITIONAL(GB800SEPLUS, test "$BOXTYPE" == "gb800seplus")
+AM_CONDITIONAL(GB800UEPLUS, test "$BOXTYPE" == "gb800ueplus")
+AM_CONDITIONAL(GBQUADPLUS, test "$BOXTYPE" == "gbquadplus")
+AM_CONDITIONAL(GBQUAD, test "$BOXTYPE" == "gbquad")
+AM_CONDITIONAL(INIHDE, test "$BOXTYPE" == "inihde")
+>>>>>>> oea/master
 AM_CONDITIONAL(INIHDE2, test "$BOXTYPE" == "inihde2")
 AM_CONDITIONAL(XPEEDLX3, test "$BOXTYPE" == "xpeedlx3")
 AM_CONDITIONAL(XPEEDLX, test "$BOXTYPE" == xpeedlx)
@@ -94,6 +107,8 @@ AM_CONDITIONAL(MBTWIN, test "$BOXTYPE" == mbtwin)
 AM_CONDITIONAL(MUTANT2400, test "$BOXTYPE" == "mutant2400")
 AM_CONDITIONAL(ODINM6, test "$BOXTYPE" == odinm6)
 AM_CONDITIONAL(ODINM7, test "$BOXTYPE" == odinm7)
+AM_CONDITIONAL(ODINM7S, test "$BOXTYPE" == odinm7s)
+AM_CONDITIONAL(ODINM7C, test "$BOXTYPE" == odinm7c)
 AM_CONDITIONAL(ODINM9, test "$BOXTYPE" == odinm9)
 AM_CONDITIONAL(VUUNO, test "$BOXTYPE" == vuuno)
 AM_CONDITIONAL(VUULTIMO, test "$BOXTYPE" == vuultimo)
@@ -104,7 +119,12 @@ AM_CONDITIONAL(VUSOLO2, test "$BOXTYPE" == vusolo2)
 AM_CONDITIONAL(VUDUO2, test "$BOXTYPE" == vuduo2)
 AM_CONDITIONAL(XP1000, test "$BOXTYPE" == xp1000)
 
+<<<<<<< HEAD
 AM_CONDITIONAL(HAVE_TEMPFANCONTROL, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm500hd -o "$BOXTYPE" == vuuno -o "$BOXTYPE" == vuultimo -o "$BOXTYPE" == vusolo2 -o "$BOXTYPE" == vuduo2 -o "$BOXTYPE" == tmsingle -o "$BOXTYPE" == tmtwin -o "$BOXTYPE" == tm2t -o "$BOXTYPE" == tmnano -o "$BOXTYPE" == iqonios100hd -o "$BOXTYPE" == iqonios200hd -o "$BOXTYPE" == iqonios300hd -o "$BOXTYPE" == optimussos1 -o "$BOXTYPE" == optimussos1+ -o "$BOXTYPE" == optimussos2 -o "$BOXTYPE" == optimussos2+ -o "$BOXTYPE" == dags1 -o "$BOXTYPE" == dags2 -o "$BOXTYPE" == dags3)
+=======
+AM_CONDITIONAL(HAVE_TEMPFANCONTROL, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm500hd -o "$BOXTYPE" == vuuno -o "$BOXTYPE" == vuultimo -o "$BOXTYPE" == vusolo2 -o "$BOXTYPE" == vuduo2 -o "$BOXTYPE" == tmsingle -o "$BOXTYPE" == tmtwin -o "$BOXTYPE" == tm2t -o "$BOXTYPE" == tmnano -o "$BOXTYPE" == iqonios100hd -o "$BOXTYPE" == iqonios200hd -o "$BOXTYPE" == iqonios300hd -o "$BOXTYPE" == optimussos1 -o "$BOXTYPE" == optimussos2 -o "$BOXTYPE" == dags1 -o "$BOXTYPE" == dags2 -o "$BOXTYPE" == dags3)
+AM_CONDITIONAL(HAVE_WIRELESSACCESSPOINT, test "$BOXTYPE" != cube)
+>>>>>>> oea/master
 
 AC_CONFIG_FILES([
 Makefile
@@ -175,6 +195,11 @@ EWVFDControl/Makefile
 EWVFDControl/src/Makefile
 EWVFDControl/meta/Makefile
 EWVFDControl/po/Makefile
+
+F3LEDControl/Makefile
+F3LEDControl/src/Makefile
+F3LEDControl/meta/Makefile
+F3LEDControl/po/Makefile
 
 LCD4linux/Makefile
 LCD4linux/src/Makefile

@@ -35,37 +35,18 @@ config.plugins.OpenUitzendingGemist = ConfigSubsection()
 config.plugins.OpenUitzendingGemist.showpictures = ConfigBoolean(default = True)
 config.plugins.OpenUitzendingGemist.Npolivestreams = ConfigBoolean(default = False)
 
-
-def wgetUrl(target):
-	std_headers = {
-		'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:28.0) Gecko/20100101 Firefox/28.0',
-		'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
-		'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-		'Accept-Language': 'en-us,en;q=0.5',
-	}
-	outtxt = Request(target, None, std_headers)
-	try:
-		outtxt = urlopen2(target, timeout = 5).read()
-	except (URLError, HTTPException, socket.error):
-		return ''
-	return outtxt
-
-def wgetUrlRefer(target, refer):
+def wgetUrl(target, refer='', cookie=''):
 	req = Request(target)
-	req.add_header('Referer', refer)
+	req.add_header('User-Agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:30.0) Gecko/20100101 Firefox/30.0')
+	if refer != '':
+		req.add_header('Referer', refer)
+	if cookie != '':
+		req.add_header('Cookie', cookie)
+	req.add_header('DNT', '1')
 	try:
-		r = urlopen2(req)
+		r = urlopen2(req, timeout = 5)
 		outtxt = r.read()
-	except:
-		outtxt = ''
-	return outtxt
-
-def wgetUrlCookie(target, cookie):
-	req = Request(target)
-	req.add_header('Cookie', cookie)
-	try:
-		r = urlopen2(req)
-		outtxt = r.read()
+		r.close()
 	except:
 		outtxt = ''
 	return outtxt
@@ -125,7 +106,7 @@ class UGMediaPlayer(Screen, InfoBarNotifications, InfoBarSeek):
 	STATE_PLAYING = 1
 	STATE_PAUSED = 2
 
-	skin = """<screen name="MediaPlayer" flags="wfNoBorder" position="0,380" size="720,160" title="Media player" backgroundColor="transparent">
+	skin = """<screen name="UGMediaPlayer" flags="wfNoBorder" position="0,380" size="720,160" title="Media player" backgroundColor="transparent">
 		<ePixmap position="0,0" pixmap="skin_default/info-bg_mp.png" zPosition="-1" size="720,160" />
 		<ePixmap position="29,40" pixmap="skin_default/screws_mp.png" size="665,104" alphatest="on" />
 		<ePixmap position="48,70" pixmap="skin_default/icons/mp_buttons.png" size="108,13" alphatest="on" />
@@ -156,6 +137,7 @@ class UGMediaPlayer(Screen, InfoBarNotifications, InfoBarSeek):
 		elif pauseable == True:
 			InfoBarSeek.__init__(self)
 		self.session = session
+		self.lastservice = None
 		self.service = service
 		self.seekable = seekable
 		self.pauseable = pauseable
@@ -277,6 +259,8 @@ class UGMediaPlayer(Screen, InfoBarNotifications, InfoBarSeek):
 			self.play()
 
 	def handleLeave(self):
+		if self.lastservice is not None:
+			self.session.nav.playService(self.lastservice)
 		self.close()
 
 	def leavePlayer(self):
@@ -409,16 +393,6 @@ class OpenUgSetupScreen(Screen):
 		self["menu"] = MenuList(self.mmenu)
 		self.onLayoutFinish.append(self.layoutFinished)
 
-	def loadUrl(self, url, sub):
-		try:
-			lines = open(url).readlines()
-			for x in lines:
-				if sub in x.lower():
-					return True
-		except:
-			return False
-		return False
-
 	def layoutFinished(self):
 		self.setTitle('Open Uitzending Gemist')
 
@@ -443,7 +417,6 @@ class OpenUgSetupScreen(Screen):
 		for root, dirs, files in os.walk(targetdir):
 			for name in files:
 				os.remove(os.path.join(root, name))
-
 
 class SmallScreen(Screen):
 	def __init__(self, session, cmd):
@@ -538,6 +511,9 @@ class SmallScreen(Screen):
 				self.mmenu.append((_("Cultura 24"), 'thematv/cultura24/cultura24.isml/cultura24.m3u8', 'npo'))
 				self.mmenu.append((_("Best 24"), 'thematv/best24/best24.isml/best24.m3u8', 'npo'))
 				self.mmenu.append((_("101 TV"), 'thematv/101tv/101tv.isml/101tv.m3u8', 'npo'))
+				self.mmenu.append((_("Radio 1 Webcam"), 'visualradio/radio1/radio1.isml/radio1.m3u8', 'npo'))
+				self.mmenu.append((_("Radio 2 Webcam"), 'visualradio/radio2/radio2.isml/radio2.m3u8', 'npo'))
+				self.mmenu.append((_("Radio 3 Webcam"), 'visualradio/3fm/3fm.isml/3fm.m3u8', 'npo'))
 			else:
 				self.mmenu.append((_("No streams avaible"), None))
 		else:
@@ -561,7 +537,7 @@ class SmallScreen(Screen):
 			if selection[2] == 'npo':
 				API_URL = 'http://ida.omroep.nl/aapi/?stream='
 				BASE_URL = 'http://livestreams.omroep.nl/live/npo/'
-				data = wgetUrl(API_URL+BASE_URL+selection[1])
+				data = wgetUrl(API_URL+BASE_URL+selection[1], 'http://www.npo.nl')
 				data = Csplit(data, "?hash=", 1)
 				data = Csplit(data, '"', 0)
 				if data != '':
@@ -1395,8 +1371,10 @@ class OpenUg(Screen):
 		channel = ''
 		akey = ''
 		ekey = ''
+		tarrif = ''
 		for line in scheduledata:
 			if state == 0:
+				tarrif = '0'
 				if "\"episode_key\":" in line:
 					state = 1
 			if state == 1:
@@ -1423,19 +1401,26 @@ class OpenUg(Screen):
 						tmp = "\"uuid\":\""
 						if tmp in line:
 							stream = line.split(tmp)[1].split('"')[0]
+						tmp = '\"quality\":\"'
+						if tmp in line:
+							date = (line.split(tmp)[1].split('\"')[0] + ' | ' + date)
 						tmp = '\"duration\":\"'
 						if tmp in line:
 							date = (line.split(tmp)[1].split('\"')[0] + ' | ' + date)
 						tmp = "\"abstract_key\":\""
 						if tmp in line:
 							akey = line.split(tmp)[1].split('"')[0]
+						tmp = "\"tariff\":"
+						if tmp in line:
+							tarrif = line.split(tmp)[1].split(',')[0]
 				for line in abstract:
 					if akey in line:
 						tmp = "\"name\":\""
 						if tmp in line:
 							name = line.split(tmp)[1].split('"')[0]
 				icon_type = icon
-				weekList.append((date, name, short, channel, stream, icon, icon_type, True))
+				if tarrif == '0':
+					weekList.append((date, name, short, channel, stream, icon, icon_type, True))
 				state = 0
 
 	def getMediaData(self, weekList, url):
@@ -1520,7 +1505,7 @@ class OpenUg(Screen):
 				icon_type = ''
 
 	def sbsGetMediaUrl(self, uid):
-		out = wgetUrlRefer('%s%s' % (self.EMBED_BASE_URL, uid), '%s/kijkframe.php?videoId=%sW&width=868&height=488' % (self.SBS_BASE_URL, uid))
+		out = wgetUrl('%s%s' % (self.EMBED_BASE_URL, uid), '%s/kijkframe.php?videoId=%sW&width=868&height=488' % (self.SBS_BASE_URL, uid))
 		data = out.split('\n')
 		myexp = ''
 		id = ''
@@ -1545,7 +1530,7 @@ class OpenUg(Screen):
 		url = ''
 		if myexp != '' and id != '' and key != '' and vplayer != '':
 			target = "http://c.brightcove.com/services/viewer/htmlFederated?&width=868&height=488&flashID=myExperience%s&bgcolor=%%23FFFFFF&playerID=%s&playerKey=%s&isVid=true&isUI=true&dynamicStreaming=true&wmode=opaque&%%40videoPlayer=%s&branding=sbs&playertitle=true&autoStart=&debuggerID=&refURL=%s/kijkframe.php?videoId=%s&width=868&height=488" % (myexp, id, key, vplayer, self.SBS_BASE_URL, uid)
-			out = wgetUrlRefer(target, '%s%s' % (self.EMBED_BASE_URL, uid))
+			out = wgetUrl(target, '%s%s' % (self.EMBED_BASE_URL, uid))
 			tmp = out.split('{')
 			for x in tmp:
 				if 'defaultURL\":' in x and 'defaultURL\":null' not in x:
@@ -1553,9 +1538,12 @@ class OpenUg(Screen):
 		return url
 
 	def dumpert(self, mediaList, url):
-		data = wgetUrlCookie(self.DUMPERT_BASE_URL + url, 'nsfw=1')
+		data = wgetUrl(self.DUMPERT_BASE_URL + url, 'http://www.dumpert.nl/', 'playersize=large; nsfw=1')
 		data = Csplit(data, '<section id="content">',1)
+		data = Csplit(data, '<section class="dump-cnt">',1)
+		data = Csplit(data, '<div class="pagecontainer">',1)
 		data = Csplit(data, '<div id="footcontainer">', 0)
+		data = Csplit(data, '<footer class="dump-ftr">', 0)
 		nexturl = ''
 		prevurl = ''
 		if '<li class="volgende">' in data:
@@ -1599,12 +1587,14 @@ class OpenUg(Screen):
 					short = line.split(tmp)[1].split('</p>')[0]
 				mediaList.append((date, name, short, channel, stream, icon, icon_type, True))
 				state = 0
-		mediaList.append(('', ' ---> Volgende Pagina', '', '', nexturl, '', '', True))
+		if nexturl != '':
+			mediaList.append(('', ' ---> Volgende Pagina', '', '', nexturl, '', '', True))
 
 	def getDumpertStream(self, url):
-		data = wgetUrl(url)
+		data = wgetUrl(url, 'http://www.dumpert.nl/', 'playersize=large; nsfw=1')
 		url = ''
-		data = Csplit(data, '<div class="dump-player">', 1)
+		data = Csplit(data, '<div class="dump-pan">', 1)
+		data = Csplit(data, '<div class="dump-player"', 1)
 		data = Csplit(data, '<div id="commentscontainer">', 0)
 		tmp = 'class="videoplayer"'
 		if tmp in data:
@@ -1616,11 +1606,13 @@ class OpenUg(Screen):
 				for line in url:
 					if '"720p"' in line:
 						vidurl = line.split('":"')[1].replace("\/","/").replace('"','')
-						return vidurl
+						if 'dumpert' in vidurl:
+							return vidurl
 					if '"tablet"' in line:
 						vidurl = line.split('":"')[1].replace("\/","/").replace('"','')
-				return vidurl
-		return
+				if 'dumpert' in vidurl:
+					return vidurl
+		return ''
 
 	def rver(self, mediaList, url):
 		data = wgetUrl(url)
