@@ -40,6 +40,7 @@ endif
 
 if XPEEDLX3
 SUBDIRS += MICOMUpgrade
+endif
 
 if ODINM7S
 SUBDIRS += OdinM7VFDControl
