@@ -16,8 +16,6 @@ from Screens.InfoBar import InfoBar
 from time import localtime, time
 from Tools.Directories import fileExists
 
-from boxbranding import getBoxType
-
 import Screens.Standby
 
 config.plugins.VFD_ini = ConfigSubsection()
