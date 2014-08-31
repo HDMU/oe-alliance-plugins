@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = AutoBouquetsMaker DLNABrowser DLNAServer StreamTV 3GModemManager OpenUitzendingGemist TunerServer OnDemand Fempa LCD4linux RemoteChannelStreamConverter
+SUBDIRS = AutoBouquetsMaker DLNABrowser DLNAServer StreamTV 3GModemManager OpenUitzendingGemist TunerServer OnDemand Fempa LCD4linux RemoteChannelStreamConverter BTDevicesManager
 
 if HAVE_WIRELESSACCESSPOINT
 SUBDIRS += WirelessAccessPoint
@@ -18,8 +18,16 @@ if XTREND
 SUBDIRS += XtrendFancontrol Blindscan XtrendRemote
 endif
 
-if MUTANT2400
-SUBDIRS += XtrendFancontrol XtrendRemote
+if ET10000
+SUBDIRS += MultiTransCodingSetup
+endif
+
+if HD2400
+SUBDIRS += XtrendFancontrol XtrendRemote MultiTransCodingSetup
+endif
+
+if HD1100
+SUBDIRS += F3LEDControl XtrendRemote
 endif
 
 if ODIN
@@ -67,7 +75,7 @@ SUBDIRS += VentonFancontrol Blindscan MICOMUpgrade
 endif
 
 if XPEEDLX3
-SUBDIRS += TransCodingSetup
+SUBDIRS += MultiTransCodingSetup
 endif
 
 if FORMULER3

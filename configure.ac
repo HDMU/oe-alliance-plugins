@@ -84,17 +84,21 @@ AM_CONDITIONAL(FORMULER3, test "$BOXTYPE" == formuler3)
 AM_CONDITIONAL(INIHDE2, test "$BOXTYPE" == "inihde2")
 AM_CONDITIONAL(XPEEDLX3, test "$BOXTYPE" == "xpeedlx3")
 AM_CONDITIONAL(XPEEDLX, test "$BOXTYPE" == xpeedlx)
-AM_CONDITIONAL(INIHDP, test "$BOXTYPE" == inihdp)
-AM_CONDITIONAL(IQONIOS100HD, test "$BOXTYPE" == iqonios100hd)
-AM_CONDITIONAL(IQONIOS200HD, test "$BOXTYPE" == iqonios200hd)
-AM_CONDITIONAL(IQONIOS300HD, test "$BOXTYPE" == iqonios300hd)
-AM_CONDITIONAL(IXUSSONE, test "$BOXTYPE" == ixussone)
-AM_CONDITIONAL(IXUSSZERO, test "$BOXTYPE" == ixusszero)
-AM_CONDITIONAL(IXUSSDUO, test "$BOXTYPE" == ixussduo)
-AM_CONDITIONAL(MEDIABOX, test "$BOXTYPE" == mediabox)
-AM_CONDITIONAL(MBTWIN, test "$BOXTYPE" == mbtwin)
-AM_CONDITIONAL(MUTANT2400, test "$BOXTYPE" == "mutant2400")
-AM_CONDITIONAL(ODINM6, test "$BOXTYPE" == odinm6)
+AM_CONDITIONAL(GB800SOLO, test "$BOXTYPE" == "gb800solo")
+AM_CONDITIONAL(GB800SE, test "$BOXTYPE" == "gb800se")
+AM_CONDITIONAL(GB800UE, test "$BOXTYPE" == "gb800ue")
+AM_CONDITIONAL(GB800SEPLUS, test "$BOXTYPE" == "gb800seplus")
+AM_CONDITIONAL(GB800UEPLUS, test "$BOXTYPE" == "gb800ueplus")
+AM_CONDITIONAL(GBQUADPLUS, test "$BOXTYPE" == "gbquadplus")
+AM_CONDITIONAL(GBQUAD, test "$BOXTYPE" == "gbquad")
+AM_CONDITIONAL(GBIPBOX, test "$BOXTYPE" == "gbipbox")
+AM_CONDITIONAL(INIHDE, test "$BOXTYPE" == "inihde")
+AM_CONDITIONAL(INIHDP, test "$BOXTYPE" == "inihdp")
+AM_CONDITIONAL(INIHDX, test "$BOXTYPE" == "inihdx")
+AM_CONDITIONAL(IXUSSZERO, test "$BOXTYPE" == "ixusszero")
+AM_CONDITIONAL(IXUSSONE, test "$BOXTYPE" == "ixussone")
+AM_CONDITIONAL(HD2400, test "$BOXTYPE" == "hd2400")
+AM_CONDITIONAL(HD1100, test "$BOXTYPE" == "hd1100")
 AM_CONDITIONAL(ODINM7, test "$BOXTYPE" == odinm7)
 AM_CONDITIONAL(ODINM7S, test "$BOXTYPE" == odinm7s)
 AM_CONDITIONAL(ODINM7C, test "$BOXTYPE" == odinm7c)
@@ -137,6 +141,10 @@ Blindscan/Makefile
 Blindscan/src/Makefile
 Blindscan/meta/Makefile
 Blindscan/po/Makefile
+
+BTDevicesManager/Makefile
+BTDevicesManager/src/Makefile
+BTDevicesManager/meta/Makefile
 
 DLNABrowser/Makefile
 DLNABrowser/src/Makefile
@@ -214,6 +222,11 @@ MICOMUpgrade/src/bin/Makefile
 MICOMUpgrade/meta/Makefile
 MICOMUpgrade/po/Makefile
 MICOMUpgrade/buttons/Makefile
+
+MultiTransCodingSetup/Makefile
+MultiTransCodingSetup/src/Makefile
+MultiTransCodingSetup/meta/Makefile
+MultiTransCodingSetup/po/Makefile
 
 OnDemand/Makefile
 OnDemand/src/Makefile
