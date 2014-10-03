@@ -26,6 +26,16 @@ AM_PATH_PYTHON
 AX_PYTHON_DEVEL
 AX_PTHREAD
 
+AC_ARG_WITH(arch,
+	[  --with-arch=NAME box arch [[none,ah4,mipsel...]]],
+	[ARCH="$withval"],[ARCH="mipsel"])
+AC_SUBST(ARCH)
+AC_DEFINE_UNQUOTED(ARCH,"$ARCH",[box arch])
+
+AM_CONDITIONAL(SH4, test `echo "$ARCH" | cut -b 1-3` == "sh4")
+AM_CONDITIONAL(MIPSEL, test `echo "$ARCH" | cut -b 1-6` == "mipsel")
+AM_CONDITIONAL(ARM, test `echo "$ARCH" | cut -b 1-3` == "arm")
+
 AC_ARG_WITH(boxtype,
 	[  --with-boxtype=NAME box type [[none,dm7025,dm800...]]],
 	[BOXTYPE="$withval"],[BOXTYPE="dm800"])
@@ -34,7 +44,11 @@ AC_DEFINE_UNQUOTED(BOXTYPE,"$BOXTYPE",[box type])
 
 AM_CONDITIONAL(AZBOX, test `echo "$BOXTYPE" | cut -b 1-5` == "azbox")
 AM_CONDITIONAL(CUBE, test `echo "$BOXTYPE" | cut -b 1-4` == "cube")
-AM_CONDITIONAL(DAGS, test `echo "$BOXTYPE" | cut -b 1-4` == "optimuss")
+AM_CONDITIONAL(DAGS1, test "$BOXTYPE" == "optimussos1")
+AM_CONDITIONAL(DAGS2, test "$BOXTYPE" == "optimussos2")
+AM_CONDITIONAL(DAGS3, test "$BOXTYPE" == "optimussos1plus")
+AM_CONDITIONAL(DAGS3, test "$BOXTYPE" == "optimussos2plus")
+AM_CONDITIONAL(DAGS4, test "$BOXTYPE" == "dags4")
 AM_CONDITIONAL(DREAMBOX, test `echo "$BOXTYPE" | cut -b 1-2` == "dm")
 AM_CONDITIONAL(VUPLUS, test `echo "$BOXTYPE" | cut -b 1-2` == "vu")
 AM_CONDITIONAL(XTREND, test `echo "$BOXTYPE" | cut -b 1-2` == "et")
@@ -42,6 +56,7 @@ AM_CONDITIONAL(INI, test `echo "$BOXTYPE" | cut -b 1-3` == "ini")
 AM_CONDITIONAL(GIGABLUE, test `echo "$BOXTYPE" | cut -b 1-2` == "gb")
 AM_CONDITIONAL(ODIN, test `echo "$BOXTYPE" | cut -b 1-4` == "odin")
 AM_CONDITIONAL(EBOX, test `echo "$BOXTYPE" | cut -b 1-4` == "ebox")
+<<<<<<< HEAD
 AM_CONDITIONAL(EDISION, test `echo "$BOXTYPE" | cut -b 1-4` == "opti")
 AM_CONDITIONAL(EVO, test `echo "$BOXTYPE" | cut -b 1-4` == "enfi")
 AM_CONDITIONAL(JEPSSEN, test `echo "$BOXTYPE" | cut -b 1-5` == "media")
@@ -65,6 +80,9 @@ AM_CONDITIONAL(EBOX5000, test "$BOXTYPE" == ebox5000)
 AM_CONDITIONAL(EBOX5100, test "$BOXTYPE" == ebox5100)
 AM_CONDITIONAL(EBOXLUMI, test "$BOXTYPE" == eboxlumi)
 AM_CONDITIONAL(EBOX7358, test "$BOXTYPE" == ebox7358)
+AM_CONDITIONAL(KMT3000, test `echo "$BOXTYPE"` == "formuler3")
+AM_CONDITIONAL(SPARK, test `echo "$BOXTYPE" | cut -b 1-5` == "spark")
+AM_CONDITIONAL(BLACKBOX7405, test "$BOXTYPE" == "blackbox7405")
 AM_CONDITIONAL(EW7358, test `echo "$BOXTYPE"` == "ew7358")
 AM_CONDITIONAL(ET4X00, test "$BOXTYPE" == et4x00)
 AM_CONDITIONAL(ET5X00, test "$BOXTYPE" == et5x00)
@@ -87,6 +105,7 @@ AM_CONDITIONAL(GBQUADPLUS, test "$BOXTYPE" == "gbquadplus")
 AM_CONDITIONAL(GBQUAD, test "$BOXTYPE" == "gbquad")
 AM_CONDITIONAL(GBIPBOX, test "$BOXTYPE" == "gbipbox")
 AM_CONDITIONAL(INIHDE, test "$BOXTYPE" == "inihde")
+AM_CONDITIONAL(INIHDE2, test `echo "$BOXTYPE" | cut -b 1-7` == inihde2)
 AM_CONDITIONAL(INIHDP, test "$BOXTYPE" == "inihdp")
 AM_CONDITIONAL(INIHDX, test "$BOXTYPE" == "inihdx")
 AM_CONDITIONAL(IXUSSZERO, test "$BOXTYPE" == "ixusszero")
@@ -98,6 +117,7 @@ AM_CONDITIONAL(ODINM7, test "$BOXTYPE" == odinm7)
 AM_CONDITIONAL(ODINM7S, test "$BOXTYPE" == odinm7s)
 AM_CONDITIONAL(ODINM7C, test "$BOXTYPE" == odinm7c)
 AM_CONDITIONAL(ODINM9, test "$BOXTYPE" == odinm9)
+AM_CONDITIONAL(VP7358CI, test "$BOXTYPE" == "vp7358ci")
 AM_CONDITIONAL(VUUNO, test "$BOXTYPE" == vuuno)
 AM_CONDITIONAL(VUULTIMO, test "$BOXTYPE" == vuultimo)
 AM_CONDITIONAL(VUSOLO, test "$BOXTYPE" == vusolo)
@@ -106,9 +126,13 @@ AM_CONDITIONAL(VUDUO, test "$BOXTYPE" == vuduo)
 AM_CONDITIONAL(VUSOLO2, test "$BOXTYPE" == vusolo2)
 AM_CONDITIONAL(VUDUO2, test "$BOXTYPE" == vuduo2)
 AM_CONDITIONAL(XP1000, test "$BOXTYPE" == xp1000)
+AM_CONDITIONAL(SPARK, test `echo "$BOXTYPE" | cut -b 1-5` == spark)
+if test `echo "$BOXTYPE" | cut -b 1-2` == "dm"; then
+	AC_DEFINE(DREAMBOX, 1, [Dreambox hardware])
+fi
 
 AM_CONDITIONAL(HAVE_TEMPFANCONTROL, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm500hd -o "$BOXTYPE" == vuuno -o "$BOXTYPE" == vuultimo -o "$BOXTYPE" == vusolo2 -o "$BOXTYPE" == vuduo2 -o "$BOXTYPE" == tmsingle -o "$BOXTYPE" == tmtwin -o "$BOXTYPE" == tm2t -o "$BOXTYPE" == tmnano -o "$BOXTYPE" == iqonios100hd -o "$BOXTYPE" == iqonios200hd -o "$BOXTYPE" == iqonios300hd -o "$BOXTYPE" == optimussos1 -o "$BOXTYPE" == optimussos1plus -o "$BOXTYPE" == optimussos2 -o "$BOXTYPE" == optimussos2plus -o "$BOXTYPE" == dags1 -o "$BOXTYPE" == dags2 -o "$BOXTYPE" == dags3)
-AM_CONDITIONAL(HAVE_WIRELESSACCESSPOINT, test "$BOXTYPE" != cube)
+AM_CONDITIONAL(HAVE_WIRELESSACCESSPOINT, test "$BOXTYPE" != cube -a `echo "$BOXTYPE" | cut -b 1-5` != spark)
 
 AC_CONFIG_FILES([
 Makefile
@@ -189,6 +213,11 @@ F3LEDControl/src/Makefile
 F3LEDControl/meta/Makefile
 F3LEDControl/po/Makefile
 
+VPLEDControl/Makefile
+VPLEDControl/src/Makefile
+VPLEDControl/meta/Makefile
+VPLEDControl/po/Makefile
+
 LCD4linux/Makefile
 LCD4linux/src/Makefile
 LCD4linux/src/data/Makefile
@@ -203,6 +232,7 @@ LCD4linux/src/renderer/Makefile
 LCD4linux/src/wetter/Makefile
 LCD4linux/src/arm/Makefile
 LCD4linux/src/mips/Makefile
+LCD4linux/src/sh4/Makefile
 LCD4linux/meta/Makefile
 LCD4linux/po/Makefile
 
@@ -232,6 +262,16 @@ OnDemand/po/Makefile
 RemoteChannelStreamConverter/Makefile
 RemoteChannelStreamConverter/src/Makefile
 RemoteChannelStreamConverter/po/Makefile
+
+SH4BoosterControl/Makefile
+SH4BoosterControl/src/Makefile
+SH4BoosterControl/meta/Makefile
+SH4BoosterControl/po/Makefile
+
+SH4OSDAdjustment/Makefile
+SH4OSDAdjustment/src/Makefile
+SH4OSDAdjustment/meta/Makefile
+SH4OSDAdjustment/po/Makefile
 
 TempFanControl/Makefile
 TempFanControl/src/Makefile
@@ -305,6 +345,14 @@ XtrendRemote/src/Makefile
 XtrendRemote/meta/Makefile
 XtrendRemote/po/Makefile
 
+SparkVFDControl/Makefile
+SparkVFDControl/src/Makefile
+SparkVFDControl/meta/Makefile
+SparkVFDControl/po/Makefile
+
+SparkUnionTunerType/Makefile
+SparkUnionTunerType/src/Makefile
+SparkUnionTunerType/meta/Makefile
 
 ])
 AC_OUTPUT

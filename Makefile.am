@@ -82,6 +82,14 @@ if FORMULER3
 SUBDIRS += F3LEDControl
 endif
 
+if KMT3000
+SUBDIRS += F3LEDControl
+endif
+
+if VP7358CI
+SUBDIRS += VPLEDControl
+endif
+
 if VUUNO
 SUBDIRS += FirmwareUpgrade Blindscan VuRemote
 endif
@@ -113,6 +121,11 @@ endif
 if XP1000
 SUBDIRS += XtrendRemote SF8VFDControl
 endif
+
+if SPARK
+SUBDIRS += SparkVFDControl SparkUnionTunerType SH4BoosterControl SH4OSDAdjustment
+endif
+
 
 if HAVE_TEMPFANCONTROL
 SUBDIRS += TempFanControl
