@@ -416,12 +416,12 @@ class LED_Giga:
 	config.misc.standbyCounter.addNotifier(standbyCounterChanged, initial_call = False)
 
 def main(menuid):
-	if getImageDistro() in ('openmips'):
-		if menuid != "frontpanel_menu":
-			return [ ]
-	else:
-		if menuid != "system":
-			return [ ]
+#	if getImageDistro() in ('openmips'):
+#		if menuid != "frontpanel_menu":
+#			return [ ]
+#	else:
+	if menuid != "system":
+		return [ ]
 
 	if BOX in ('gb800se', 'gb800solo', 'gb800seplus', 'gbultra'):
 		return [(_("Display/LED"), startLED, "LED_Giga", None)]
