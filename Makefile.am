@@ -62,6 +62,10 @@ if EW7358
 SUBDIRS += EWVFDControl
 endif
 
+if EW7362
+SUBDIRS += EWVFDControl
+endif
+
 if INIHDE
 SUBDIRS += INIVFDControl MICOMUpgrade
 endif
@@ -82,7 +86,11 @@ if FORMULER3
 SUBDIRS += F3LEDControl
 endif
 
-if KMT3000
+if VG5000
+SUBDIRS += F3LEDControl
+endif
+
+if SH1
 SUBDIRS += F3LEDControl
 endif
 
@@ -112,6 +120,10 @@ endif
 
 if VUDUO2
 SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup Blindscan
+endif
+
+if VUZERO
+SUBDIRS += FirmwareUpgrade VuRemote Blindscan
 endif
 
 if GIGABLUE

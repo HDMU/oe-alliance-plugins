@@ -1,5 +1,6 @@
 from .. import log
 from Components.config import config
+from tools import Tools
 import os, codecs, re
 
 class BouquetsWriter():
@@ -255,11 +256,14 @@ class BouquetsWriter():
 					continue
 		print>>log, "[BouquetsWriter] Done"
 
-	def buildBouquets(self, path, provider_config, services, sections, section_identifier, preferred_order, channels_on_top, bouquets_to_hide, section_prefix):
+	def buildBouquets(self, path, provider_config, services, sections, section_identifier, preferred_order, channels_on_top, bouquets_to_hide, section_prefix, current_bouquet_key):
 		channels_on_top = channels_on_top[0]
 		if len(section_prefix) > 0:
 			section_prefix = section_prefix + " - "
 		current_number = 0
+		
+		# swap services if customLCN
+		services = Tools().customLCN(services, section_identifier, current_bouquet_key)
 
 		# as first thing we're going to cleanup channels
 		# with a numeration inferior to the first section
@@ -292,7 +296,7 @@ class BouquetsWriter():
 					preferred_order_tmp[swaprule[0] - 1] = preferred_order_tmp[swaprule[1] - 1]
 					preferred_order_tmp[swaprule[1] - 1] = tmp
 
-			# always write first not hidden section on top of list
+			# Always write first not hidden section on top of list
 			for number in preferred_order_tmp:
 				if number in sections and number not in bouquets_to_hide:
 					bouquet_current.write("#SERVICE 1:64:0:0:0:0:0:0:0:0:\n")
@@ -300,10 +304,12 @@ class BouquetsWriter():
 					first_section = number
 					break
 					
+			# Use separate section counter. Preferred_order_tmp has swapped numbers. Can put sections on wrong places
+			section_number = 1
 			for number in preferred_order_tmp:
-				if number in sections and number not in bouquets_to_hide and number != first_section:
+				if section_number in sections and section_number not in bouquets_to_hide and section_number != first_section:
 					bouquet_current.write("#SERVICE 1:64:0:0:0:0:0:0:0:0:\n")
-					bouquet_current.write("#DESCRIPTION %s%s\n" % (section_prefix, sections[number]))
+					bouquet_current.write("#DESCRIPTION %s%s\n" % (section_prefix, sections[section_number]))
 				if number in services["video"] and number not in bouquets_to_hide:
 					bouquet_current.write("#SERVICE 1:0:%x:%x:%x:%x:%x:0:0:0:\n" % (
 							services["video"][number]["service_type"],
@@ -319,6 +325,7 @@ class BouquetsWriter():
 					bouquet_current.write("#DESCRIPTION  \n")
 
 				current_number += 1
+				section_number += 1
 
 			bouquet_current.close()
 

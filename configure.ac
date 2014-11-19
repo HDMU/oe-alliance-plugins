@@ -82,6 +82,7 @@ AM_CONDITIONAL(EBOX7358, test "$BOXTYPE" == ebox7358)
 AM_CONDITIONAL(KMT3000, test `echo "$BOXTYPE"` == "formuler3")
 AM_CONDITIONAL(SPARK, test `echo "$BOXTYPE" | cut -b 1-5` == "spark")
 AM_CONDITIONAL(BLACKBOX7405, test "$BOXTYPE" == "blackbox7405")
+<<<<<<< HEAD
 AM_CONDITIONAL(EW7358, test `echo "$BOXTYPE"` == "ew7358")
 AM_CONDITIONAL(ET4X00, test "$BOXTYPE" == et4x00)
 AM_CONDITIONAL(ET5X00, test "$BOXTYPE" == et5x00)
@@ -90,6 +91,35 @@ AM_CONDITIONAL(ET9X00, test "$BOXTYPE" == et9x00)
 AM_CONDITIONAL(ET10000, test "$BOXTYPE" == et10000)
 AM_CONDITIONAL(ENFINITY, test "$BOXTYPE" == enfinity)
 AM_CONDITIONAL(INIHDE, test "$BOXTYPE" == inihde)
+=======
+AM_CONDITIONAL(CUBE, test "$BOXTYPE" == "cube")
+AM_CONDITIONAL(DAGS1, test "$BOXTYPE" == "dags1")
+AM_CONDITIONAL(DAGS2, test "$BOXTYPE" == "dags2")
+AM_CONDITIONAL(DAGS3, test "$BOXTYPE" == "dags3")
+AM_CONDITIONAL(DAGS4, test "$BOXTYPE" == "dags4")
+AM_CONDITIONAL(DM500HD, test "$BOXTYPE" == "dm500hd")
+AM_CONDITIONAL(DM500HDV2, test "$BOXTYPE" == "dm500hdv2")
+AM_CONDITIONAL(DM800, test "$BOXTYPE" == "dm800")
+AM_CONDITIONAL(DM800SE, test "$BOXTYPE" == "dm800se")
+AM_CONDITIONAL(DM800SEV2, test "$BOXTYPE" == "dm800sev2")
+AM_CONDITIONAL(DM7020HD, test "$BOXTYPE" == "dm7020hd")
+AM_CONDITIONAL(DM7020HDV2, test "$BOXTYPE" == "dm7020hdv2")
+AM_CONDITIONAL(DM8000, test "$BOXTYPE" == "dm8000")
+AM_CONDITIONAL(E3HD, test "$BOXTYPE" == "e3hd")
+AM_CONDITIONAL(EBOX5000, test "$BOXTYPE" == "ebox5000")
+AM_CONDITIONAL(EBOX5100, test "$BOXTYPE" == "ebox5100")
+AM_CONDITIONAL(EBOX7358, test "$BOXTYPE" == "ebox7358")
+AM_CONDITIONAL(EBOXLUMI, test "$BOXTYPE" == "eboxlumi")
+AM_CONDITIONAL(ET4X00, test "$BOXTYPE" == "et4x00")
+AM_CONDITIONAL(ET5X00, test "$BOXTYPE" == "et5x00")
+AM_CONDITIONAL(ET6X00, test "$BOXTYPE" == "et6x00")
+AM_CONDITIONAL(ET9X00, test "$BOXTYPE" == "et9x00")
+AM_CONDITIONAL(ET8000, test "$BOXTYPE" == "et8000")
+AM_CONDITIONAL(ET10000, test "$BOXTYPE" == "et10000")
+AM_CONDITIONAL(VG5000, test `echo "$BOXTYPE"` == "vg5000")
+AM_CONDITIONAL(EW7358, test `echo "$BOXTYPE"` == "ew7358")
+AM_CONDITIONAL(EW7362, test `echo "$BOXTYPE"` == "ew7362")
+>>>>>>> oea/2.3
 AM_CONDITIONAL(FORMULER1, test "$BOXTYPE" == formuler1)
 AM_CONDITIONAL(FORMULER3, test "$BOXTYPE" == formuler3)
 AM_CONDITIONAL(INIHDE2, test "$BOXTYPE" == "inihde2")
@@ -124,7 +154,9 @@ AM_CONDITIONAL(VUSOLOSE, test "$BOXTYPE" == vusolose)
 AM_CONDITIONAL(VUDUO, test "$BOXTYPE" == vuduo)
 AM_CONDITIONAL(VUSOLO2, test "$BOXTYPE" == vusolo2)
 AM_CONDITIONAL(VUDUO2, test "$BOXTYPE" == vuduo2)
+AM_CONDITIONAL(VUZERO, test "$BOXTYPE" == vuzero)
 AM_CONDITIONAL(XP1000, test "$BOXTYPE" == xp1000)
+AM_CONDITIONAL(SH1, test `echo "$BOXTYPE"` == "sh1")
 AM_CONDITIONAL(SPARK, test `echo "$BOXTYPE" | cut -b 1-5` == spark)
 if test `echo "$BOXTYPE" | cut -b 1-2` == "dm"; then
 	AC_DEFINE(DREAMBOX, 1, [Dreambox hardware])
@@ -149,6 +181,7 @@ AutoBouquetsMaker/po/Makefile
 AutoBouquetsMaker/providers/Makefile
 AutoBouquetsMaker/src/Makefile
 AutoBouquetsMaker/src/scanner/Makefile
+AutoBouquetsMaker/custom/Makefile
 
 AudioEffect/Makefile
 AudioEffect/src/Makefile

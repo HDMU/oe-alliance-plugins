@@ -1,7 +1,7 @@
 from .. import log
 import dvbreader
 import datetime
-import time
+import time, os
 
 class DvbScanner():
 	TIMEOUT_SEC = 20
@@ -243,6 +243,8 @@ class DvbScanner():
 				key = "%x:%x:%x" % (transponder["transport_stream_id"], transponder["original_network_id"], transponder["service_id"])
 				hd_logical_channel_number_dict_tmp[key] = transponder
 				continue
+			if len(transponder) == 8: # DVB-T2 part, not ready yet.
+				continue
 			transponder["services"] = {}
 			transponder["dvb_type"] = self.dvbtype
 			transponder["bouquet_type"] = bouquettype
@@ -315,14 +317,14 @@ class DvbScanner():
 		else:
 			for id in logical_channel_number_dict_tmp:
 				logical_channel_number_dict[id] = logical_channel_number_dict_tmp[id]
-
+				
 		return {
 			"transport_stream_id_list": transport_stream_id_list,
 			"logical_channel_number_dict": logical_channel_number_dict,
 			"service_dict_tmp": service_dict_tmp
 		}
 
-	def updateAndReadServicesLCN(self, namespace, transponders, servicehacks, transport_stream_id_list, logical_channel_number_dict, service_dict_tmp):
+	def updateAndReadServicesLCN(self, namespace, transponders, servicehacks, transport_stream_id_list, logical_channel_number_dict, service_dict_tmp, protocol):
 		print>>log, "[DvbScanner] Reading services..."
 
 		if self.sdt_other_table_id == 0x00:
@@ -380,6 +382,22 @@ class DvbScanner():
 			print>>log, "[DvbScanner] Cannot fetch SDT for the following transport_stream_id list: ", transport_stream_id_list
 
 		dvbreader.close(fd)
+
+		# When no LCN available, create fake LCN numbers (service-id) and use customlcn file for final channel numbers
+		if len(logical_channel_number_dict) == 0 and protocol == "nolcn":
+			lcn_temp = {}
+			for key in sdt_secions_status:
+				for section_content in sdt_secions_status[key]["content"]:
+					service = section_content
+					key = "%x:%x:%x" % (service["transport_stream_id"], service["original_network_id"], service["service_id"])
+					lcn_temp[key] = service
+			for key in lcn_temp:
+				if lcn_temp[key]["service_type"] in DvbScanner.VIDEO_ALLOWED_TYPES or lcn_temp[key]["service_type"] in DvbScanner.AUDIO_ALLOWED_TYPES or lcn_temp[key]["service_type"] in DvbScanner.INTERACTIVE_ALLOWED_TYPES:
+					lcn_temp[key]["logical_channel_number"] = lcn_temp[key]["service_id"]
+					lcn_temp[key]["visible_service_flag"] = 1
+				else:
+					lcn_temp[key]["visible_service_flag"] = 0
+			logical_channel_number_dict = lcn_temp
 
 		service_count = 0
 		tmp_services_dict = {}
@@ -446,7 +464,7 @@ class DvbScanner():
 				for number in service["numbers"]:
 					if number not in radio_services:
 						radio_services[number] = service
-
+	
 		print>>log, "[DvbScanner] %d valid services" % service_extra_count
 		return {
 			"video": video_services,
