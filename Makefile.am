@@ -114,6 +114,10 @@ if VUSOLO2
 SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup Blindscan
 endif
 
+if VUSOLO2CL
+SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup Blindscan
+endif
+
 if VUSOLOSE
 SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup Blindscan
 endif
