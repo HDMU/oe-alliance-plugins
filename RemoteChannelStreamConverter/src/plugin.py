@@ -1,6 +1,6 @@
 # for localized messages
 from . import _
-from boxbranding import getBoxType, getImageDistro
+#from boxbranding import getBoxType, getImageDistro
 
 from Plugins.Plugin import PluginDescriptor
 from Screens.Screen import Screen
@@ -568,16 +568,16 @@ def main(session, **kwargs):
 	session.open(StreamingChannelFromServerScreen)
 
 def mainInMenu(menuid, **kwargs):
-	if getImageDistro() in ('openmips') and getBoxType() in ('gbipbox'):
-		if menuid == "setup":
-			return [(_("Remote channel stream converter"), main, "streamconvert", 20)]
-		else:
-			return []
+#	if getImageDistro() in ('openmips') and getBoxType() in ('gbipbox'):
+#		if menuid == "setup":
+#			return [(_("Remote channel stream converter"), main, "streamconvert", 20)]
+#		else:
+#			return []
+#	else:
+	if menuid == "scan":
+		return [(_("Remote channel stream converter"), main, "streamconvert", 99)]
 	else:
-		if menuid == "scan":
-			return [(_("Remote channel stream converter"), main, "streamconvert", 99)]
-		else:
-			return []
+		return []
 
 def Plugins(**kwargs):
 	return [ PluginDescriptor(name = _("Remote channel stream converter"), description = _("Convert remote channel list for streaming"), where = PluginDescriptor.WHERE_MENU, fnc = mainInMenu) ]
