@@ -82,16 +82,6 @@ AM_CONDITIONAL(EBOX7358, test "$BOXTYPE" == ebox7358)
 AM_CONDITIONAL(KMT3000, test `echo "$BOXTYPE"` == "formuler3")
 AM_CONDITIONAL(SPARK, test `echo "$BOXTYPE" | cut -b 1-5` == "spark")
 AM_CONDITIONAL(BLACKBOX7405, test "$BOXTYPE" == "blackbox7405")
-<<<<<<< HEAD
-AM_CONDITIONAL(EW7358, test `echo "$BOXTYPE"` == "ew7358")
-AM_CONDITIONAL(ET4X00, test "$BOXTYPE" == et4x00)
-AM_CONDITIONAL(ET5X00, test "$BOXTYPE" == et5x00)
-AM_CONDITIONAL(ET6X00, test "$BOXTYPE" == et6x00)
-AM_CONDITIONAL(ET9X00, test "$BOXTYPE" == et9x00)
-AM_CONDITIONAL(ET10000, test "$BOXTYPE" == et10000)
-AM_CONDITIONAL(ENFINITY, test "$BOXTYPE" == enfinity)
-AM_CONDITIONAL(INIHDE, test "$BOXTYPE" == inihde)
-=======
 AM_CONDITIONAL(CUBE, test "$BOXTYPE" == "cube")
 AM_CONDITIONAL(DAGS1, test "$BOXTYPE" == "dags1")
 AM_CONDITIONAL(DAGS2, test "$BOXTYPE" == "dags2")
@@ -119,7 +109,6 @@ AM_CONDITIONAL(ET9X00, test "$BOXTYPE" == "et9x00")
 AM_CONDITIONAL(ET8000, test "$BOXTYPE" == "et8000")
 AM_CONDITIONAL(ET10000, test "$BOXTYPE" == "et10000")
 AM_CONDITIONAL(VG2000, test `echo "$BOXTYPE"` == "vg2000")
->>>>>>> oea/2.3
 AM_CONDITIONAL(VG5000, test `echo "$BOXTYPE"` == "vg5000")
 AM_CONDITIONAL(EW7358, test `echo "$BOXTYPE"` == "ew7358")
 AM_CONDITIONAL(EW7362, test `echo "$BOXTYPE"` == "ew7362")
@@ -168,11 +157,7 @@ if test `echo "$BOXTYPE" | cut -b 1-2` == "dm"; then
 	AC_DEFINE(DREAMBOX, 1, [Dreambox hardware])
 fi
 
-<<<<<<< HEAD
 AM_CONDITIONAL(HAVE_TEMPFANCONTROL, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm500hd -o "$BOXTYPE" == vuuno -o "$BOXTYPE" == vuultimo -o "$BOXTYPE" == vusolo2 -o "$BOXTYPE" == vusolo2cl -o "$BOXTYPE" == vuduo2 -o "$BOXTYPE" == tmsingle -o "$BOXTYPE" == tmtwin -o "$BOXTYPE" == tm2t -o "$BOXTYPE" == tmnano -o "$BOXTYPE" == iqonios100hd -o "$BOXTYPE" == iqonios200hd -o "$BOXTYPE" == iqonios300hd -o "$BOXTYPE" == optimussos1 -o "$BOXTYPE" == optimussos1plus -o "$BOXTYPE" == optimussos2 -o "$BOXTYPE" == optimussos2plus -o "$BOXTYPE" == dags1 -o "$BOXTYPE" == dags2 -o "$BOXTYPE" == dags3)
-=======
-AM_CONDITIONAL(HAVE_TEMPFANCONTROL, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm500hd -o "$BOXTYPE" == vuuno -o "$BOXTYPE" == vuultimo -o "$BOXTYPE" == vusolo2 -o "$BOXTYPE" == vuduo2 -o "$BOXTYPE" == tmsingle -o "$BOXTYPE" == tmtwin -o "$BOXTYPE" == tm2t -o "$BOXTYPE" == tmnano -o "$BOXTYPE" == iqonios100hd -o "$BOXTYPE" == iqonios200hd -o "$BOXTYPE" == iqonios300hd -o "$BOXTYPE" == optimussos1 -o "$BOXTYPE" == optimussos2 -o "$BOXTYPE" == dags1 -o "$BOXTYPE" == dags2 -o "$BOXTYPE" == dags3 -o "$BOXTYPE" == dags4 -o "$BOXTYPE" == dags5)
->>>>>>> oea/2.3
 AM_CONDITIONAL(HAVE_WIRELESSACCESSPOINT, test "$BOXTYPE" != cube -a `echo "$BOXTYPE" | cut -b 1-5` != spark)
 
 AC_CONFIG_FILES([
