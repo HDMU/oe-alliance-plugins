@@ -20,16 +20,18 @@ import itertools
 
 class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 	skin = """
-		<screen position="center,center" size="600,350" >
+		<screen position="center,center" size="600,350">
 			<widget name="key_red" position="0,0" size="140,40" valign="center" halign="center" zPosition="4" foregroundColor="white" backgroundColor="#9f1313" font="Regular;18" transparent="1"/>
 			<widget name="key_green" position="150,0" size="140,40" valign="center" halign="center" zPosition="4" foregroundColor="white" backgroundColor="#1f771f" font="Regular;18" transparent="1"/>
-			<ePixmap name="red" position="0,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/red.png" transparent="1" alphatest="on" />
-			<ePixmap name="green" position="150,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/green.png" transparent="1" alphatest="on" />
-			<widget name="config" position="10,60" size="580,230" scrollbarMode="showOnDemand" />
-			<widget name="description" position="0,300" size="600,50" font="Regular;18" halign="center" valign="bottom" transparent="0" zPosition="1" />
-			<widget name="pleasewait" position="10,60" size="580,230" font="Regular;18" halign="center" valign="center" transparent="0" zPosition="2" />
+			<ePixmap name="red" position="0,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/red.png" transparent="1" alphatest="on"/>
+			<ePixmap name="green" position="150,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/green.png" transparent="1" alphatest="on"/>
+			<widget name="config" position="10,60" size="580,230" scrollbarMode="showOnDemand"/>
+			<widget name="description" position="0,300" size="600,50" font="Regular;18" halign="center" valign="bottom" transparent="0" zPosition="1"/>
+			<widget name="pleasewait" position="10,60" size="580,230" font="Regular;18" halign="center" valign="center" transparent="0" zPosition="2"/>
 		</screen>"""
 
+	ABM_BOUQUET_PREFIX = "userbouquet.abm."
+		
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.session = session
@@ -76,6 +78,7 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 		self.providers_makehd = {}
 		self.providers_makefta = {}
 		self.providers_makeftahd = {}
+		self.providers_rescan = {}
 		self.providers_order = []
 		self.orbital_supported = []
 
@@ -117,7 +120,7 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 
 		if bouquets["tv"] is not None:
 			for bouquet in bouquets["tv"]:
-				if bouquet["filename"][:12] == "autobouquet.":
+				if bouquet["filename"][:12] == "autobouquet." or bouquet["filename"][:len(self.ABM_BOUQUET_PREFIX)] == self.ABM_BOUQUET_PREFIX:
 					continue
 				bouquets_list.append((bouquet["filename"], bouquet["name"]))
 
@@ -173,7 +176,7 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 					if provider in providers_tmp_configs and providers_tmp_configs[provider].isMakeFTAHDMain():
 						makemain_default = "ftahd"
 
-				if len(bouquets_list) > 0:
+				if len(bouquets_list) > 0 and config.autobouquetsmaker.placement.getValue() == 'top':
 					makemain_list.append(("custom", _("yes (custom)")))
 					if provider in providers_tmp_configs and providers_tmp_configs[provider].isMakeCustomMain():
 						makemain_default = "custom"
@@ -208,22 +211,38 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 				if provider in providers_tmp_configs:
 					default_area = providers_tmp_configs[provider].getArea()
 				self.providers_area[provider] = ConfigSelection(default = default_area, choices = arealist)
-
+			
+			# selective rescan
+			no_rescan = config.autobouquetsmaker.no_rescan.value.split("|")
+			rescan = config.autobouquetsmaker.level.value == "simple" or provider not in no_rescan
+			self.providers_rescan[provider] = ConfigYesNo(default = rescan)
+			
 		self.createSetup()
 		self["pleasewait"].hide()
 		self["actions"].setEnabled(True)
+		
+	def providerKeysInNameOrder(self, providers):
+		temp = []
+		for provider in providers.keys():
+			temp.append((provider, providers[provider]["name"]))
+		return [i[0] for i in sorted(temp, key=lambda p: p[1].lower().decode('ascii','ignore'))]
 
 	def createSetup(self):
 		self.editListEntry = None
 		self.list = []
 		providers_enabled = []
-		for provider in sorted(self.providers.keys()):
+		providers_already_loaded = []
+		for provider in self.providerKeysInNameOrder(self.providers):
 			if self.providers[provider]["streamtype"] == 'dvbs' and self.providers[provider]["transponder"]["orbital_position"] not in self.orbital_supported:
 				continue
 			if self.providers[provider]["streamtype"] == 'dvbc' and len(self.dvbc_nims) <= 0:
 				continue
 			if self.providers[provider]["streamtype"] == 'dvbt' and len(self.dvbt_nims) <= 0:
 				continue
+			if self.providers[provider]["name"] in providers_already_loaded:
+				continue
+			else:
+				providers_already_loaded.append(self.providers[provider]["name"])
 
 			self.list.append(getConfigListEntry(self.providers[provider]["name"], self.providers_configs[provider], _("This option enables the current selected provider.")))
 			if self.providers_configs[provider].value:
@@ -272,6 +291,9 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 							if len(self.providers[provider]["swapchannels"]) > 0:
 								self.list.append(getConfigListEntry(self.providers[provider]["name"] + ": " + _("swap channels"), self.providers_swapchannels[provider], _("This option will swap SD versions of channels with HD versions. (ie 101 BBC One, 103 ITV, 104 Channel Four, 105 Channel Five)")))
 
+					# selective rescan
+					self.list.append(getConfigListEntry(self.providers[provider]["name"] + ": " + _("Rescan every time"), self.providers_rescan[provider], _("If set to 'no' the original scan of this provider will persist and not be updated on subsequent scans.")))
+								
 				providers_enabled.append(provider)
 
 		for provider in providers_enabled:
@@ -311,6 +333,8 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 	def saveAll(self):
 		for x in self["config"].list:
 			x[1].save()
+			
+		no_rescan = []
 
 		config_string = ""
 		for provider in self.providers_order:
@@ -351,7 +375,16 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 					provider_config.setSwapChannels()
 
 				config_string += provider_config.serialize()
+				
+				if not self.providers_rescan[provider].value:
+					no_rescan.append(provider)
 
+		# selective rescan
+		config.autobouquetsmaker.no_rescan.value = ''
+		if no_rescan:
+			config.autobouquetsmaker.no_rescan.value = '|'.join(no_rescan)
+		config.autobouquetsmaker.no_rescan.save()
+		
 		config.autobouquetsmaker.providers.value = config_string
 		config.autobouquetsmaker.providers.save()
 		configfile.save()
@@ -377,14 +410,14 @@ class AutoBouquetsMaker_ProvidersSetup(ConfigListScreen, Screen):
 
 class AutoBouquetsMaker_Setup(ConfigListScreen, Screen):
 	skin = """
-		<screen position="center,center" size="600,350" >
+		<screen position="center,center" size="600,350">
 			<widget name="key_red" position="0,0" size="140,40" valign="center" halign="center" zPosition="4" foregroundColor="white" backgroundColor="#9f1313" font="Regular;18" transparent="1"/>
 			<widget name="key_green" position="150,0" size="140,40" valign="center" halign="center" zPosition="4" foregroundColor="white" backgroundColor="#1f771f" font="Regular;18" transparent="1"/>
-			<ePixmap name="red" position="0,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/red.png" transparent="1" alphatest="on" />
-			<ePixmap name="green" position="150,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/green.png" transparent="1" alphatest="on" />
-			<widget name="config" position="10,60" size="580,230" scrollbarMode="showOnDemand" />
-			<widget name="description" position="0,300" size="600,50" font="Regular;18" halign="center" valign="bottom" transparent="0" zPosition="1" />
-			<widget name="pleasewait" position="10,60" size="580,230" font="Regular;18" halign="center" valign="center" transparent="0" zPosition="2" />
+			<ePixmap name="red" position="0,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/red.png" transparent="1" alphatest="on"/>
+			<ePixmap name="green" position="150,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/green.png" transparent="1" alphatest="on"/>
+			<widget name="config" position="10,60" size="580,230" scrollbarMode="showOnDemand"/>
+			<widget name="description" position="0,300" size="600,50" font="Regular;18" halign="center" valign="bottom" transparent="0" zPosition="1"/>
+			<widget name="pleasewait" position="10,60" size="580,230" font="Regular;18" halign="center" valign="center" transparent="0" zPosition="2"/>
 		</screen>"""
 
 	def __init__(self, session):
@@ -441,9 +474,11 @@ class AutoBouquetsMaker_Setup(ConfigListScreen, Screen):
 			self.list.append(getConfigListEntry(_("Time of scan to start"), config.autobouquetsmaker.scheduletime, _("Set the time of day to perform the scan.")))
 			self.list.append(getConfigListEntry(_("Repeat how often"), config.autobouquetsmaker.repeattype, _("Set the repeat interval of the schedule.")))
 		if config.autobouquetsmaker.level.value == "expert":
-			self.list.append(getConfigListEntry(_("Keep all bouquets"), config.autobouquetsmaker.keepallbouquets, _("When disabled this will enable the 'Keep bouquets' in the main menu, allowing you to hide some 'existing' bouquets.")))
+			self.list.append(getConfigListEntry(_("Keep all non-ABM bouquets"), config.autobouquetsmaker.keepallbouquets, _("When disabled this will enable the 'Keep bouquets' option in the main menu, allowing you to hide some 'existing' bouquets.")))
 			self.list.append(getConfigListEntry(_("Add provider prefix to bouquets"), config.autobouquetsmaker.addprefix, _("This option will prepend the provider name to bouquet name.")))
 			self.list.append(getConfigListEntry(_("Place bouquets at"), config.autobouquetsmaker.placement, _("This option will alow you choose where to place the created bouquets.")))
+			self.list.append(getConfigListEntry(_("Skip services on not configured sats"), config.autobouquetsmaker.skipservices, _("If a service is carried on a satellite that is not configured, 'yes' means the channel will not appear in the channel list, 'no' means the channel will show in the channel list but be greyed out and not be accessible.")))
+			self.list.append(getConfigListEntry(_("Include 'not indexed' channels"), config.autobouquetsmaker.showextraservices, _("When a search finds extra channels that do not have an allocated channel number, 'yes' will add these at the end of the channel list, and 'no' means these will not be included.")))
 		self.list.append(getConfigListEntry(_("Show in extensions"), config.autobouquetsmaker.extensions, _("When enable allow you start a scan from the extensions list.")))
 
 		self["config"].list = self.list

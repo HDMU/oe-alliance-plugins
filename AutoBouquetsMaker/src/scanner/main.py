@@ -18,6 +18,7 @@ from enigma import eTimer, eServiceReference, eDVBDB, iPlayableService, eDVBFron
 
 from manager import Manager
 from providerconfig import ProviderConfig
+from providers import Providers
 from time import localtime, time, strftime, mktime
 
 from .. import log
@@ -41,7 +42,8 @@ class AutoBouquetsMaker(Screen):
 
 	LOCK_TIMEOUT_FIXED = 100 	# 100ms for tick - 10 sec
 	LOCK_TIMEOUT_ROTOR = 1200 	# 100ms for tick - 120 sec
-
+	ABM_BOUQUET_PREFIX = "userbouquet.abm."
+		
 	def __init__(self, session, args = 0):
 		self.session = session
 		Screen.__init__(self, session)
@@ -112,9 +114,13 @@ class AutoBouquetsMaker(Screen):
 		self.actionsList = []
 
 		providers_tmp = config.autobouquetsmaker.providers.value.split("|")
+		
+		# selective rescan
+		providers_tmp = self.manager.checkRescan(providers_tmp)
+		
 		for provider_tmp in providers_tmp:
 			provider_config = ProviderConfig(provider_tmp)
-			if provider_config.isValid():
+			if provider_config.isValid() and Providers().providerFileExists(provider_config.getProvider()):
 				self.actionsList.append(provider_config.getProvider())
 				self.selectedProviders[provider_config.getProvider()] = provider_config
 
@@ -123,12 +129,12 @@ class AutoBouquetsMaker(Screen):
 			bouquets_tv = []
 			bouquets_radio = []
 			for bouquet in bouquets["tv"]:
-				if bouquet["filename"][:12] == "autobouquet.":
+				if bouquet["filename"][:12] == "autobouquet." or bouquet["filename"][:len(self.ABM_BOUQUET_PREFIX)] == self.ABM_BOUQUET_PREFIX:
 					continue
 				if len(bouquet["filename"]) > 0:
 					bouquets_tv.append(bouquet["filename"])
 			for bouquet in bouquets["radio"]:
-				if bouquet["filename"][:12] == "autobouquet.":
+				if bouquet["filename"][:12] == "autobouquet." or bouquet["filename"][:len(self.ABM_BOUQUET_PREFIX)] == self.ABM_BOUQUET_PREFIX:
 					continue
 				if len(bouquet["filename"]) > 0:
 					bouquets_radio.append(bouquet["filename"])
@@ -138,9 +144,9 @@ class AutoBouquetsMaker(Screen):
 			bouquets_tv = []
 			bouquets_radio = []
 			for bouquet in bouquets:
-				if bouquet[-3:] == ".tv":
+				if bouquet.endswith(".tv"):
 					bouquets_tv.append(bouquet)
-				else:
+				elif bouquet.endswith(".radio"):
 					bouquets_radio.append(bouquet)
 			self.manager.setBouquetsToKeep(bouquets_tv, bouquets_radio)
 
@@ -301,9 +307,9 @@ class AutoBouquetsMaker(Screen):
 		if not self.rawchannel:
 			# if we are here the only possible option is to close the active service
 			if currentlyPlayingNIM in nimList:
+				slotid = currentlyPlayingNIM
 				if self.providers[self.currentAction]["streamtype"] == "dvbs":
 					sats = nimmanager.getSatListForNim(currentlyPlayingNIM)
-					slotid = currentlyPlayingNIM
 					for sat in sats:
 						if sat[0] == transponder["orbital_position"]:
 							print>>log, "[AutoBouquetsMaker] Nim found on slot id %d but it's busy. Stopping active service" % currentlyPlayingNIM

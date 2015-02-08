@@ -13,8 +13,10 @@ from Tools.HardwareInfo import HardwareInfo
 
 config.misc.remotecontrol_text_support = ConfigYesNo(default = True)	
 stb = HardwareInfo().get_device_name()
+config.misc.remotecontrol_text_support = ConfigYesNo(default = True)
+
 config.plugins.remotecontrolcode = ConfigSubsection()
-if stb in ("vuuno", "vuultimo", "vusolo2" ,"vuduo2", "vusolose"):
+if stb in ("vuuno", "vuultimo", "vusolo2" ,"vuduo2", "vusolose", "vuzero"):
 	config.plugins.remotecontrolcode.systemcode = ConfigSelection(default = "2", choices =
 		[ ("1", "1 "), ("2", "2 "), ("3", "3 "), ("4", "4 ") ] )
 elif stb in ("vusolo", "vuduo"):

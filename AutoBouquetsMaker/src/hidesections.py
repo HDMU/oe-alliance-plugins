@@ -18,12 +18,12 @@ from urlparse import urlparse
 
 class AutoBouquetsMaker_HideSections(Screen):
 	skin = """
-		<screen position="center,center" size="600,500" >
+		<screen position="center,center" size="600,500">
 			<widget name="key_red" position="0,0" size="140,40" valign="center" halign="center" zPosition="4" foregroundColor="white" backgroundColor="#9f1313" font="Regular;18" transparent="1"/>
 			<widget name="key_green" position="150,0" size="140,40" valign="center" halign="center" zPosition="4" foregroundColor="white" backgroundColor="#1f771f" font="Regular;18" transparent="1"/>
-			<ePixmap name="red" position="0,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/red.png" transparent="1" alphatest="on" />
-			<ePixmap name="green" position="150,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/green.png" transparent="1" alphatest="on" />
-			<widget source="list" render="Listbox" position="10,50" size="580,450" scrollbarMode="showOnDemand" >
+			<ePixmap name="red" position="0,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/red.png" transparent="1" alphatest="on"/>
+			<ePixmap name="green" position="150,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/green.png" transparent="1" alphatest="on"/>
+			<widget source="list" render="Listbox" position="10,50" size="580,450" scrollbarMode="showOnDemand">
 				<convert type="TemplatedMultiContent">
 					{"template": [
 						MultiContentEntryPixmapAlphaTest(pos = (10, 0), size = (32, 32), png = 0),
@@ -68,7 +68,8 @@ class AutoBouquetsMaker_HideSections(Screen):
 				continue
 				
 			self.providers_enabled.append(provider_config.getProvider())
-			
+
+		self.housekeeping()	
 		self.refresh()
 
 	def buildListEntry(self, enabled, name, type):
@@ -129,3 +130,14 @@ class AutoBouquetsMaker_HideSections(Screen):
 			self.session.openWithCallback(self.cancelConfirm, MessageBox, _("Really close without saving settings?"))
 		else:
 			self.close()
+			
+	def housekeeping(self):
+		# remove non-existent hidden sections, due to changes in the provider file
+		hidden_sections = config.autobouquetsmaker.hidesections.value.split("|")
+		new_hidden_sections = []
+		for provider in self.providers_enabled:
+			for section in sorted(self.providers[provider]["sections"].keys()):
+				key = provider + ":" + str(section)
+				if key in hidden_sections:
+					new_hidden_sections.append(key)
+		config.autobouquetsmaker.hidesections.value = "|".join(new_hidden_sections)

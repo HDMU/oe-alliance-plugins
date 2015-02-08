@@ -3,7 +3,8 @@ import os
 import xml.dom.minidom
 
 class Providers():
-	VALID_PROTOCOLS = [ "sky", "lcn", "nolcn", "fastscan", "freesat", "lcnbat" ]
+	VALID_PROTOCOLS = [ "sky", "lcn", "lcn2", "nolcn", "fastscan", "freesat", "lcnbat" ]
+	PROVIDERS_DIR = os.path.dirname(__file__) + "/../providers"
 	def parseXML(self, filename):
 		try:
 			provider = open(filename, "r")
@@ -20,9 +21,14 @@ class Providers():
 
 		provider.close()
 		return dom
+		
+	def providerFileExists(self, name):
+		providers_dir = self.PROVIDERS_DIR
+		filename = name + ".xml"
+		return os.path.exists(providers_dir + "/" + filename)
 
 	def read(self):
-		providers_dir = os.path.dirname(__file__) + "/../providers"
+		providers_dir = self.PROVIDERS_DIR
 		providers = {}
 
 		for filename in os.listdir(providers_dir):

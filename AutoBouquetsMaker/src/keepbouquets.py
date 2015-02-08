@@ -17,12 +17,12 @@ from urlparse import urlparse
 
 class AutoBouquetsMaker_KeepBouquets(Screen):
 	skin = """
-		<screen position="center,center" size="600,500" >
+		<screen position="center,center" size="600,500">
 			<widget name="key_red" position="0,0" size="140,40" valign="center" halign="center" zPosition="4" foregroundColor="white" backgroundColor="#9f1313" font="Regular;18" transparent="1"/>
 			<widget name="key_green" position="150,0" size="140,40" valign="center" halign="center" zPosition="4" foregroundColor="white" backgroundColor="#1f771f" font="Regular;18" transparent="1"/>
-			<ePixmap name="red" position="0,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/red.png" transparent="1" alphatest="on" />
-			<ePixmap name="green" position="150,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/green.png" transparent="1" alphatest="on" />
-			<widget source="list" render="Listbox" position="10,50" size="580,450" scrollbarMode="showOnDemand" >
+			<ePixmap name="red" position="0,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/red.png" transparent="1" alphatest="on"/>
+			<ePixmap name="green" position="150,0" zPosition="2" size="140,40" pixmap="skin_default/buttons/green.png" transparent="1" alphatest="on"/>
+			<widget source="list" render="Listbox" position="10,50" size="580,450" scrollbarMode="showOnDemand">
 				<convert type="TemplatedMultiContent">
 					{"template": [
 						MultiContentEntryPixmapAlphaTest(pos = (10, 0), size = (32, 32), png = 0),
@@ -36,6 +36,8 @@ class AutoBouquetsMaker_KeepBouquets(Screen):
 			</widget>
 		</screen>"""
 
+	ABM_BOUQUET_PREFIX = "userbouquet.abm."
+		
 	def __init__(self, session):
 		Screen.__init__(self, session)
 		self.session = session
@@ -80,7 +82,7 @@ class AutoBouquetsMaker_KeepBouquets(Screen):
 
 		if self.listTv is not None and self.listRadio is not None:
 			for bouquet in self.listTv:
-				if bouquet["filename"][:12] == "autobouquet.":
+				if bouquet["filename"][:12] == "autobouquet." or bouquet["filename"][:len(self.ABM_BOUQUET_PREFIX)] == self.ABM_BOUQUET_PREFIX:
 					continue
 				if bouquet["filename"] in self.bouquets:
 					self.drawList.append(self.buildListEntry(True, bouquet["name"], "TV"))
@@ -89,7 +91,7 @@ class AutoBouquetsMaker_KeepBouquets(Screen):
 				self.listAll.append(bouquet["filename"])
 
 			for bouquet in self.listRadio:
-				if bouquet["filename"][:12] == "autobouquet.":
+				if bouquet["filename"][:12] == "autobouquet." or bouquet["filename"][:len(self.ABM_BOUQUET_PREFIX)] == self.ABM_BOUQUET_PREFIX:
 					continue
 				if bouquet["filename"] in self.bouquets:
 					self.drawList.append(self.buildListEntry(True, bouquet["name"], "Radio"))
