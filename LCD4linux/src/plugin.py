@@ -144,9 +144,9 @@ if stb in ('gbquad','gb800ue','gb800ueplus'):
 	LCD4default = Data+"default.gigablue"
 elif stb == 'gbquadplus':
 	LCD4default = Data+"default.quadplus"
-elif getBoxType() == 'vuduo2':
+elif stb == 'vuduo2':
 	LCD4default = Data+"default.vuduo2"
-elif getBoxType() == 'et8500':
+elif stb == 'et8500':
 	LCD4default = Data+"default.et8500"
 else:
 	LCD4default = Data+"default.lcd"
