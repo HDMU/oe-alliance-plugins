@@ -63,7 +63,7 @@ SUBDIRS += INIVFDControl MICOMUpgrade
 endif
 
 if XPEEDLX3
-SUBDIRS += MICOMUpgrade
+SUBDIRS += MICOMUpgrade MultiTransCodingSetup
 endif
 
 if ODINM7S
@@ -94,12 +94,16 @@ if INIHDE2
 SUBDIRS += INIVFDControl
 endif
 
-if INI
-SUBDIRS += VentonFancontrol Blindscan MICOMUpgrade
+if ATEMIO6100
+SUBDIRS += INIVFDControl MICOMUpgrade
 endif
 
-if XPEEDLX3
-SUBDIRS += MultiTransCodingSetup
+if ATEMIO6000
+SUBDIRS += INIVFDControl MICOMUpgrade
+endif
+
+if INI
+SUBDIRS += VentonFancontrol Blindscan MICOMUpgrade
 endif
 
 if FORMULER3
