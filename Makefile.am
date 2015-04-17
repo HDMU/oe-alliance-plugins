@@ -19,7 +19,7 @@ SUBDIRS += TransCodingSetup
 endif
 
 if VUPLUS
-SUBDIRS += VuplusEvent AudioEffect
+SUBDIRS += AudioEffect
 endif
 
 if XTREND
