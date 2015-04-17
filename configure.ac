@@ -117,6 +117,8 @@ AM_CONDITIONAL(EW7356, test `echo "$BOXTYPE"` == "ew7356")
 AM_CONDITIONAL(FORMULER1, test "$BOXTYPE" == formuler1)
 AM_CONDITIONAL(FORMULER3, test "$BOXTYPE" == formuler3)
 AM_CONDITIONAL(INIHDE2, test "$BOXTYPE" == "inihde2")
+AM_CONDITIONAL(INIHDE2, test "$BOXTYPE" == "atemio6000")
+AM_CONDITIONAL(INIHDE2, test "$BOXTYPE" == "atemio6100")
 AM_CONDITIONAL(XPEEDLX3, test "$BOXTYPE" == "xpeedlx3")
 AM_CONDITIONAL(XPEEDLX, test "$BOXTYPE" == xpeedlx)
 AM_CONDITIONAL(GB800SOLO, test "$BOXTYPE" == "gb800solo")
@@ -137,6 +139,7 @@ AM_CONDITIONAL(HD2400, test "$BOXTYPE" == "hd2400")
 AM_CONDITIONAL(HD1200, test "$BOXTYPE" == "hd1200")
 AM_CONDITIONAL(HD1100, test "$BOXTYPE" == "hd1100")
 AM_CONDITIONAL(ODINM6, test "$BOXTYPE" == odinm6)
+AM_CONDITIONAL(HD500C, test "$BOXTYPE" == "hd500c")
 AM_CONDITIONAL(ODINM7, test "$BOXTYPE" == odinm7)
 AM_CONDITIONAL(ODINM7S, test "$BOXTYPE" == odinm7s)
 AM_CONDITIONAL(ODINM7C, test "$BOXTYPE" == odinm7c)
@@ -153,7 +156,9 @@ AM_CONDITIONAL(VUDUO2, test "$BOXTYPE" == vuduo2)
 AM_CONDITIONAL(VUZERO, test "$BOXTYPE" == vuzero)
 AM_CONDITIONAL(XP1000, test "$BOXTYPE" == xp1000)
 AM_CONDITIONAL(SH1, test `echo "$BOXTYPE"` == "sh1")
+AM_CONDITIONAL(SH2, test `echo "$BOXTYPE"` == "sh2")
 AM_CONDITIONAL(SPARK, test `echo "$BOXTYPE" | cut -b 1-5` == spark)
+AM_CONDITIONAL(XC7362, test "$BOXTYPE" == xc7362)
 if test `echo "$BOXTYPE" | cut -b 1-2` == "dm"; then
 	AC_DEFINE(DREAMBOX, 1, [Dreambox hardware])
 fi
@@ -344,11 +349,6 @@ VuDuoFanControl/Makefile
 VuDuoFanControl/src/Makefile
 VuDuoFanControl/meta/Makefile
 VuDuoFanControl/po/Makefile
-
-VuplusEvent/Makefile
-VuplusEvent/src/Makefile
-VuplusEvent/meta/Makefile
-VuplusEvent/po/Makefile
 
 WebBrowser/Makefile
 WebBrowser/src/Makefile

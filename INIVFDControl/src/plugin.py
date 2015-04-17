@@ -291,4 +291,11 @@ def Plugins(**kwargs):
 		return [ PluginDescriptor(where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=sessionstart),
 			PluginDescriptor(name="LED Display Setup", description="Change VFD display settings",where = PluginDescriptor.WHERE_MENU, fnc = main) ]
 	else:
-		return []
+		f = open("/etc/.box",'r')
+ 		modell = f.readline().strip().lower()
+ 		f.close()
+		if modell in ('atemio6000', 'atemio6100', 'bwidowx', 'bwidowx2', 'mbhybrid'):
+			return [ PluginDescriptor(where=[PluginDescriptor.WHERE_AUTOSTART, PluginDescriptor.WHERE_SESSIONSTART], fnc=sessionstart),
+				PluginDescriptor(name="LED Display Setup", description="Change VFD display settings",where = PluginDescriptor.WHERE_MENU, fnc = main) ]
+		else:
+			return []

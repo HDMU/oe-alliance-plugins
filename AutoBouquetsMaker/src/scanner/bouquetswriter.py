@@ -191,7 +191,7 @@ class BouquetsWriter():
 			content = bouquets.read().strip().split("\n")
 			bouquets.close()
 			for line in content:
-				if line[:13] == "#SERVICE 1:0:":		#service line found
+				if line[:13] == "#SERVICE 1:0:" or line[:16] == "#SERVICE 4097:0:":		#service or iptv line found
 					return True
 					break
 			return False
@@ -213,6 +213,7 @@ class BouquetsWriter():
 
 		customfilenames = []
 		hidden_non_abm_bouquet = []
+		display_empty_bouquet = ['userbouquet.favourites.tv', 'userbouquet.favourites.radio', 'userbouquet.LastScanned.tv']
 		
 		if config.autobouquetsmaker.placement.getValue() == 'bottom':
 			for bouquet_type in ["tv", "radio"]:
@@ -221,7 +222,7 @@ class BouquetsWriter():
 						continue
 					if filename[:len(self.ABM_BOUQUET_PREFIX)-2] == self.ABM_BOUQUET_PREFIX[:-2]: # selective rescan clause
 						filename = self.ABM_BOUQUET_PREFIX[:-1] + filename[len(self.ABM_BOUQUET_PREFIX):]
-					if filename in bouquetsToKeep[bouquet_type] and self.containServicesLines(path, filename):
+					if filename in bouquetsToKeep[bouquet_type] and (self.containServicesLines(path, filename) or filename in display_empty_bouquet):
 						to_write = "#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET \"%s\" ORDER BY bouquet\n" % filename
 					else:
 						to_write = "#SERVICE 1:519:1:0:0:0:0:0:0:0:FROM BOUQUET \"%s\" ORDER BY bouquet\n" % filename
@@ -293,7 +294,7 @@ class BouquetsWriter():
 						continue
 					if filename[:len(self.ABM_BOUQUET_PREFIX)-2] == self.ABM_BOUQUET_PREFIX[:-2]: # selective rescan clause
 						filename = self.ABM_BOUQUET_PREFIX[:-1] + filename[len(self.ABM_BOUQUET_PREFIX):]
-					if filename in bouquetsToKeep[bouquet_type] and self.containServicesLines(path, filename):
+					if filename in bouquetsToKeep[bouquet_type] and (self.containServicesLines(path, filename) or filename in display_empty_bouquet):
 						to_write = "#SERVICE 1:7:1:0:0:0:0:0:0:0:FROM BOUQUET \"%s\" ORDER BY bouquet\n" % filename
 					else:
 						to_write = "#SERVICE 1:519:1:0:0:0:0:0:0:0:FROM BOUQUET \"%s\" ORDER BY bouquet\n" % filename
@@ -322,6 +323,15 @@ class BouquetsWriter():
 		if len(section_prefix) > 0:
 			section_prefix = section_prefix + " - "
 		current_number = 0
+		
+		# fta only
+		if config.autobouquetsmaker.level.value == "expert" and section_identifier in config.autobouquetsmaker.FTA_only.value:
+			video_services_tmp = {}
+			for number in services["video"]:
+				if services["video"][number]["free_ca"] == 0:
+					video_services_tmp[number] = services["video"][number]
+			services["video"] = video_services_tmp
+				
 		
 		# swap services if customLCN
 		services = Tools().customLCN(services, section_identifier, current_bouquet_key)
@@ -465,6 +475,12 @@ class BouquetsWriter():
 			else:
 				section_current_number = sorted(sections.keys())[0] - 1
 
+			# sections swap
+			sectionsSwap = {}
+			for swaprule in preferred_order:
+				sectionsSwap[swaprule[0]] = swaprule[1]
+				sectionsSwap[swaprule[1]] = swaprule[0]
+				
 			for section_number in sorted(sections.keys()):
 				section_name = sections[section_number]
 
@@ -497,6 +513,8 @@ class BouquetsWriter():
 				#current_number += 1
 				section_current_number += 1
 				for number in range(section_current_number, higher_number + 1):
+					if number in sectionsSwap and sectionsSwap[number] in services["video"]:
+						number = sectionsSwap[number]
 					if number in services["video"] and section_number not in bouquets_to_hide:
 						bouquet_current.write("#SERVICE 1:0:%x:%x:%x:%x:%x:0:0:0:\n" % (
 								services["video"][number]["service_type"],

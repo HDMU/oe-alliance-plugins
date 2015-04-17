@@ -42,6 +42,10 @@ if HD1200
 SUBDIRS += F3LEDControl XtrendRemote
 endif
 
+if HD500C
+SUBDIRS += F3LEDControl XtrendRemote
+endif
+
 if ODIN
 SUBDIRS += XtrendFancontrol Blindscan
 endif
@@ -79,7 +83,7 @@ SUBDIRS += EWVFDControl
 endif
 
 if EW7356
-SUBDIRS += TransCodingSetup
+SUBDIRS += MultiTransCodingSetup
 endif
 
 if INIHDE
@@ -115,6 +119,10 @@ SUBDIRS += F3LEDControl
 endif
 
 if SH1
+SUBDIRS += F3LEDControl
+endif
+
+if SH2
 SUBDIRS += F3LEDControl
 endif
 
@@ -185,4 +193,12 @@ endif
 
 if GB800UEPLUS
 SUBDIRS += AudioEffect
+endif
+
+if VUPLUS
+SUBDIRS += HbbTV AudioEffect
+endif
+
+if XC7362
+SUBDIRS += Blindscan
 endif
