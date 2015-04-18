@@ -200,7 +200,7 @@ SUBDIRS += AudioEffect
 endif
 
 if VUPLUS
-SUBDIRS += HbbTV AudioEffect
+SUBDIRS += AudioEffect
 endif
 
 if XC7362
