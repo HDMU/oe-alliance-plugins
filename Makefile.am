@@ -66,6 +66,10 @@ if XPEEDLX3
 SUBDIRS += MICOMUpgrade MultiTransCodingSetup
 endif
 
+if ATEMIONEMESIS
+SUBDIRS += MICOMUpgrade MultiTransCodingSetup
+endif
+
 if ODINM7S
 SUBDIRS += OdinM7VFDControl
 endif

@@ -119,6 +119,7 @@ AM_CONDITIONAL(FORMULER3, test "$BOXTYPE" == formuler3)
 AM_CONDITIONAL(INIHDE2, test "$BOXTYPE" == "inihde2")
 AM_CONDITIONAL(ATEMIO6000, test "$BOXTYPE" == "atemio6000")
 AM_CONDITIONAL(ATEMIO6100, test "$BOXTYPE" == "atemio6100")
+AM_CONDITIONAL(ATEMIONEMESIS, test "$BOXTYPE" == "atemionemesis")
 AM_CONDITIONAL(XPEEDLX3, test "$BOXTYPE" == "xpeedlx3")
 AM_CONDITIONAL(XPEEDLX, test "$BOXTYPE" == xpeedlx)
 AM_CONDITIONAL(GB800SOLO, test "$BOXTYPE" == "gb800solo")
@@ -163,7 +164,7 @@ if test `echo "$BOXTYPE" | cut -b 1-2` == "dm"; then
 	AC_DEFINE(DREAMBOX, 1, [Dreambox hardware])
 fi
 
-AM_CONDITIONAL(HAVE_TEMPFANCONTROL, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm500hd -o "$BOXTYPE" == vuuno -o "$BOXTYPE" == vuultimo -o "$BOXTYPE" == vusolo2 -o "$BOXTYPE" == vusolo2cl -o "$BOXTYPE" == vuduo2 -o "$BOXTYPE" == tmsingle -o "$BOXTYPE" == tmtwin -o "$BOXTYPE" == tm2t -o "$BOXTYPE" == tmnano -o "$BOXTYPE" == iqonios100hd -o "$BOXTYPE" == iqonios200hd -o "$BOXTYPE" == iqonios300hd -o "$BOXTYPE" == optimussos1 -o "$BOXTYPE" == optimussos1plus -o "$BOXTYPE" == optimussos2 -o "$BOXTYPE" == optimussos2plus -o "$BOXTYPE" == dags1 -o "$BOXTYPE" == dags2 -o "$BOXTYPE" == dags3)
+AM_CONDITIONAL(HAVE_TEMPFANCONTROL, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm500hd -o "$BOXTYPE" == vuuno -o "$BOXTYPE" == xpeedlx3 -o "$BOXTYPE" == atemionemesis -o "$BOXTYPE" == vuultimo -o "$BOXTYPE" == vusolo2 -o "$BOXTYPE" == vusolo2cl -o "$BOXTYPE" == vuduo2 -o "$BOXTYPE" == tmsingle -o "$BOXTYPE" == tmtwin -o "$BOXTYPE" == tm2t -o "$BOXTYPE" == tmnano -o "$BOXTYPE" == iqonios100hd -o "$BOXTYPE" == iqonios200hd -o "$BOXTYPE" == iqonios300hd -o "$BOXTYPE" == optimussos1 -o "$BOXTYPE" == optimussos1plus -o "$BOXTYPE" == optimussos2 -o "$BOXTYPE" == optimussos2plus -o "$BOXTYPE" == dags1 -o "$BOXTYPE" == dags2 -o "$BOXTYPE" == dags3)
 AM_CONDITIONAL(HAVE_WIRELESSACCESSPOINT, test "$BOXTYPE" != cube -a `echo "$BOXTYPE" | cut -b 1-5` != spark)
 
 AC_CONFIG_FILES([
