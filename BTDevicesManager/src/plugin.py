@@ -16,7 +16,7 @@
 # kernel-module-hid-wacom 
 #====================================================
 
-from boxbranding import getImageDistro, getBrandOEM
+#from boxbranding import getImageDistro, getBrandOEM
 
 from Plugins.Plugin import PluginDescriptor
 from enigma import eTimer, eConsoleAppContainer
@@ -34,7 +34,7 @@ from Components.MenuList import MenuList
 
 import os
 
-brandoem = getBrandOEM()
+#brandoem = getBrandOEM()
 
 class TaskManager:
 	def __init__(self):
@@ -182,10 +182,10 @@ class BluetoothDevicesManager(Screen):
 		self["key_red"]    = Label(_("Exit"))
 		self["key_green"]  = Label(_("(Re)Scan"))
 		self["key_yellow"] = Label(_("Connect"))
-		if brandoem == 'xcore':
-			self["key_blue"]   = Label()
-		else:
-			self["key_blue"]   = Label(_("Config"))
+#		if brandoem == 'xcore':
+#			self["key_blue"]   = Label()
+#		else:
+		self["key_blue"]   = Label(_("Config"))
     
 		self.devicelist = []
 		self["devicelist"] = MenuList(self.devicelist)
@@ -193,8 +193,8 @@ class BluetoothDevicesManager(Screen):
 	def initDevice(self):
 		print "[BluetoothManager] initDevice"
 		cmd = "hciconfig hci0 up"
-		if brandoem == 'xcore':
-			cmd = "hciattach ttyS2 rtk_h5 | hciconfig hci0 up"
+#		if brandoem == 'xcore':
+#			cmd = "hciattach ttyS2 rtk_h5 | hciconfig hci0 up"
 		self.taskManager.append(cmd, self.cbPrintAvailBTDev, self.cbRunNextTask)
 		cmd = "hcitool dev" ## check if hci0 is on the dev list, then make scan
 		self.taskManager.append(cmd, self.cbPrintAvailBTDev, self.cbStopDone)
@@ -210,7 +210,7 @@ class BluetoothDevicesManager(Screen):
 			
 	def keyGreen(self):
 		print "[BluetoothManager] keyGreen"  
-		if config.btdevicesmanager.autostart.getValue() or  brandoem == 'xcore':
+		if config.btdevicesmanager.autostart.getValue():
 			self["ConnStatus"].setText(_("No connected to any device"))
 			self.initDevice()
 		else:
@@ -301,9 +301,9 @@ class BluetoothDevicesManager(Screen):
 			self["ConnStatus"].setText(msg)
 			
 	def keyBlue(self):
-		if brandoem != 'xcore':
-			print "[BluetoothManager] keyBlue"
-			self.session.openWithCallback(self.keyGreen, BluetoothDevicesManagerSetup)
+#		if brandoem != 'xcore':
+		print "[BluetoothManager] keyBlue"
+		self.session.openWithCallback(self.keyGreen, BluetoothDevicesManagerSetup)
 
 	def showMessage(self,msg):
 		self.session.open(MessageBox, msg, MessageBox.TYPE_INFO, 3)
@@ -336,20 +336,20 @@ def main(session, **kwargs):
 	session.open(BluetoothDevicesManager)
 
 def autostart(reason, **kwargs):
-	if brandoem != 'xcore':
-		if reason == 0:
-			if config.btdevicesmanager.autostart.getValue():
-				print "[BluetoothManager] Autostart: Loading driver" ## We have it on a blacklist because We want to have faster system loading, so We load driver while we enable it.
-				os.system("modprobe rtk_btusb")
-			else:
-				print "[BluetoothManager] Autostart: Unloading driver" ## We know it is blacklisted, but try to remove it anyway.
-				os.system("rmmod rtk_btusb")
+#	if brandoem != 'xcore':
+	if reason == 0:
+		if config.btdevicesmanager.autostart.getValue():
+			print "[BluetoothManager] Autostart: Loading driver" ## We have it on a blacklist because We want to have faster system loading, so We load driver while we enable it.
+			os.system("modprobe rtk_btusb")
+		else:
+			print "[BluetoothManager] Autostart: Unloading driver" ## We know it is blacklisted, but try to remove it anyway.
+			os.system("rmmod rtk_btusb")
 
 def Plugins(**kwargs):
 	l = []
 	l.append(PluginDescriptor(where = [PluginDescriptor.WHERE_AUTOSTART], fnc = autostart))
-	if getImageDistro() in ("miracleboxhd", "miraclebox"):
-		l.append(PluginDescriptor(name=_("Bluetooth Devices Manager"), where=PluginDescriptor.WHERE_MENU, fnc=start_menu_main))
-	else:
-		l.append(PluginDescriptor(name=_("Bluetooth Devices Manager"), description="This is bt devices manager", where = PluginDescriptor.WHERE_PLUGINMENU, fnc=main))
+#	if getImageDistro() in ("miracleboxhd", "miraclebox"):
+#		l.append(PluginDescriptor(name=_("Bluetooth Devices Manager"), where=PluginDescriptor.WHERE_MENU, fnc=start_menu_main))
+#	else:
+	l.append(PluginDescriptor(name=_("Bluetooth Devices Manager"), description="This is bt devices manager", where = PluginDescriptor.WHERE_PLUGINMENU, fnc=main))
 	return l  
