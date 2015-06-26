@@ -59,7 +59,7 @@ SUBDIRS += OdinM7VFDControl
 endif
 
 if XPEEDLX
-SUBDIRS += INIVFDControl MICOMUpgrade
+SUBDIRS += INIVFDControl MICOMUpgrade Blindscan
 endif
 
 if XPEEDLX3
