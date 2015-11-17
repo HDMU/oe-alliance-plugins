@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+# for localized messages
+from . import _
+
 from Screens.Screen import Screen
 from Screens.MessageBox import MessageBox
 from Components.config import getConfigListEntry, config, configfile
@@ -104,7 +108,7 @@ class AutoBouquetsMaker_Ordering(Screen):
 			if provider_config.getProvider() not in self.providers:
 				continue
 				
-			providers = (provider_config.getProvider(), str(self.providers[provider_config.getProvider()]["name"]))
+			providers = (str(self.providers[provider_config.getProvider()]["name"]), provider_config.getProvider())
 			self.list.append(providers)
 			self.providers_configs[provider_config.getProvider()] = provider_config
 			
@@ -171,7 +175,7 @@ class AutoBouquetsMaker_Ordering(Screen):
 	def keySave(self):
 		config_string = ""
 		for provider in self.list:
-			provider = provider[0]
+			provider = provider[1]
 			if len(config_string) > 0:
 				config_string += "|"
 				

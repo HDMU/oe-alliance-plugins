@@ -1,8 +1,8 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = AutoBouquetsMaker DLNABrowser DLNAServer StreamTV 3GModemManager TunerServer OnDemand Fempa LCD4linux RemoteChannelStreamConverter BTDevicesManager
+SUBDIRS = AutoBouquetsMaker DLNABrowser DLNAServer StreamTV 3GModemManager TunerServer OnDemand Fempa LCD4linux RemoteChannelStreamConverter BTDevicesManager SatipClient
 
-if HAVE_WIRELESSACCESSPOINT
+if MIPSEL
 SUBDIRS += WirelessAccessPoint
 endif
 
@@ -22,6 +22,10 @@ if VUPLUS
 SUBDIRS += AudioEffect
 endif
 
+if DREAMBOX
+SUBDIRS +=  DMBlindscan
+endif
+
 if XTREND
 SUBDIRS += XtrendFancontrol Blindscan XtrendRemote
 endif
@@ -39,6 +43,10 @@ SUBDIRS += F3LEDControl XtrendRemote
 endif
 
 if HD1200
+SUBDIRS += F3LEDControl XtrendRemote
+endif
+
+if HD1265
 SUBDIRS += F3LEDControl XtrendRemote
 endif
 
@@ -126,16 +134,20 @@ if VG5000
 SUBDIRS += F3LEDControl
 endif
 
+if JJ7362
+SUBDIRS += F3LEDControl
+endif
+
+if S7300S
+SUBDIRS += F3LEDControl
+endif
+
 if SH1
 SUBDIRS += F3LEDControl
 endif
 
-if SH2
+if H3
 SUBDIRS += F3LEDControl
-endif
-
-if VP7358CI
-SUBDIRS += VPLEDControl
 endif
 
 if VUUNO
@@ -170,6 +182,10 @@ if VUZERO
 SUBDIRS += FirmwareUpgrade VuRemote Blindscan
 endif
 
+if VUSOLO4K
+SUBDIRS += FirmwareUpgrade VuRemote Blindscan
+endif
+
 if GIGABLUE
 SUBDIRS += GigaBlueVFDControl Blindscan AudioEffect
 endif
@@ -188,19 +204,23 @@ SUBDIRS += TempFanControl
 endif
 
 if GBQUADPLUS
-SUBDIRS += AudioEffect TransCodingSetup
+SUBDIRS += TransCodingSetup
 endif
 
 if GBQUAD
-SUBDIRS += AudioEffect TransCodingSetup
+SUBDIRS += TransCodingSetup
 endif
 
-if GB800SEPLUS
-SUBDIRS += AudioEffect
+if VUPLUS
+SUBDIRS += HbbTV AudioEffect
 endif
 
-if GB800UEPLUS
-SUBDIRS += AudioEffect
+if WETEK
+SUBDIRS += RCUSelect ReZap
+endif
+
+if XC7362
+SUBDIRS += Blindscan VPLEDControl
 endif
 
 if VUPLUS
@@ -209,4 +229,12 @@ endif
 
 if XC7362
 SUBDIRS += Blindscan
+endif
+
+if XC7358
+SUBDIRS += Blindscan VPLEDControl
+endif
+
+if XC7358CI
+SUBDIRS += Blindscan VPLEDControl
 endif

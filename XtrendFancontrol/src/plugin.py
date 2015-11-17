@@ -32,6 +32,7 @@ import gettext
 from Components.ActionMap import ActionMap
 from Components.Button import Button
 from Components.Label import Label
+from boxbranding import getImageDistro
 
 PLUGIN_VERSION = _(" ver. 3.2")
 
@@ -62,7 +63,7 @@ timsetlist = {"none": _("None"), "off": _("Fan - Off"), "on": _("Fan - On"), "au
 syswatchlist = {"off": _("Off"), "on": _("On")}
 
 config.plugins.FanSetup = ConfigSubsection()
-config.plugins.FanSetup.mode = ConfigSelection(choices = modelist, default = "off")
+config.plugins.FanSetup.mode = ConfigSelection(choices = modelist, default = "auto")
 config.plugins.FanSetup.timeset = ConfigSelection(choices = timsetlist, default = "none")
 config.plugins.FanSetup.timestartoff = ConfigClock(default = ((21 * 60 + 30) * 60) )
 config.plugins.FanSetup.timeendoff = ConfigClock(default = ((7 * 60 + 0) * 60) )
@@ -475,8 +476,12 @@ def getHddTemp():
 	return None, None
 
 def selSetup(menuid, **kwargs):
-	if menuid != "system":
-		return [ ]
+	if getImageDistro() in ("openatv"):
+		if menuid != "extended":
+			return [ ]
+	else:
+		if menuid != "system":
+			return [ ]
 	return [(_("Fan Control"), main, "fansetup_config", 70)]
 
 def show_temp(session, **kwargs):

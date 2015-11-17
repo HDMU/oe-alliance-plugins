@@ -16,12 +16,12 @@ stb = HardwareInfo().get_device_name()
 config.misc.remotecontrol_text_support = ConfigYesNo(default = True)
 
 config.plugins.remotecontrolcode = ConfigSubsection()
-if stb in ("vuuno", "vuultimo", "vusolo2" ,"vuduo2", "vusolose", "vuzero"):
+if stb in ("vusolo", "vuduo"):
+	config.plugins.remotecontrolcode.systemcode = ConfigSelection(default = "1", choices =
+		[ ("1", "1 "), ("2", "2 "), ("3", "3 "), ("4", "4 ") ] )
+else:
 	config.plugins.remotecontrolcode.systemcode = ConfigSelection(default = "2", choices =
 		[ ("1", "1 "), ("2", "2 "), ("3", "3 "), ("4", "4 ") ] )
-elif stb in ("vusolo", "vuduo"):
-	config.plugins.remotecontrolcode.systemcode = ConfigSelection(default = "1", choices =
-			[ ("1", "1 "), ("2", "2 "), ("3", "3 "), ("4", "4 ") ] )
 
 class RemoteControlCodeInit:
 	def __init__(self):
@@ -37,7 +37,7 @@ class RemoteControlCodeInit:
 		return 0
 
 	def getModel(self):
-		if stb in ("vuuno", "vuultimo", "vusolo2" ,"vuduo2", "vusolose"):
+		if stb in ("vuuno", "vuultimo", "vusolo2" ,"vuduo2", "vusolose", "vuzero", "vusolo4k"):
 			return True
 		else:
 			return False
@@ -79,7 +79,7 @@ class RemoteControlCode(Screen,ConfigListScreen,RemoteControlCodeInit):
 			self.checkModelTimer.start(1000,True)
 
 	def invalidmodel(self):
-		self.session.openWithCallback(self.close, MessageBox, _("This Plugin only supports") + " Uno/Ultimo/Solo2/Duo2", MessageBox.TYPE_ERROR)
+		self.session.openWithCallback(self.close, MessageBox, _("Sorry, but %s is not supported.") % getBoxType(), MessageBox.TYPE_ERROR)
 
 	def createSetup(self):
 		self.list = []

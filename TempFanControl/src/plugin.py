@@ -179,8 +179,12 @@ def main(session, **kwargs):
 	session.open(TempFanControl)
 
 def startMenu(menuid):
-	if menuid != "system":
-		return []
+	if getImageDistro() in ('openatv'):
+		if menuid != "extended":
+			return []
+	else:
+		if menuid != "system":
+			return []
 	return [(_("Temperature and fan control"), main, "tempfancontrol", 80)]
 
 def Plugins(**kwargs):
