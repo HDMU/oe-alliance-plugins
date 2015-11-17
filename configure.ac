@@ -158,11 +158,8 @@ AM_CONDITIONAL(VUSOLO, test "$BOXTYPE" == vusolo)
 AM_CONDITIONAL(VUSOLOSE, test "$BOXTYPE" == vusolose)
 AM_CONDITIONAL(VUDUO, test "$BOXTYPE" == vuduo)
 AM_CONDITIONAL(VUSOLO2, test "$BOXTYPE" == vusolo2)
-<<<<<<< HEAD
 AM_CONDITIONAL(VUSOLO2CL, test "$BOXTYPE" == vusolo2cl)
-=======
 AM_CONDITIONAL(VUSOLO4K, test "$BOXTYPE" == vusolo4k)
->>>>>>> oea/2.3
 AM_CONDITIONAL(VUDUO2, test "$BOXTYPE" == vuduo2)
 AM_CONDITIONAL(VUZERO, test "$BOXTYPE" == vuzero)
 AM_CONDITIONAL(XP1000, test "$BOXTYPE" == xp1000)
