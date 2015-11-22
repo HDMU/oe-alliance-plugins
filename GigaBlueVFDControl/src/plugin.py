@@ -498,8 +498,13 @@ def main(menuid, **kwargs):
 #			if menuid != "frontpanel_menu":
 #				return [ ]
 #		else:
-	return [(_("LED"), startLED, "LED_Giga", None)]
-
+#			return [(_("LED"), startLED, "LED_Giga", None)]
+	if menuid != "system":
+		return [ ]
+	if BOX in ('gb800se', 'gb800solo', 'gb800seplus', 'gbultra', 'gbultrase'):
+		return [(_("Display/LED"), startLED, "LED_Giga", None)]
+	else:
+		return [(_("LED"), startLED, "LED_Giga", None)]
 def startLED(session, **kwargs):
 	session.open(LED_GigaSetup)
 

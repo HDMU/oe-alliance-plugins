@@ -156,7 +156,7 @@ elif stb == 'vuduo2':
 	LCD4default = Data+"default.vuduo2"
 elif stb == 'et8500':
 	LCD4default = Data+"default.et8500"
-elif getBoxType() == 'vusolo4k':
+elif stb == 'vusolo4k':
 	LCD4default = Data+"default.solo4k"
 else:
 	LCD4default = Data+"default.lcd"
