@@ -282,7 +282,7 @@ class Blindscan(ConfigListScreen, Screen):
 		for n in nimmanager.nim_slots:
 			if n.config_mode == "nothing":
 				continue
-			if n.config_mode == "advanced" and len(nimmanager.getSatListForNim(n.slot)) < 1:
+			if n.isCompatible("DVB-S") and len(nimmanager.getSatListForNim(n.slot)) < 1:
 				continue
 			if n.config_mode in ("loopthrough", "satposdepends"):
 				root_id = nimmanager.sec.getRoot(n.slot_id, int(n.config.connectedTo.value))
@@ -953,7 +953,7 @@ class Blindscan(ConfigListScreen, Screen):
 		print "orb = ", orb
 		return orb
 		
-	def startScanCallback(self, answer):
+	def startScanCallback(self, answer=True):
 		if answer:
 			self.session.nav.playService(self.session.postScanService)
 			self.close(True)

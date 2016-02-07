@@ -86,6 +86,10 @@ if ODINM7C
 SUBDIRS += OdinM7VFDControl
 endif
 
+if PROTEK9900LX
+SUBDIRS += OdinM7VFDControl
+endif
+
 if EW7358
 SUBDIRS += EWVFDControl
 endif
@@ -142,11 +146,19 @@ if S7300S
 SUBDIRS += F3LEDControl
 endif
 
+if S7400S
+SUBDIRS += F3LEDControl
+endif
+
 if SH1
 SUBDIRS += F3LEDControl
 endif
 
 if H3
+SUBDIRS += F3LEDControl
+endif
+
+if LC
 SUBDIRS += F3LEDControl
 endif
 
@@ -183,7 +195,7 @@ SUBDIRS += FirmwareUpgrade VuRemote Blindscan
 endif
 
 if VUSOLO4K
-SUBDIRS += FirmwareUpgrade VuRemote Blindscan
+SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup Blindscan 
 endif
 
 if GIGABLUE
@@ -208,6 +220,10 @@ SUBDIRS += TransCodingSetup
 endif
 
 if GBQUAD
+SUBDIRS += TransCodingSetup
+endif
+
+if GB7356
 SUBDIRS += TransCodingSetup
 endif
 

@@ -60,7 +60,7 @@ class Manager():
 		print>>log, "[Manager] Loading settings..."
 		reader = BouquetsReader()
 		self.transponders = reader.readLamedb(self.path)
-		print>>log, "[Manager] Done"
+		print>>log, "[Manager] Settings loaded"
 
 	def save(self, providers, dependent_providers = {}):
 		#merge dependent providers
@@ -186,7 +186,7 @@ class Manager():
 				self.bouquetsToKeep, currentBouquets, self.bouquetsToHide,
 				self.providerConfigs)
 
-		print>>log, "[Manager] Done"
+		print>>log, "[Manager] write bouquets, Done"
 
 	def read(self, provider_config, providers):
 		ret = False
@@ -216,6 +216,7 @@ class Manager():
 				scanner.setNitPid(providers[provider_key]["transponder"]["nit_pid"])
 				scanner.setNitCurrentTableId(providers[provider_key]["transponder"]["nit_current_table_id"])
 				scanner.setNitOtherTableId(providers[provider_key]["transponder"]["nit_other_table_id"])
+				scanner.setVisibleServiceFlagIgnore(providers[provider_key]["ignore_visible_service_flag"])
 
 				if providers[provider_key]["protocol"] in ('lcn', 'lcn2', 'lcnbat', 'lcnbat2', 'nolcn', 'vmuk'):
 					scanner.setSdtPid(providers[provider_key]["transponder"]["sdt_pid"])
@@ -234,9 +235,9 @@ class Manager():
 					if providers[provider_key]["protocol"] in ("lcnbat", "lcnbat2"):
 						scanner.setBatPid(providers[provider_key]["transponder"]["bat_pid"])
 						scanner.setBatTableId(providers[provider_key]["transponder"]["bat_table_id"])
-						tmp["logical_channel_number_dict"] = scanner.readLCNBAT(bouquet_id, providers[provider_key]["bouquets"][bouquet_key]["region"])
+						tmp["logical_channel_number_dict"], tmp["TSID_ONID_list"] = scanner.readLCNBAT(bouquet_id, providers[provider_key]["bouquets"][bouquet_key]["region"], tmp["TSID_ONID_list"])
 					self.services[provider_key] = scanner.updateAndReadServicesLCN(
-						self.transponders, providers[provider_key]["servicehacks"], tmp["transport_stream_id_list"],
+						self.transponders, providers[provider_key]["servicehacks"], tmp["TSID_ONID_list"],
 						tmp["logical_channel_number_dict"], tmp["service_dict_tmp"], providers[provider_key]["protocol"], bouquet_key)
 
 					ret = len(self.services[provider_key]["video"].keys()) > 0 or len(self.services[provider_key]["radio"].keys()) > 0
@@ -251,7 +252,7 @@ class Manager():
 					tmp = scanner.updateTransponders(self.transponders, True)
 					self.services[provider_key] = scanner.updateAndReadServicesFastscan(
 							self.transponders, providers[provider_key]["servicehacks"],
-							tmp["transport_stream_id_list"], tmp["logical_channel_number_dict"])
+							tmp["logical_channel_number_dict"])
 
 					ret = len(self.services[provider_key]["video"].keys()) > 0 or len(self.services[provider_key]["radio"].keys()) > 0
 
@@ -302,7 +303,7 @@ class Manager():
 					if provider_key in config.autobouquetsmaker.providers.value: # not a descendent provider
 						self.bouquetsOrder.append(provider_key)
 
-		print>>log, "[Manager] Done"
+		print>>log, "[Manager] read %s, Done" % provider_key
 		return ret
 
 	def getBouquetsList(self):
