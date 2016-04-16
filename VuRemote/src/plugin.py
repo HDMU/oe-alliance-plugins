@@ -79,7 +79,7 @@ class RemoteControlCode(Screen,ConfigListScreen,RemoteControlCodeInit):
 			self.checkModelTimer.start(1000,True)
 
 	def invalidmodel(self):
-		self.session.openWithCallback(self.close, MessageBox, _("Sorry, but %s is not supported.") % getBoxType(), MessageBox.TYPE_ERROR)
+		self.session.openWithCallback(self.close, MessageBox, _("Sorry, but your box is not supported."), MessageBox.TYPE_ERROR)
 
 	def createSetup(self):
 		self.list = []
