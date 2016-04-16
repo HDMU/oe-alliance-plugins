@@ -143,6 +143,7 @@ AM_CONDITIONAL(INIHDX, test "$BOXTYPE" == "inihdx")
 AM_CONDITIONAL(IXUSSZERO, test "$BOXTYPE" == "ixusszero")
 AM_CONDITIONAL(IXUSSONE, test "$BOXTYPE" == "ixussone")
 AM_CONDITIONAL(HD2400, test "$BOXTYPE" == "hd2400")
+AM_CONDITIONAL(HD1500, test "$BOXTYPE" == "hd1500")
 AM_CONDITIONAL(HD1265, test "$BOXTYPE" == "hd1265")
 AM_CONDITIONAL(HD1200, test "$BOXTYPE" == "hd1200")
 AM_CONDITIONAL(HD1100, test "$BOXTYPE" == "hd1100")
@@ -169,6 +170,7 @@ AM_CONDITIONAL(S7300S, test `echo "$BOXTYPE"` == "7300s")
 AM_CONDITIONAL(S7400S, test `echo "$BOXTYPE"` == "7400s")
 AM_CONDITIONAL(SH1, test `echo "$BOXTYPE"` == "sh1")
 AM_CONDITIONAL(H3, test `echo "$BOXTYPE"` == "h3")
+AM_CONDITIONAL(H5, test `echo "$BOXTYPE"` == "h5")
 AM_CONDITIONAL(LC, test `echo "$BOXTYPE"` == "lc")
 AM_CONDITIONAL(TRIPLEX, test `echo "$BOXTYPE"` == "triplex")
 AM_CONDITIONAL(SPARK, test `echo "$BOXTYPE" | cut -b 1-5` == spark)
@@ -189,16 +191,6 @@ Makefile
 3GModemManager/src/Makefile
 3GModemManager/src/script/Makefile
 3GModemManager/meta/Makefile
-
-AutoBouquetsMaker/Makefile
-AutoBouquetsMaker/images/Makefile
-AutoBouquetsMaker/lib/Makefile
-AutoBouquetsMaker/meta/Makefile
-AutoBouquetsMaker/po/Makefile
-AutoBouquetsMaker/providers/Makefile
-AutoBouquetsMaker/src/Makefile
-AutoBouquetsMaker/src/scanner/Makefile
-AutoBouquetsMaker/custom/Makefile
 
 AudioEffect/Makefile
 AudioEffect/src/Makefile
@@ -231,6 +223,7 @@ DLNAServer/meta/Makefile
 DMBlindscan/Makefile
 DMBlindscan/src/Makefile
 DMBlindscan/meta/Makefile
+DMBlindscan/po/Makefile
 
 FirmwareUpgrade/Makefile
 FirmwareUpgrade/src/Makefile

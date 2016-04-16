@@ -182,7 +182,7 @@ msgid "No detected HbbTV applications."
 msgstr "Keine HbbTV Anwendungen gefunden."
 
 msgid "Open Startpage"
-msgstr "Öffne STartseite"
+msgstr "Öffne Startseite"
 
 msgid "Open URL"
 msgstr "Öffne URL"
@@ -228,7 +228,7 @@ msgid "Return"
 msgstr "Zurück"
 
 msgid "Right Key"
-msgstr "REchts Taste"
+msgstr "Rechts Taste"
 
 msgid "Right Mouse Button"
 msgstr "Rechte Maus Taste"
@@ -237,7 +237,7 @@ msgid "Save"
 msgstr "Speichern"
 
 msgid "Set as Startpage"
-msgstr "Als STartseite benutzen"
+msgstr "Als Startseite benutzen"
 
 msgid "Show the Menu window."
 msgstr "Menüfenster zeigen."
@@ -277,3 +277,18 @@ msgstr "URL"
 
 msgid "start opera web browser"
 msgstr "Opera starten"
+
+msgid "Do not show YouTube TV Starter again"
+msgstr "Zeige YouTube TV Starter nicht mehr"
+
+msgid "YouTube TV"
+msgstr "YouTube TV"
+
+msgid "YouTube TV Settings"
+msgstr "YouTube TV Einstellungen"
+
+msgid "YouTube TV URL"
+msgstr "YouTube TV URL"
+
+msgid "YouTube TV is a new way to watch YouTube videos"
+msgstr "YouTube TV ist eine neue Möglichkeit YouTube Videos anzuschauen"
