@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = DLNABrowser DLNAServer StreamTV 3GModemManager TunerServer OnDemand Fempa LCD4linux RemoteChannelStreamConverter BTDevicesManager SatipClient
+SUBDIRS = DLNABrowser DLNAServer StreamTV 3GModemManager TunerServer OnDemand Fempa LCD4linux RemoteChannelStreamConverter BTDevicesManager SatipClient TerrestrialScan
 
 if MIPSEL
 SUBDIRS += WirelessAccessPoint
@@ -32,6 +32,10 @@ endif
 
 if ET10000
 SUBDIRS += MultiTransCodingSetup
+endif
+
+if G100
+SUBDIRS += F3LEDControl
 endif
 
 if HD2400
@@ -130,6 +134,10 @@ if FORMULER3
 SUBDIRS += F3LEDControl
 endif
 
+if FORMULER4
+SUBDIRS += F3LEDControl
+endif
+
 if VG2000
 SUBDIRS += F3LEDControl
 endif
@@ -147,6 +155,10 @@ SUBDIRS += F3LEDControl
 endif
 
 if JJ7362
+SUBDIRS += F3LEDControl
+endif
+
+if S7220S
 SUBDIRS += F3LEDControl
 endif
 

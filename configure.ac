@@ -122,12 +122,14 @@ AM_CONDITIONAL(EW7362, test `echo "$BOXTYPE"` == "ew7362")
 AM_CONDITIONAL(EW7356, test `echo "$BOXTYPE"` == "ew7356")
 AM_CONDITIONAL(FORMULER1, test "$BOXTYPE" == formuler1)
 AM_CONDITIONAL(FORMULER3, test "$BOXTYPE" == formuler3)
+AM_CONDITIONAL(FORMULER4, test "$BOXTYPE" == formuler4)
 AM_CONDITIONAL(INIHDE2, test "$BOXTYPE" == "inihde2")
 AM_CONDITIONAL(ATEMIO6000, test "$BOXTYPE" == "atemio6000")
 AM_CONDITIONAL(ATEMIO6100, test "$BOXTYPE" == "atemio6100")
 AM_CONDITIONAL(ATEMIONEMESIS, test "$BOXTYPE" == "atemionemesis")
 AM_CONDITIONAL(XPEEDLX3, test "$BOXTYPE" == "xpeedlx3")
 AM_CONDITIONAL(XPEEDLX, test "$BOXTYPE" == xpeedlx)
+AM_CONDITIONAL(G100, test "$BOXTYPE" == "g100")
 AM_CONDITIONAL(GB800SOLO, test "$BOXTYPE" == "gb800solo")
 AM_CONDITIONAL(GB800SE, test "$BOXTYPE" == "gb800se")
 AM_CONDITIONAL(GB800UE, test "$BOXTYPE" == "gb800ue")
@@ -167,6 +169,7 @@ AM_CONDITIONAL(VUSOLO4K, test "$BOXTYPE" == vusolo4k)
 AM_CONDITIONAL(VUDUO2, test "$BOXTYPE" == vuduo2)
 AM_CONDITIONAL(VUZERO, test "$BOXTYPE" == vuzero)
 AM_CONDITIONAL(XP1000, test "$BOXTYPE" == xp1000)
+AM_CONDITIONAL(S7220S, test `echo "$BOXTYPE"` == "7220s")
 AM_CONDITIONAL(S7300S, test `echo "$BOXTYPE"` == "7300s")
 AM_CONDITIONAL(S7400S, test `echo "$BOXTYPE"` == "7400s")
 AM_CONDITIONAL(SH1, test `echo "$BOXTYPE"` == "sh1")
@@ -185,12 +188,17 @@ fi
 
 AM_CONDITIONAL(HAVE_TEMPFANCONTROL, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm500hd -o "$BOXTYPE" == vuuno -o "$BOXTYPE" == vuultimo -o "$BOXTYPE" == vusolo2 -o "$BOXTYPE" == vusolo2cl -o "$BOXTYPE" == vuduo2 -o "$BOXTYPE" == tmsingle -o "$BOXTYPE" == tmtwin -o "$BOXTYPE" == tm2t -o "$BOXTYPE" == tmnano -o "$BOXTYPE" == iqonios100hd -o "$BOXTYPE" == iqonios200hd -o "$BOXTYPE" == iqonios300hd -o "$BOXTYPE" == optimussos1 -o "$BOXTYPE" == optimussos1plus -o "$BOXTYPE" == optimussos2 -o "$BOXTYPE" == optimussos2plus -o "$BOXTYPE" == dags1 -o "$BOXTYPE" == dags2 -o "$BOXTYPE" == dags3)
 
+AM_CONDITIONAL(HAVE_ARMV7A, test "$BOXTYPE" == cube)
+AM_CONDITIONAL(HAVE_ARMV7AHF, test "$BOXTYPE" == hd51 -o "$BOXTYPE" == vusolo4k)
+AM_CONDITIONAL(HAVE_CORTEXA9HF, test "$BOXTYPE" == wetekplay -o "$BOXTYPE" == wetekplayplus)
+
 AC_CONFIG_FILES([
 Makefile
 
 3GModemManager/Makefile
 3GModemManager/src/Makefile
 3GModemManager/src/script/Makefile
+3GModemManager/po/Makefile
 3GModemManager/meta/Makefile
 
 AudioEffect/Makefile
@@ -200,6 +208,7 @@ AudioEffect/po/Makefile
 
 AnimationSetup/Makefile
 AnimationSetup/src/Makefile
+AnimationSetup/po/Makefile
 AnimationSetup/meta/Makefile
 
 Blindscan/Makefile
@@ -215,10 +224,12 @@ BTDevicesManager/po/Makefile
 DLNABrowser/Makefile
 DLNABrowser/src/Makefile
 DLNABrowser/icons/Makefile
+DLNABrowser/po/Makefile
 DLNABrowser/meta/Makefile
 
 DLNAServer/Makefile
 DLNAServer/src/Makefile
+DLNAServer/po/Makefile
 DLNAServer/meta/Makefile
 
 DMBlindscan/Makefile
@@ -234,6 +245,7 @@ FirmwareUpgrade/po/Makefile
 Fempa/Makefile
 Fempa/meta/Makefile
 Fempa/src/Makefile
+Fempa/po/Makefile
 
 FPGAUpgrade/Makefile
 FPGAUpgrade/src/Makefile
@@ -282,9 +294,9 @@ LCD4linux/src/data/Clock6/Makefile
 LCD4linux/src/meteo/Makefile
 LCD4linux/src/renderer/Makefile
 LCD4linux/src/wetter/Makefile
-LCD4linux/src/cube/Makefile
-LCD4linux/src/solo4k/Makefile
-LCD4linux/src/wetek/Makefile
+LCD4linux/src/armv7a/Makefile
+LCD4linux/src/armv7ahf/Makefile
+LCD4linux/src/cortexa9hf/Makefile
 LCD4linux/src/mips/Makefile
 LCD4linux/src/sh4/Makefile
 LCD4linux/meta/Makefile
@@ -332,6 +344,12 @@ TempFanControl/src/Makefile
 TempFanControl/meta/Makefile
 TempFanControl/po/Makefile
 
+TerrestrialScan/Makefile
+TerrestrialScan/images/Makefile
+TerrestrialScan/meta/Makefile
+TerrestrialScan/po/Makefile
+TerrestrialScan/src/Makefile
+
 TransCodingSetup/Makefile
 TransCodingSetup/src/Makefile
 TransCodingSetup/meta/Makefile
@@ -365,6 +383,7 @@ SF8VFDControl/po/Makefile
 StreamTV/Makefile
 StreamTV/src/Makefile
 StreamTV/meta/Makefile
+StreamTV/po/Makefile
 StreamTV/icons/Makefile
 
 VentonFancontrol/Makefile
@@ -411,6 +430,7 @@ SparkVFDControl/po/Makefile
 
 SparkUnionTunerType/Makefile
 SparkUnionTunerType/src/Makefile
+SparkUnionTunerType/po/Makefile
 SparkUnionTunerType/meta/Makefile
 
 ])
