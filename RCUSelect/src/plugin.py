@@ -63,13 +63,6 @@ class RCUSelect(Screen):
 		_("xtrend ET10000 RCU"),
 		_("Zgemma Star RCU")]
 		self.SetOSDList()
-		self.MakeKeymapBckUp()
-
-	def MakeKeymapBckUp(self):
-		filename = '/usr/lib/enigma2/python/Plugins/Extensions/RCUSelect/conf/keymap.orig.xml'
-		cmd ='cp -f /usr/share/enigma2/keymap.xml ' + filename + ' &'
-		if not os.path.exists(filename):
-			os.system(cmd)
 
 	def SetOSDList(self):
 		boxime = HardwareInfo().get_device_name()
@@ -142,15 +135,6 @@ class RCUSelect(Screen):
 					fout.close()
 					os.system('mv -f /etc/amremote/wetek_tmp.conf /etc/amremote/wetek.conf &')
 				os.system("/usr/bin/remotecfg /etc/amremote/wetek.conf &")
-				if self.rcuold == "WeTek Play OpenElec RCU" or self.rcuv == "WeTek Play OpenElec RCU":
-					if self.rcuold != self.rcuv:
-						if self.rcuv == 'WeTek Play OpenElec RCU':
-							os.system("cp -f /usr/lib/enigma2/python/Plugins/Extensions/RCUSelect/conf/keymap.OE.xml /usr/share/enigma2/keymap.xml &")
-						else:
-							os.system("cp -f /usr/lib/enigma2/python/Plugins/Extensions/RCUSelect/conf/keymap.orig.xml /usr/share/enigma2/keymap.xml &")
-						os.system("killall -9 enigma2 &")
-				else:
-					os.system("cp -f /usr/lib/enigma2/python/Plugins/Extensions/RCUSelect/conf/keymap.orig.xml /usr/share/enigma2/keymap.xml &")
 			except IOError:
 				print "RCU select failed."
 			self.close()
