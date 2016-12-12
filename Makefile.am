@@ -120,6 +120,7 @@ endif
 
 if ATEMIO6100
 SUBDIRS += INIVFDControl Blindscan MICOMUpgrade
+endif
 
 if INI
 SUBDIRS += VentonFancontrol MICOMUpgrade
