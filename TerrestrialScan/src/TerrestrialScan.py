@@ -1,3 +1,6 @@
+# for localized messages
+from . import _
+
 from Screens.Screen import Screen
 from Components.ConfigList import ConfigListScreen
 from Components.ActionMap import ActionMap
@@ -5,6 +8,7 @@ from Screens.MessageBox import MessageBox
 from Components.Label import Label
 from Components.Pixmap import Pixmap
 from Components.ProgressBar import ProgressBar
+from Components.Sources.Progress import Progress
 from Components.NimManager import nimmanager
 from enigma import eDVBFrontendParameters, eDVBFrontendParametersTerrestrial, eDVBResourceManager, eTimer, iFrontendInformation
 
@@ -65,6 +69,7 @@ class TerrestrialScan(Screen, ConfigListScreen):
 		self["action"] = Label(_("Starting scanner"))
 		self["status"] = Label("")
 		self["progress"] = ProgressBar()
+		self["progress_text"] = Progress()
 
 		self["actions"] = ActionMap(["SetupActions"],
 		{
@@ -128,6 +133,8 @@ class TerrestrialScan(Screen, ConfigListScreen):
 			self["status"].setText(_("Scanning for active transponders"))
 			self.progresscount = len(self.scanTransponders)
 			self.progresscurrent = 1
+			self["progress_text"].range = self.progresscount
+			self["progress_text"].value = self.progresscurrent
 			self["progress"].setRange((0, self.progresscount))
 			self["progress"].setValue(self.progresscurrent)
 			self.timer = eTimer()
@@ -146,6 +153,7 @@ class TerrestrialScan(Screen, ConfigListScreen):
 			print "[TerrestrialScan][Search] Scan system %d" % self.system
 			print "[TerrestrialScan][Search] Scan bandwidth %d" % self.bandwidth
 			self.progresscurrent = self.index
+			self["progress_text"].value = self.progresscurrent
 			self["progress"].setValue(self.progresscurrent)
 			self["action"].setText(_("Scanning channel %s") % str(self.channel))
 			self["status"].setText(ngettext("Found %d unique transponder", "Found %d unique transponders", len(self.transponders_unique)) % len(self.transponders_unique))
@@ -169,13 +177,13 @@ class TerrestrialScan(Screen, ConfigListScreen):
 		nimList = []
 		if self.selectedNIM < 0: # automatic tuner selection
 			for nim in nimmanager.nim_slots:
-				if nim.config_mode not in ("nothing",) and nim.isCompatible("DVB-T2"):
+				if nim.config_mode not in ("nothing",) and (nim.isCompatible("DVB-T2") or (nim.isCompatible("DVB-S") and nim.canBeCompatible("DVB-T2"))):
 					nimList.append(nim.slot)
 					self.isT2tuner = True
 			if len(nimList) == 0:
 				print "[TerrestrialScan][getFrontend] No T2 tuner found"
 				for nim in nimmanager.nim_slots:
-					if nim.config_mode not in ("nothing",) and nim.isCompatible("DVB-T"):
+					if nim.config_mode not in ("nothing",) and (nim.isCompatible("DVB-T") or (nim.isCompatible("DVB-S") and nim.canBeCompatible("DVB-T"))):
 						nimList.append(nim.slot)
 			if len(nimList) == 0:
 				print "[TerrestrialScan][getFrontend] No terrestrial tuner found"
@@ -183,12 +191,12 @@ class TerrestrialScan(Screen, ConfigListScreen):
 				return
 		else: # manual tuner selection, and subsequent iterations
 			nim = nimmanager.nim_slots[self.selectedNIM]
-			if nim.config_mode not in ("nothing",) and nim.isCompatible("DVB-T2"):
+			if nim.config_mode not in ("nothing",) and (nim.isCompatible("DVB-T2") or (nim.isCompatible("DVB-S") and nim.canBeCompatible("DVB-T2"))):
 				nimList.append(nim.slot)
 				self.isT2tuner = True
 			if len(nimList) == 0:
 				print "[TerrestrialScan][getFrontend] User selected tuner is not T2 compatible"
-				if nim.config_mode not in ("nothing",) and nim.isCompatible("DVB-T"):
+				if nim.config_mode not in ("nothing",) and (nim.isCompatible("DVB-T") or (nim.isCompatible("DVB-S") and nim.canBeCompatible("DVB-T"))):
 					nimList.append(nim.slot)
 			if len(nimList) == 0:
 				print "[TerrestrialScan][getFrontend] User selected tuner not configured"

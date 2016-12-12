@@ -330,7 +330,7 @@ def initLED():
 		forcmd = '1'
 	else:
 		forcmd = '0'
-	if BOX in ("gbquad", "gb800ueplus", "gbquadplus", "gbipbox", "gbx1", "gbx3"):
+	if BOX in ("gbquad", "gb800ueplus", "gbquadplus", "gbultraue", "gbultraueh", "gbipbox", "gbx1", "gbx2", "gbx3", "gbx3h"):
 		cmd = 'echo STB does not support to show clock in Deep Standby'
 	else:
 		cmd = 'echo '+str(forcmd)+' > /proc/stb/fp/enable_clock'
@@ -369,7 +369,7 @@ class LED_GigaSetup(ConfigListScreen, Screen):
 		self.Console = Console()
 		self["key_red"] = Button(_("Cancel"))
 		self["key_green"] = Button(_("Save"))
-		if BOX in ("gbquad", "gb800ueplus", "gbquadplus", "gbipbox", "gbx1", "gbx3"):
+		if BOX in ("gbquad", "gb800ueplus", "gbquadplus", "gbultraue", "gbultraueh", "gbipbox", "gbx1", "gbx2", "gbx3", "gbx3h"):
 			self["key_yellow"] = Button("")
 		else:
 			self["key_yellow"] = Button(_("Update Date/Time"))
@@ -389,7 +389,7 @@ class LED_GigaSetup(ConfigListScreen, Screen):
 		if config.plugins.VFD_Giga.setLed.value:
 			self.list.append(getConfigListEntry(_("Led state RUN"), config.plugins.VFD_Giga.ledRUN))
 			self.list.append(getConfigListEntry(_("Led state Standby"), config.plugins.VFD_Giga.ledSBY))
-			if BOX not in ("gbquad", "gb800ueplus", "gb800seplus", "gbquadplus", "gbipbox", "gbultra", "gbultraue", "gbultrase", "gbx1", "gbx3"):
+			if BOX not in ("gbquad", "gb800ueplus", "gb800seplus", "gbquadplus", "gbipbox", "gbultra", "gbultraue", "gbultraueh", "gbultrase", "gbx1", "gbx2", "gbx3", "gbx3h"):
 				self.list.append(getConfigListEntry(_("Led state Deep Standby"), config.plugins.VFD_Giga.ledDSBY))
 			self.list.append(getConfigListEntry(_("Led state Record"), config.plugins.VFD_Giga.ledREC))
 			self.list.append(getConfigListEntry(_("Blink Record Led"), config.plugins.VFD_Giga.recLedBlink))
@@ -450,9 +450,10 @@ class LED_GigaSetup(ConfigListScreen, Screen):
 		self.close()
 
 	def Update(self):
-		if BOX != "gbquad":
-			self.createSetup()
-			initLED()
+		# still needed? I doubt it, as i can't see a difference for gbquad and other models with LCD
+		#if BOX != "gbquad":
+		self.createSetup()
+		initLED()
 
 class LED_Giga:
 	def __init__(self, session):
@@ -485,23 +486,9 @@ class LED_Giga:
 	config.misc.standbyCounter.addNotifier(standbyCounterChanged, initial_call = False)
 
 def main(menuid, **kwargs):
-#	if getImageDistro() in ("openvix", "openvixhd"):
-#		if menuid == "display":
-#			if BOX in ('gb800se', 'gb800solo', 'gb800seplus', 'gbultra'):
-#				return [(_("Display/LED"), startLED, "LED_Giga", None)]
-#			else:
-#				return [(_("LED"), startLED, "LED_Giga", None)]
-#		else:
-#			return []
-#	else:
-#		if getImageDistro() in ('openmips'):
-#			if menuid != "frontpanel_menu":
-#				return [ ]
-#		else:
-#			return [(_("LED"), startLED, "LED_Giga", None)]
 	if menuid != "system":
 		return [ ]
-	if BOX in ('gb800se', 'gb800solo', 'gb800seplus', 'gbultra', 'gbultrase'):
+	if BOX in ('gb800se', 'gb800solo', 'gbx1', 'gbx2', 'gbx3', 'gbx3h','gb800seplus', 'gbultra', 'gbultrase'):
 		return [(_("Display/LED"), startLED, "LED_Giga", None)]
 	else:
 		return [(_("LED"), startLED, "LED_Giga", None)]

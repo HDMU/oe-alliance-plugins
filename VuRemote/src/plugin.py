@@ -37,7 +37,7 @@ class RemoteControlCodeInit:
 		return 0
 
 	def getModel(self):
-		if stb in ("vuuno", "vuultimo", "vusolo2" ,"vuduo2", "vusolose", "vuzero", "vusolo4k"):
+		if stb in ("vuuno", "vuultimo", "vusolo2" ,"vuduo2", "vusolose", "vuzero", "vusolo4k", "vuuno4k", "vuultimo4k"):
 			return True
 		else:
 			return False

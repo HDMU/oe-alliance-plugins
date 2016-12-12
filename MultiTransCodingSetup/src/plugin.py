@@ -17,20 +17,22 @@ from os import path
 
 config.plugins.transcodingsetup = ConfigSubsection()
 config.plugins.transcodingsetup.transcoding = ConfigSelection(default = "enable", choices = [ ("enable", _("enable")), ("disable", _("disable"))])
-#if getMachineBuild() in ('ew7356'):
-#	choice = ConfigSelection(default = "400000", choices=[("-1", "Auto"), ("50000", "50 Kbits"), ("100000", "100 Kbits"), ("150000", "150 Kbits"), ("200000", "200 Kbits"), ("250000", "250 Kbits"), ("300000", "300 Kbits"), ("350000", "350 Kbits"), ("400000", "400 Kbits"), ("450000", "450 Kbits"), ("500000", "500 Kbits"), ("600000", "600 Kbits"), ("700000", "700 Kbits"), ("800000", "800 Kbits"), ("900000", "900 Kbits"), ("1000000", "1 Mbits")])
-#	config.plugins.transcodingsetup.bitrate = choice
-#	choice = ConfigSelection(default = "50000", choices = [("-1", "Auto"), ("23976", "23.976 fps"), ("24000", "24 fps"), ("25000", "25 fps"), ("29970", "29.970 fps"), ("30000", "30 fps"), ("50000", "50 fps"), ("59940", "59.940 fps"), ("60000", "60 fps")])
-#	config.plugins.transcodingsetup.framerate = choice
-#else:
-choice = ConfigSelectionNumber(min = 100000, max = 10000000, stepwidth = 100000, default = 400000, wraparound = True)
-config.plugins.transcodingsetup.bitrate = choice
-choice = ConfigSelection(default = "50000", choices = [("23976", "23.976 fps"), ("24000", "24 fps"), ("25000", "25 fps"), ("29970", "29.970 fps"), ("30000", "30 fps"), ("50000", "50 fps"), ("59940", "59.940 fps"), ("60000", "60 fps")])
-config.plugins.transcodingsetup.framerate = choice
-choice = ConfigSelection(default = "854x480", choices = [ ("854x480", _("480p")), ("768x576", _("576p")), ("1280x720", _("720p")), ("320x240", _("320x240")), ("160x120", _("160x120")) ])
-config.plugins.transcodingsetup.resolution = choice
-config.plugins.transcodingsetup.aspectratio = ConfigSelection(default = "2", choices = [("0", _("4x3")), ("1", _("16x9")), ("2", _("Auto")) ])
-config.plugins.transcodingsetup.interlaced = ConfigSelection(default = "0", choices = [ ("1", _("Yes")), ("0", _("No"))])
+from Tools.HardwareInfo import HardwareInfo
+BOX = HardwareInfo().get_device_name()
+if BOX in ('ew7356','formuler1'):
+	choice = ConfigSelection(default = "400000", choices=[("-1", "Auto"), ("50000", "50 Kbits"), ("100000", "100 Kbits"), ("150000", "150 Kbits"), ("200000", "200 Kbits"), ("250000", "250 Kbits"), ("300000", "300 Kbits"), ("350000", "350 Kbits"), ("400000", "400 Kbits"), ("450000", "450 Kbits"), ("500000", "500 Kbits"), ("600000", "600 Kbits"), ("700000", "700 Kbits"), ("800000", "800 Kbits"), ("900000", "900 Kbits"), ("1000000", "1 Mbits")])
+	config.plugins.transcodingsetup.bitrate = choice
+	choice = ConfigSelection(default = "50000", choices = [("-1", "Auto"), ("23976", "23.976 fps"), ("24000", "24 fps"), ("25000", "25 fps"), ("29970", "29.970 fps"), ("30000", "30 fps"), ("50000", "50 fps"), ("59940", "59.940 fps"), ("60000", "60 fps")])
+	config.plugins.transcodingsetup.framerate = choice
+else:
+	choice = ConfigSelectionNumber(min = 100000, max = 10000000, stepwidth = 100000, default = 400000, wraparound = True)
+	config.plugins.transcodingsetup.bitrate = choice
+	choice = ConfigSelection(default = "50000", choices = [("23976", "23.976 fps"), ("24000", "24 fps"), ("25000", "25 fps"), ("29970", "29.970 fps"), ("30000", "30 fps"), ("50000", "50 fps"), ("59940", "59.940 fps"), ("60000", "60 fps")])
+	config.plugins.transcodingsetup.framerate = choice
+	choice = ConfigSelection(default = "854x480", choices = [ ("854x480", _("480p")), ("768x576", _("576p")), ("1280x720", _("720p")), ("320x240", _("320x240")), ("160x120", _("160x120")) ])
+	config.plugins.transcodingsetup.resolution = choice
+	config.plugins.transcodingsetup.aspectratio = ConfigSelection(default = "2", choices = [("0", _("4x3")), ("1", _("16x9")), ("2", _("Auto")) ])
+	config.plugins.transcodingsetup.interlaced = ConfigSelection(default = "0", choices = [ ("1", _("Yes")), ("0", _("No"))])
 
 class TranscodingSetup(Screen,ConfigListScreen):
 	skin =  """
@@ -70,24 +72,27 @@ class TranscodingSetup(Screen,ConfigListScreen):
 
 		self["key_red"] = StaticText(_("Exit"))
 		self["key_green"] = StaticText(_("Save"))
+		self["key_yellow"] = StaticText()
+		self["key_blue"] = Button()
 
 		self["description"] = Label()
-		
+		self["text"] = Label("")
+
 		text =  (_("To use transcoding You can build URL for VLC by Yourself\n\n"))
 		self["HelpTextHeader1"] = Label(text)
-		
+
 		text2 = "http://STB_IP:PORT/CH_REF:?bitrate=BITRATE?width=WIDTH?height=HEIGHT?aspectration=ASPECT?interlaced=0\n\ne.x:\n\n"
 		text2 += "http://192.168.1.5:8001/1:0:1:C25:1E78:71:820000:0:0:0:?bitrate=300000?width=320?height=240?aspectratio=2?interlaced=0\n\n"
 		self["HelpText1"] = Label(_(text2))
-		
+
 		text3 = (_("Transcoding from HDMI-IN e.x:\n\n"))
 		self["HelpTextHeader2"] = Label(_(text3))
-		
+
 		text4 = "http://192.168.1.5:8001/8192:0:1:0:0:0:0:0:0:0:?bitrate=300000?width=720?height=480?aspectratio=2?interlaced=1"
 		self["HelpText2"] = Label(_(text4))
 
 		self.onLayoutFinish.append(self.checkEncoder)
-		
+
 		self.invaliedModelTimer = eTimer()
 		self.invaliedModelTimer.callback.append(self.invalidmodel)
 
@@ -102,15 +107,15 @@ class TranscodingSetup(Screen,ConfigListScreen):
 
 	def createSetup(self):
 		self.list = []
-#		if getMachineBuild() in ('ew7356'):
-#			self.list.append(getConfigListEntry(_("Bitrate in bits"), config.plugins.transcodingsetup.bitrate))
-#			self.list.append(getConfigListEntry(_("Framerate"), config.plugins.transcodingsetup.framerate))
-#		else:
-		self.list.append(getConfigListEntry(_("Bitrate in bits"), config.plugins.transcodingsetup.bitrate))
-		self.list.append(getConfigListEntry(_("Framerate"), config.plugins.transcodingsetup.framerate))
-		self.list.append(getConfigListEntry(_("Resolution"), config.plugins.transcodingsetup.resolution))
-		self.list.append(getConfigListEntry(_("Aspect Ratio"), config.plugins.transcodingsetup.aspectratio))
-		self.list.append(getConfigListEntry(_("Interlaced"), config.plugins.transcodingsetup.interlaced))
+		if BOX in ('ew7356','formuler1'):
+			self.list.append(getConfigListEntry(_("Bitrate in bits"), config.plugins.transcodingsetup.bitrate))
+			self.list.append(getConfigListEntry(_("Framerate"), config.plugins.transcodingsetup.framerate))
+		else:
+			self.list.append(getConfigListEntry(_("Bitrate in bits"), config.plugins.transcodingsetup.bitrate))
+			self.list.append(getConfigListEntry(_("Framerate"), config.plugins.transcodingsetup.framerate))
+			self.list.append(getConfigListEntry(_("Resolution"), config.plugins.transcodingsetup.resolution))
+			self.list.append(getConfigListEntry(_("Aspect Ratio"), config.plugins.transcodingsetup.aspectratio))
+			self.list.append(getConfigListEntry(_("Interlaced"), config.plugins.transcodingsetup.interlaced))
 		self["config"].list = self.list
 		self["config"].l.setList(self.list)
 

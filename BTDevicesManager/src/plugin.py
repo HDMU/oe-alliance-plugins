@@ -192,7 +192,9 @@ class BluetoothDevicesManager(Screen):
 	def initDevice(self):
 		print "[BluetoothManager] initDevice"
 		cmd = "hciconfig hci0 up"
-#		if brandoem == 'xcore':
+#		if getMachineBuild() in ("xc7346"):
+#			cmd = "hciattach ttyS1 rtk_h5 | hciconfig hci0 up"
+#		if getMachineBuild() in ("xc7362"):
 #			cmd = "hciattach ttyS2 rtk_h5 | hciconfig hci0 up"
 		self.taskManager.append(cmd, self.cbPrintAvailBTDev, self.cbRunNextTask)
 		cmd = "hcitool dev" ## check if hci0 is on the dev list, then make scan
@@ -300,7 +302,6 @@ class BluetoothDevicesManager(Screen):
 			self["ConnStatus"].setText(msg)
 			
 	def keyBlue(self):
-#		if brandoem != 'xcore':
 		print "[BluetoothManager] keyBlue"
 		self.session.openWithCallback(self.keyGreen, BluetoothDevicesManagerSetup)
 

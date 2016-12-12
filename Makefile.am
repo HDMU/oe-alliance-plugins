@@ -1,13 +1,9 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = DLNABrowser DLNAServer StreamTV 3GModemManager TunerServer OnDemand Fempa LCD4linux RemoteChannelStreamConverter BTDevicesManager SatipClient TerrestrialScan
+SUBDIRS = Blindscan DLNABrowser DLNAServer StreamTV 3GModemManager TunerServer OnDemand Fempa LCD4linux RemoteChannelStreamConverter BTDevicesManager SatipClient TerrestrialScan
 
 if MIPSEL
 SUBDIRS += WirelessAccessPoint
-endif
-
-if AZBOX
-SUBDIRS += Blindscan
 endif
 
 if DAGS3
@@ -27,7 +23,7 @@ SUBDIRS +=  DMBlindscan
 endif
 
 if XTREND
-SUBDIRS += XtrendFancontrol Blindscan XtrendRemote
+SUBDIRS += XtrendFancontrol XtrendRemote
 endif
 
 if ET10000
@@ -62,8 +58,12 @@ if HD500C
 SUBDIRS += F3LEDControl XtrendRemote
 endif
 
+if HD530C
+SUBDIRS += F3LEDControl XtrendRemote
+endif
+
 if ODIN
-SUBDIRS += XtrendFancontrol Blindscan
+SUBDIRS += XtrendFancontrol
 endif
 
 if ODINM7
@@ -120,6 +120,9 @@ endif
 
 if ATEMIO6100
 SUBDIRS += INIVFDControl Blindscan MICOMUpgrade
+
+if INI
+SUBDIRS += VentonFancontrol MICOMUpgrade
 endif
 
 if ATEMIO6000
@@ -130,11 +133,19 @@ if INI
 SUBDIRS += VentonFancontrol Blindscan MICOMUpgrade
 endif
 
+if FORMULER1
+SUBDIRS += MultiTransCodingSetup
+endif
+
 if FORMULER3
 SUBDIRS += F3LEDControl
 endif
 
 if FORMULER4
+SUBDIRS += F3LEDControl
+endif
+
+if FORMULER4TURBO
 SUBDIRS += F3LEDControl
 endif
 
@@ -159,6 +170,10 @@ SUBDIRS += F3LEDControl
 endif
 
 if S7220S
+SUBDIRS += F3LEDControl
+endif
+
+if S7225S
 SUBDIRS += F3LEDControl
 endif
 
@@ -187,11 +202,11 @@ SUBDIRS += F3LEDControl
 endif
 
 if VUUNO
-SUBDIRS += FirmwareUpgrade Blindscan VuRemote
+SUBDIRS += FirmwareUpgrade VuRemote
 endif
 
 if VUULTIMO
-SUBDIRS += FirmwareUpgrade Blindscan VuRemote
+SUBDIRS += FirmwareUpgrade VuRemote
 endif
 
 if VUDUO
@@ -199,7 +214,7 @@ SUBDIRS += VuDuoFanControl
 endif
 
 if VUSOLO2
-SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup Blindscan
+SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup
 endif
 
 if VUSOLO2CL
@@ -207,23 +222,31 @@ SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup Blindscan
 endif
 
 if VUSOLOSE
-SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup Blindscan
+SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup
 endif
 
 if VUDUO2
-SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup Blindscan
+SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup
 endif
 
 if VUZERO
-SUBDIRS += FirmwareUpgrade VuRemote Blindscan
+SUBDIRS += FirmwareUpgrade VuRemote
 endif
 
 if VUSOLO4K
-SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup Blindscan 
+SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup
+endif
+
+if VUUNO4K
+SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup
+endif
+
+if VUULTIMO4K
+SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup
 endif
 
 if GIGABLUE
-SUBDIRS += GigaBlueVFDControl Blindscan AudioEffect
+SUBDIRS += GigaBlueVFDControl AudioEffect
 endif
 
 if XP1000
@@ -260,7 +283,7 @@ SUBDIRS += RCUSelect ReZap
 endif
 
 if XC7362
-SUBDIRS += Blindscan VPLEDControl
+SUBDIRS += VPLEDControl
 endif
 
 if VUPLUS
@@ -272,9 +295,9 @@ SUBDIRS += Blindscan
 endif
 
 if XC7358
-SUBDIRS += Blindscan VPLEDControl
+SUBDIRS += VPLEDControl
 endif
 
 if XC7358CI
-SUBDIRS += Blindscan VPLEDControl
+SUBDIRS += VPLEDControl
 endif
