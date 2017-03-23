@@ -378,8 +378,8 @@ class SatelliteTransponderSearchSupport:
 		self.timer.callback.append(self.updateStateSat)
 
 		print "tunername", tunername
-		if tunername in ("BCM4505", "BCM4506 (internal)", "BCM4506", "Alps BSBE1 C01A/D01A.", "Si2166B"):
-			self.auto_scan = tunername == 'Si2166B'
+		if tunername in ("BCM4505", "BCM4506 (internal)", "BCM4506", "Alps BSBE1 C01A/D01A.", "Si2166B", "Si2169C"):
+			self.auto_scan = tunername == 'Si2166B' or tunername == 'Si2169C'
 			(self.channel, self.frontend) = self.tryGetRawFrontend(nim_idx, False, False)
 			if not self.frontend:
 				self.session.nav.stopService()
@@ -468,7 +468,18 @@ class Blindscan(ConfigListScreen, Screen, TransponderSearchSupport, SatelliteTra
 		if self.service is not None:
 			self.feinfo = self.service.frontendInfo()
 			frontendData = self.feinfo and self.feinfo.getAll(True)
-		
+
+		# make config
+		self.legacy = True
+		for slot in nimmanager.nim_slots:
+			if slot.canBeCompatible("DVB-S"):
+				try:
+					slot.config.dvbs
+					self.legacy = False
+				except:
+					self.legacy = True
+				break
+
 		self.createConfig(frontendData)
 
 		del self.feinfo
@@ -534,7 +545,8 @@ class Blindscan(ConfigListScreen, Screen, TransponderSearchSupport, SatelliteTra
 			self.list.append(self.satelliteEntry)
 			self.list.append(getConfigListEntry(_("Frequency start"), self.scan_sat.bs_freq_start))
 			self.list.append(getConfigListEntry(_("Frequency stop"), self.scan_sat.bs_freq_stop))
-			if nim.isCompatible("DVB-S2"):
+			tunername = nimmanager.getNimName(index_to_scan)
+			if nim.isCompatible("DVB-S2") and tunername != 'Si2166B' and tunername != 'Si2169C':
 				self.list.append(getConfigListEntry(_("Accuracy (higher is better)"), self.scan_sat.bs_accuracy))
 			self.list.append(getConfigListEntry(_("Horizontal"), self.scan_sat.bs_horizontal))
 			self.list.append(getConfigListEntry(_("Vertical"), self.scan_sat.bs_vertical))
@@ -607,13 +619,19 @@ class Blindscan(ConfigListScreen, Screen, TransponderSearchSupport, SatelliteTra
 			nim_list = []
 			# collect all nims which are *not* set to "nothing"
 			for n in nimmanager.nim_slots:
-                            if n.isCompatible("DVB-S"):
-				if n.config_mode == "nothing":
+				if not n.isCompatible("DVB-S"):
 					continue
-				if n.config_mode == "advanced" and len(nimmanager.getSatListForNim(n.slot)) < 1:
+				if not self.legacy:
+					config = n.config.dvbs
+				else:
+					config = n.config
+				config_mode = config.configMode.value
+				if config_mode == "nothing":
 					continue
-				if n.config_mode in ("loopthrough", "satposdepends"):
-					root_id = nimmanager.sec.getRoot(n.slot_id, int(n.config.connectedTo.value))
+				if config_mode == "advanced" and len(nimmanager.getSatListForNim(n.slot)) < 1:
+					continue
+				if config_mode in ("loopthrough", "satposdepends"):
+					root_id = nimmanager.sec.getRoot(n.slot_id, int(config.connectedTo.value))
 					if n.type == nimmanager.nim_slots[root_id].type: # check if connected from a DVB-S to DVB-S2 Nim or vice versa
 						continue
 				nim_list.append((str(n.slot), n.friendly_full_description))

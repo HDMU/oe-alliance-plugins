@@ -13,7 +13,7 @@ from Components.ConfigList import ConfigListScreen
 from Components.Sources.StaticText import StaticText
 from Components.ActionMap import NumberActionMap, ActionMap
 from Components.NimManager import nimmanager, getConfigSatlist
-from Components.config import config, ConfigSubsection, ConfigSelection, ConfigYesNo, ConfigInteger, getConfigListEntry, ConfigSlider, ConfigEnableDisable
+from Components.config import config, ConfigSubsection, ConfigSelection, ConfigYesNo, ConfigInteger, getConfigListEntry, ConfigSlider, ConfigEnableDisable, ConfigNothing
 from Components.Sources.Boolean import Boolean
 from Components.Sources.StaticText import StaticText
 from Components.Pixmap import Pixmap
@@ -1233,6 +1233,8 @@ class Blindscan(ConfigListScreen, Screen):
 			currSat = nimconfig.advanced.sat[cur_orb_pos]
 			lnbnum = int(currSat.lnb.getValue())
 			currLnb = nimconfig.advanced.lnb[lnbnum]
+			if isinstance(currLnb, ConfigNothing):
+				return False
 			lof = currLnb.lof.getValue()
 			print "[Blindscan][isCbandLNB] LNB type: ", lof
 			if lof == "c_band":
@@ -1249,6 +1251,8 @@ class Blindscan(ConfigListScreen, Screen):
 			currSat = nimconfig.advanced.sat[cur_orb_pos]
 			lnbnum = int(currSat.lnb.getValue())
 			currLnb = nimconfig.advanced.lnb[lnbnum]
+			if isinstance(currLnb, ConfigNothing):
+				return False
 			lof = currLnb.lof.getValue()
 			print "[Blind scan] LNB type: ", lof
 			if lof == "circular_lnb":
@@ -1265,6 +1269,8 @@ class Blindscan(ConfigListScreen, Screen):
 			currSat = nimconfig.advanced.sat[cur_orb_pos]
 			lnbnum = int(currSat.lnb.getValue())
 			currLnb = nimconfig.advanced.lnb[lnbnum]
+			if isinstance(currLnb, ConfigNothing):
+				return False
 			lof = currLnb.lof.getValue()
 			print "[Blind scan] LNB type: ", lof
 			if lof == "universal_lnb":
@@ -1281,6 +1287,8 @@ class Blindscan(ConfigListScreen, Screen):
 			currSat = nimconfig.advanced.sat[cur_orb_pos]
 			lnbnum = int(currSat.lnb.getValue())
 			currLnb = nimconfig.advanced.lnb[lnbnum]
+			if isinstance(currLnb, ConfigNothing):
+				return False
 			lof = currLnb.lof.getValue()
 			print "[Blind scan] LNB type: ", lof
 			if lof == "user_defined":

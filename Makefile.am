@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = Blindscan DLNABrowser DLNAServer StreamTV 3GModemManager TunerServer OnDemand Fempa LCD4linux RemoteChannelStreamConverter BTDevicesManager SatipClient TerrestrialScan
+SUBDIRS = Blindscan DLNABrowser DLNAServer StreamTV 3GModemManager TunerServer OnDemand Fempa LCD4linux RemoteChannelStreamConverter BTDevicesManager SatipClient TerrestrialScan ChannelsImporter DsayersCustomMixImporter
 
 if MIPSEL
 SUBDIRS += WirelessAccessPoint
@@ -16,6 +16,10 @@ endif
 
 if VUPLUS
 SUBDIRS += AudioEffect
+endif
+
+if DAGS7252
+SUBDIRS += TransCodingSetup
 endif
 
 if DREAMBOX
@@ -39,6 +43,18 @@ SUBDIRS += F3LEDControl
 endif
 
 if SF138
+SUBDIRS += F3LEDControl
+endif
+
+if G101
+SUBDIRS += F3LEDControl
+endif
+
+if HD51
+SUBDIRS += F3LEDControl
+endif
+
+if ET1x000
 SUBDIRS += F3LEDControl
 endif
 
@@ -158,6 +174,10 @@ if FORMULER4TURBO
 SUBDIRS += F3LEDControl
 endif
 
+if TIVIARMIN
+SUBDIRS += F3LEDControl
+endif
+
 if VG2000
 SUBDIRS += F3LEDControl
 endif
@@ -203,6 +223,10 @@ SUBDIRS += F3LEDControl
 endif
 
 if H5
+SUBDIRS += F3LEDControl
+endif
+
+if H7
 SUBDIRS += F3LEDControl
 endif
 
@@ -283,11 +307,19 @@ if GB7356
 SUBDIRS += TransCodingSetup
 endif
 
+if VS1000
+SUBDIRS += F3LEDControl XtrendRemote
+endif
+
 if VUPLUS
 SUBDIRS += HbbTV AudioEffect
 endif
 
 if WETEK
+SUBDIRS += RCUSelect ReZap
+endif
+
+if HARDKERNEL
 SUBDIRS += RCUSelect ReZap
 endif
 
