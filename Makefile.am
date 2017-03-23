@@ -34,6 +34,14 @@ if G100
 SUBDIRS += F3LEDControl
 endif
 
+if SF128
+SUBDIRS += F3LEDControl
+endif
+
+if SF138
+SUBDIRS += F3LEDControl
+endif
+
 if HD2400
 SUBDIRS += XtrendFancontrol XtrendRemote MultiTransCodingSetup
 endif
