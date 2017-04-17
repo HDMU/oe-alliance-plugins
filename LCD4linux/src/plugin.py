@@ -2871,18 +2871,16 @@ def writeHelligkeit(hell,night,STOP):
 					open("/proc/stb/lcd/oled_brightness","w").write(str(int(h3*25.5)))
 		except:
 			pass
-	try:
-		LCDdisplay = LCD()
-		if LCD4linux.LCDType1.value[0] == "5":
-			LCDdisplay.setBright(h1)
-		if LCD4linux.LCDType2.value[0] == "5":
-			LCDdisplay.setBright(h2)
-		if LCD4linux.LCDType3.value[0] == "5":
-			LCDdisplay.setBright(h3)
-	except:
-		from traceback import format_exc
-		L4logE("Error LCD:",format_exc() )
-		pass
+	if os.path.isfile("/proc/stb/lcd/oled_brightness"):
+		try:
+			if LCD4linux.LCDType1.value[0] == "5":
+				open("/proc/stb/lcd/oled_brightness","w").write(str(int(h1*25.5)))
+			if LCD4linux.LCDType2.value[0] == "5":
+				open("/proc/stb/lcd/oled_brightness","w").write(str(int(h2*25.5)))
+			if LCD4linux.LCDType3.value[0] == "5":
+				open("/proc/stb/lcd/oled_brightness","w").write(str(int(h3*25.5)))
+		except:
+			pass
 	if PNGutilOK == True:
 		H = -1
 		if LCD4linux.LCDType1.value[0] == "9":
