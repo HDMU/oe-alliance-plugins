@@ -127,6 +127,9 @@ AM_CONDITIONAL(EW7356, test `echo "$BOXTYPE"` == "ew7356")
 AM_CONDITIONAL(FORMULER1, test "$BOXTYPE" == formuler1)
 AM_CONDITIONAL(FORMULER3, test "$BOXTYPE" == formuler3)
 AM_CONDITIONAL(FORMULER4, test "$BOXTYPE" == formuler4)
+AM_CONDITIONAL(FORMULER1TC, test "$BOXTYPE" == formuler1tc)
+AM_CONDITIONAL(FORMULER3IP, test "$BOXTYPE" == formuler3ip)
+AM_CONDITIONAL(FORMULER4IP, test "$BOXTYPE" == formuler4ip)
 AM_CONDITIONAL(INIHDE2, test "$BOXTYPE" == "inihde2")
 AM_CONDITIONAL(ATEMIO6000, test "$BOXTYPE" == "atemio6000")
 AM_CONDITIONAL(ATEMIO6100, test "$BOXTYPE" == "atemio6100")
@@ -217,7 +220,7 @@ fi
 AM_CONDITIONAL(HAVE_TEMPFANCONTROL, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm500hd -o "$BOXTYPE" == vuuno -o "$BOXTYPE" == vuultimo -o "$BOXTYPE" == vusolo2 -o "$BOXTYPE" == vusolo2cl -o "$BOXTYPE" == vuduo2 -o "$BOXTYPE" == tmsingle -o "$BOXTYPE" == tmtwin -o "$BOXTYPE" == tm2t -o "$BOXTYPE" == tmnano -o "$BOXTYPE" == iqonios100hd -o "$BOXTYPE" == iqonios200hd -o "$BOXTYPE" == iqonios300hd -o "$BOXTYPE" == optimussos1 -o "$BOXTYPE" == optimussos1plus -o "$BOXTYPE" == optimussos2 -o "$BOXTYPE" == optimussos2plus -o "$BOXTYPE" == dags1 -o "$BOXTYPE" == dags2 -o "$BOXTYPE" == dags3)
 
 AM_CONDITIONAL(HAVE_ARMV7A, test "$BOXTYPE" == cube)
-AM_CONDITIONAL(HAVE_ARMV7AHF, test "$BOXTYPE" == hd51  -o "$BOXTYPE" == hd52 -o "$BOXTYPE" == vusolo4k -o "$BOXTYPE" == vuuno4k -o "$BOXTYPE" == vuultimo4k -o "$BOXTYPE" == dm900 -o "$BOXTYPE" == sf4008 -o "$BOXTYPE" == dags7252 -o "$BOXTYPE" == gb7252 -o "$BOXTYPE" == xc7439)
+AM_CONDITIONAL(HAVE_ARMV7AHF, test "$BOXTYPE" == hd51 -o "$BOXTYPE" == hd52 -o "$BOXTYPE" == vs1500 -o "$BOXTYPE" == vusolo4k -o "$BOXTYPE" == vuuno4k -o "$BOXTYPE" == vuultimo4k -o "$BOXTYPE" == dm900 -o "$BOXTYPE" == sf4008 -o "$BOXTYPE" == dags7252 -o "$BOXTYPE" == gb7252 -o "$BOXTYPE" == xc7439 -o "$BOXTYPE" == h7)
 AM_CONDITIONAL(HAVE_CORTEXA9HF, test "$BOXTYPE" == wetekplay)
 
 AC_CONFIG_FILES([
@@ -289,6 +292,11 @@ FPGAUpgrade/Makefile
 FPGAUpgrade/src/Makefile
 FPGAUpgrade/meta/Makefile
 FPGAUpgrade/po/Makefile
+
+GigaBlueRemote/Makefile
+GigaBlueRemote/src/Makefile
+GigaBlueRemote/meta/Makefile
+GigaBlueRemote/po/Makefile
 
 GigaBlueVFDControl/Makefile
 GigaBlueVFDControl/src/Makefile

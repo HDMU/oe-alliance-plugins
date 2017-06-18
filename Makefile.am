@@ -158,7 +158,7 @@ if INI
 SUBDIRS += VentonFancontrol Blindscan MICOMUpgrade
 endif
 
-if FORMULER1
+if FORMULER1TC
 SUBDIRS += MultiTransCodingSetup
 endif
 
@@ -167,6 +167,14 @@ SUBDIRS += F3LEDControl
 endif
 
 if FORMULER4
+SUBDIRS += F3LEDControl
+endif
+
+if FORMULER3IP
+SUBDIRS += F3LEDControl
+endif
+
+if FORMULER4IP
 SUBDIRS += F3LEDControl
 endif
 
@@ -279,7 +287,7 @@ SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup
 endif
 
 if GIGABLUE
-SUBDIRS += GigaBlueVFDControl AudioEffect
+SUBDIRS += GigaBlueVFDControl AudioEffect GigaBlueRemote
 endif
 
 if XP1000

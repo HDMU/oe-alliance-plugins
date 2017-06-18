@@ -268,7 +268,7 @@ def main(menuid):
 	if menuid != "system":
 		return [ ]
 	else:
-		return [(_("LED Display Setup"), startVFD, "VFD_INI", None)]
+		return [(_("LED Display Setup"), startSEG, "VFD_INI", None)]
 
 def startSEG(session, **kwargs):
 	session.open(VFD_INISetup)
