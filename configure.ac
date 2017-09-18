@@ -245,7 +245,6 @@ AnimationSetup/meta/Makefile
 Blindscan/Makefile
 Blindscan/src/Makefile
 Blindscan/meta/Makefile
-Blindscan/po/Makefile
 
 BTDevicesManager/Makefile
 BTDevicesManager/src/Makefile
