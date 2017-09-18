@@ -315,6 +315,10 @@ if GB7356
 SUBDIRS += TransCodingSetup
 endif
 
+if GB7252
+SUBDIRS += TransCodingSetup
+endif
+
 if VS1000
 SUBDIRS += F3LEDControl XtrendRemote
 endif

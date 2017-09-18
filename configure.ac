@@ -277,6 +277,7 @@ DsayersCustomMixImporter/Makefile
 DsayersCustomMixImporter/meta/Makefile
 DsayersCustomMixImporter/po/Makefile
 DsayersCustomMixImporter/src/Makefile
+DsayersCustomMixImporter/mixes/Makefile
 
 FirmwareUpgrade/Makefile
 FirmwareUpgrade/src/Makefile

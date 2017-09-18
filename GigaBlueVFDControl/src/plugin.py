@@ -492,6 +492,7 @@ def main(menuid, **kwargs):
 		return [(_("Display/LED"), startLED, "LED_Giga", None)]
 	else:
 		return [(_("LED"), startLED, "LED_Giga", None)]
+
 def startLED(session, **kwargs):
 	session.open(LED_GigaSetup)
 
