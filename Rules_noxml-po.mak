@@ -10,17 +10,17 @@ $(PLUGIN)-py.pot: $(srcdir)/../src/*.py
 
 $(PLUGIN).pot: $(PLUGIN)-py.pot
 	sed --in-place $(PLUGIN)-py.pot --expression=s/CHARSET/UTF-8/
-	$(MSGUNIQ) --no-wrap --no-location $^ -o $@
+	/usr/bin/msguniq --no-wrap --no-location $^ -o $@
 
 %.po: $(PLUGIN).pot
 	if [ -f $@ ]; then \
-		$(MSGMERGE) --backup=none --no-wrap --no-location -s -N -U $@ $< && touch $@; \
+		/usr/bin/msgmerge --backup=none --no-wrap --no-location -s -N -U $@ $< && touch $@; \
 	else \
-		$(MSGINIT) -l $@ -o $@ -i $< --no-translator; \
+		/usr/bin/msginit -l $@ -o $@ -i $< --no-translator; \
 	fi
 
 .po.mo:
-	$(MSGFMT) -o $@ $<
+	/usr/bin/msgfmt -o $@ $<
 
 BUILT_SOURCES = $(LANGMO)
 CLEANFILES = $(LANGMO) $(PLUGIN)-py.pot $(PLUGIN)-xml.pot $(PLUGIN).pot
