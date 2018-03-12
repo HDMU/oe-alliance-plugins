@@ -653,6 +653,7 @@ def main(session, **kwargs):
 
 def mainInMenu(menuid, **kwargs):
 <<<<<<< HEAD
+<<<<<<< HEAD
 #	if getImageDistro() in ('openmips') and getBoxType() in ('gbipbox'):
 #		if menuid == "setup":
 #			return [(_("Remote channel stream converter"), main, "streamconvert", 20)]
@@ -661,13 +662,7 @@ def mainInMenu(menuid, **kwargs):
 #	else:
 	if menuid == "scan":
 		return [(_("Remote channel stream converter"), main, "streamconvert", 99)]
-=======
-	if getImageDistro() in ('teamblue') and getBoxType() in ('gbipbox'):
-		if menuid == "setup":
-			return [(_("Remote channel stream converter"), main, "streamconvert", 20)]
-		else:
-			return []
->>>>>>> oea/2.3
+
 	else:
 		return []
 

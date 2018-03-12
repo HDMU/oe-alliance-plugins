@@ -17,6 +17,8 @@ from Components.config import config, ConfigSubsection, ConfigSelection, ConfigY
 from Components.Sources.Boolean import Boolean
 from Components.Pixmap import Pixmap
 
+from Tools.BoundFunction import boundFunction
+
 from enigma import eTimer, eDVBFrontendParametersSatellite, eComponentScan, eConsoleAppContainer, eDVBResourceManager
 
 import os
@@ -30,13 +32,13 @@ from time import strftime, time
 XML_BLINDSCAN_DIR = "/tmp"
 
 # _supportNimType is only used by vuplus hardware
-_supportNimType = { 'AVL1208':'', 'AVL6222':'6222_', 'AVL6211':'6211_', 'BCM7356':'bcm7346_'}
+_supportNimType = { 'AVL1208':'', 'AVL6222':'6222_', 'AVL6211':'6211_', 'BCM7356':'bcm7346_', 'SI2166':'si2166_'}
 
 # For STBs that support multiple DVB-S tuner models, e.g. Solo 4K.
 _unsupportedNims = ( 'Vuplus DVB-S NIM(7376 FBC)', ) # format = nim.description from nimmanager
 
 # blindscan-s2 supported tuners
-_blindscans2Nims = ('TBS-5925', 'DVBS2BOX')
+_blindscans2Nims = ('TBS-5925', 'DVBS2BOX', 'M88DS3103')
 
 #used for blindscan-s2
 def getAdapterFrontend(frontend, description):
@@ -455,7 +457,7 @@ class Blindscan(ConfigListScreen, Screen):
 		self.session.nav.playService(self.session.postScanService)
 		for x in self["config"].list:
 			x[1].cancel()
-		self.close()
+		self.close(False)
 
 	def keyGo(self):
 		print "[Blindscan][keyGo] started"
@@ -1315,12 +1317,16 @@ class Blindscan(ConfigListScreen, Screen):
 		if hasattr(self, 'raw_channel'):
 			del self.raw_channel
 
-def main(session, close=None, **kwargs):
-	session.openWithCallback(close, Blindscan)
+def BlindscanCallback(close, answer):
+	if close and answer:
+		close(True)
+
+def BlindscanMain(session, close=None, **kwargs):
+	session.openWithCallback(boundFunction(BlindscanCallback, close), Blindscan)
 
 def BlindscanSetup(menuid, **kwargs):
 	if menuid == "scan":
-		return [(_("Blind scan"), main, "blindscan", 25, False)]
+		return [(_("Blind scan"), BlindscanMain, "blindscan", 25, True)]
 	else:
 		return []
 

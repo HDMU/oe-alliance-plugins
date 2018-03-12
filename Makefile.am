@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = Blindscan DLNABrowser DLNAServer StreamTV 3GModemManager TunerServer OnDemand Fempa LCD4linux RemoteChannelStreamConverter BTDevicesManager SatipClient TerrestrialScan ChannelsImporter DsayersCustomMixImporter
+SUBDIRS = Blindscan DLNABrowser DLNAServer StreamTV 3GModemManager TunerServer OnDemand Fempa LCD4linux RemoteChannelStreamConverter BTDevicesManager SatipClient TerrestrialScan ChannelsImporter ABMCustomMixImporter
 
 if MIPSEL
 SUBDIRS += WirelessAccessPoint
@@ -31,6 +31,14 @@ SUBDIRS += XtrendFancontrol XtrendRemote
 endif
 
 if ET10000
+SUBDIRS += MultiTransCodingSetup
+endif
+
+if ET13000
+SUBDIRS += MultiTransCodingSetup
+endif
+
+if SF5008
 SUBDIRS += MultiTransCodingSetup
 endif
 
@@ -158,6 +166,10 @@ if INI
 SUBDIRS += VentonFancontrol Blindscan MICOMUpgrade
 endif
 
+if TIVIARAPLUS
+SUBDIRS += MultiTransCodingSetup
+endif
+
 if FORMULER1TC
 SUBDIRS += MultiTransCodingSetup
 endif
@@ -222,6 +234,10 @@ if S7400S
 SUBDIRS += F3LEDControl
 endif
 
+if S8100S
+SUBDIRS += MultiTransCodingSetup
+endif
+
 if SH1
 SUBDIRS += F3LEDControl
 endif
@@ -236,6 +252,10 @@ endif
 
 if H7
 SUBDIRS += F3LEDControl
+endif
+
+if H9
+SUBDIRS += MultiTransCodingSetup
 endif
 
 if LC
@@ -279,6 +299,14 @@ SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup
 endif
 
 if VUUNO4K
+SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup
+endif
+
+if VUZERO4K
+SUBDIRS += FirmwareUpgrade VuRemote
+endif
+
+if VUUNO4KSE
 SUBDIRS += FirmwareUpgrade VuRemote TransCodingSetup
 endif
 
@@ -352,5 +380,12 @@ SUBDIRS += VPLEDControl
 endif
 
 if XC7358CI
+SUBDIRS += VPLEDControl
+endif
+if OSNINO
+SUBDIRS += VPLEDControl
+endif
+
+if OSNINOPLUS
 SUBDIRS += VPLEDControl
 endif
