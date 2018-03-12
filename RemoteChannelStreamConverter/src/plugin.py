@@ -652,8 +652,6 @@ def main(session, **kwargs):
 	session.open(StreamingChannelFromServerScreen)
 
 def mainInMenu(menuid, **kwargs):
-<<<<<<< HEAD
-<<<<<<< HEAD
 #	if getImageDistro() in ('openmips') and getBoxType() in ('gbipbox'):
 #		if menuid == "setup":
 #			return [(_("Remote channel stream converter"), main, "streamconvert", 20)]

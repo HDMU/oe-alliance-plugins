@@ -158,11 +158,15 @@ AM_CONDITIONAL(GBX2, test "$BOXTYPE" == "gbx2")
 AM_CONDITIONAL(GBX3, test "$BOXTYPE" == "gbx3")
 AM_CONDITIONAL(GBX3H, test "$BOXTYPE" == "gbx3h")
 AM_CONDITIONAL(GB7356, test "$BOXTYPE" == "gb7356")
+AM_CONDITIONAL(GB7356, test "$BOXTYPE" == "gbquadplus")
+AM_CONDITIONAL(GB7356, test "$BOXTYPE" == "gbquad")
 AM_CONDITIONAL(GB7362, test "$BOXTYPE" == "gb7362")
 AM_CONDITIONAL(GB73625, test "$BOXTYPE" == "gb73625")
 AM_CONDITIONAL(GB7358, test "$BOXTYPE" == "gb7358")
 AM_CONDITIONAL(GB7325, test "$BOXTYPE" == "gb7325")
 AM_CONDITIONAL(GB7252, test "$BOXTYPE" == "gb7252")
+AM_CONDITIONAL(GB7252, test "$BOXTYPE" == "gbquad4k")
+AM_CONDITIONAL(GB7252, test "$BOXTYPE" == "gbue4k")
 AM_CONDITIONAL(INIHDE, test "$BOXTYPE" == "inihde")
 AM_CONDITIONAL(INIHDE2, test `echo "$BOXTYPE" | cut -b 1-7` == inihde2)
 AM_CONDITIONAL(INIHDP, test "$BOXTYPE" == "inihdp")
@@ -226,14 +230,10 @@ if test `echo "$BOXTYPE" | cut -b 1-2` == "dm"; then
 	AC_DEFINE(DREAMBOX, 1, [Dreambox hardware])
 fi
 
-<<<<<<< HEAD
-AM_CONDITIONAL(HAVE_TEMPFANCONTROL, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm500hd -o "$BOXTYPE" == vuuno -o "$BOXTYPE" == vuultimo -o "$BOXTYPE" == vusolo2 -o "$BOXTYPE" == vusolo2cl -o "$BOXTYPE" == vuduo2 -o "$BOXTYPE" == tmsingle -o "$BOXTYPE" == tmtwin -o "$BOXTYPE" == tm2t -o "$BOXTYPE" == tmnano -o "$BOXTYPE" == iqonios100hd -o "$BOXTYPE" == iqonios200hd -o "$BOXTYPE" == iqonios300hd -o "$BOXTYPE" == optimussos1 -o "$BOXTYPE" == optimussos1plus -o "$BOXTYPE" == optimussos2 -o "$BOXTYPE" == optimussos2plus -o "$BOXTYPE" == dags1 -o "$BOXTYPE" == dags2 -o "$BOXTYPE" == dags3)
-=======
-AM_CONDITIONAL(HAVE_TEMPFANCONTROL, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm800sev2 -o "$BOXTYPE" == dm500hd -o "$BOXTYPE" == vuuno -o "$BOXTYPE" == vuultimo -o "$BOXTYPE" == vusolo2 -o "$BOXTYPE" == vuduo2 -o "$BOXTYPE" == dags1 -o "$BOXTYPE" == dags2 -o "$BOXTYPE" == dags3 -o "$BOXTYPE" == dags4 -o "$BOXTYPE" == dags5 -o "$BOXTYPE" == dags7335 -o "$BOXTYPE" == dags7362 -o "$BOXTYPE" == dags73625 -o "$BOXTYPE" == dags7356 -o "$BOXTYPE" == dags7252 -o "$BOXTYPE" == triplex)
->>>>>>> oea/master
+AM_CONDITIONAL(HAVE_TEMPFANCONTROL, test "$BOXTYPE" == dm8000 -o "$BOXTYPE" == dm800se -o "$BOXTYPE" == dm800sev2 -o "$BOXTYPE" == dm500hd -o "$BOXTYPE" == vuuno -o "$BOXTYPE" == vuultimo -o "$BOXTYPE" == vusolo2 -o "$BOXTYPE" == vuduo2 -o "$BOXTYPE" == dags1 -o "$BOXTYPE" == dags2 -o "$BOXTYPE" == dags3 -o "$BOXTYPE" == optimussos1 -o "$BOXTYPE" == optimussos1plus -o "$BOXTYPE" == optimussos2 -o "$BOXTYPE" == optimussos2plus -o "$BOXTYPE" == dags4 -o "$BOXTYPE" == dags5 -o "$BOXTYPE" == dags7335 -o "$BOXTYPE" == dags7362 -o "$BOXTYPE" == dags73625 -o "$BOXTYPE" == dags7356 -o "$BOXTYPE" == dags7252 -o "$BOXTYPE" == triplex)
 
 AM_CONDITIONAL(HAVE_ARMV7A, test "$BOXTYPE" == cube)
-AM_CONDITIONAL(HAVE_ARMV7AHF, test "$BOXTYPE" == hd51 -o "$BOXTYPE" == 8100s -o "$BOXTYPE" == vs1500 -o "$BOXTYPE" == vusolo4k -o "$BOXTYPE" == vuuno4k -o "$BOXTYPE" == vuuno4kse -o "$BOXTYPE" == vuzero4k -o "$BOXTYPE" == vuultimo4k -o "$BOXTYPE" == dm900 -o "$BOXTYPE" == dm920 -o "$BOXTYPE" == sf4008 -o "$BOXTYPE" == dags7252 -o "$BOXTYPE" == gb7252 -o "$BOXTYPE" == xc7439 -o "$BOXTYPE" == h7 -o "$BOXTYPE" == h9 -o "$BOXTYPE" == u5 -o "$BOXTYPE" == u5pvr -o "$BOXTYPE" == sf5008 -o "$BOXTYPE" == et1x000 -o "$BOXTYPE" == et13000 )
+AM_CONDITIONAL(HAVE_ARMV7AHF, test "$BOXTYPE" == hd51 -o "$BOXTYPE" == 8100s -o "$BOXTYPE" == vs1500 -o "$BOXTYPE" == vusolo4k -o "$BOXTYPE" == vuuno4k -o "$BOXTYPE" == vuuno4kse -o "$BOXTYPE" == vuzero4k -o "$BOXTYPE" == vuultimo4k -o "$BOXTYPE" == dm900 -o "$BOXTYPE" == dm920 -o "$BOXTYPE" == sf4008 -o "$BOXTYPE" == dags7252 -o "$BOXTYPE" == gb7252 -o "$BOXTYPE" == gbquad4k -o "$BOXTYPE" == gbue4k -o "$BOXTYPE" == xc7439 -o "$BOXTYPE" == h7 -o "$BOXTYPE" == h9 -o "$BOXTYPE" == u5 -o "$BOXTYPE" == u5pvr -o "$BOXTYPE" == sf5008 -o "$BOXTYPE" == et1x000 -o "$BOXTYPE" == et13000 )
 AM_CONDITIONAL(HAVE_CORTEXA9HF, test "$BOXTYPE" == wetekplay)
 
 AC_CONFIG_FILES([

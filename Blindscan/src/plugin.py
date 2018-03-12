@@ -392,15 +392,9 @@ class Blindscan(ConfigListScreen, Screen):
 		nimname = nim.friendly_full_description
 
 		self.SundtekScan = "Sundtek DVB-S/S2" in nimname and "V" in nimname
-<<<<<<< HEAD
 #		if brandoem == 'vuplus' and "AVL6222" in nimname:
 #			warning_text = _("\nSecond slot dual tuner may not be supported blind scan.")
 		if self.SundtekScan:
-=======
-		if getBrandOEM() == 'vuplus' and "AVL6222" in nimname:
-			warning_text = _("\nSecond slot dual tuner may not be supported blind scan.")
-		elif self.SundtekScan:
->>>>>>> oea/2.3
 			warning_text = _("\nYou must use the power adapter.")
 
 		self.tunerEntry = getConfigListEntry(_("Tuner"), self.scan_nims,(_('Select a tuner that is configured for the satellite you wish to search') + warning_text))
