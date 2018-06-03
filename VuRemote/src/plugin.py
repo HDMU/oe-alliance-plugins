@@ -16,7 +16,7 @@ stb = HardwareInfo().get_device_name()
 def getRcuDefaultType():
 	if stb in ["vuultimo4k"]:
 		return "type5"
-	elif stb in ["vuzero4k"]:
+	elif stb in ["vuuno4kse","vuzero4k"]:
 		return "type6"
 	return "legacy"
 
